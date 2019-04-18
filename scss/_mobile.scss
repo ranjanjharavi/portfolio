@@ -1,0 +1,9 @@
+// Medium Size for Tablets 768px
+@include mediaMedium {
+  .skills {
+    display: flex;
+    flex-flow: column nowrap;
+  }
+}
+
+//Small Size for Mobile 475px
