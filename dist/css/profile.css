@@ -22,15 +22,68 @@
   60% {
     transform: translate3d(3px, 0, 0); } }
 
-@media screen and (max-width: 768px) {
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent; }
+  50% {
+    border-color: orange; } }
+
+@media only screen and (max-width: 768px) {
   .skills {
     display: flex;
-    flex-flow: column nowrap; } }
+    flex-flow: column nowrap;
+    margin-top: 2rem; } }
+
+@media only screen and (max-width: 425px) {
+  .image-container .avatar {
+    content: url(../img/me1.png);
+    height: 150px;
+    width: 150px; }
+  .bgimg-1 .caption {
+    padding: 1rem 2rem; }
+    .bgimg-1 .caption .lg-heading {
+      font-size: 2.5rem;
+      margin-top: 1rem;
+      line-height: 2.5rem; }
+    .bgimg-1 .caption .sm-heading {
+      margin-bottom: 1.5rem;
+      font-size: 20px; }
+    .bgimg-1 .caption .icons {
+      padding: 1.5rem 0 0 0;
+      font-size: 1rem;
+      line-height: 2rem; }
+  .intro h1 {
+    padding-bottom: 1.5rem; }
+  .skills-section .skill-wrapper {
+    display: flex;
+    flex-flow: column nowrap; }
+    .skills-section .skill-wrapper .current-wrapper {
+      margin-bottom: 1rem; }
+    .skills-section .skill-wrapper .ongoing-wrapper {
+      margin-top: 1rem; }
+  .projects .projects-container {
+    flex-flow: column;
+    justify-content: center;
+    padding: 1rem 1rem 0 1rem; }
+    .projects .projects-container .proj {
+      margin: 1rem 0;
+      width: 90%; }
+  .contact-section .contact {
+    padding: 3rem 5% 4rem 5%; }
+    .contact-section .contact .contact-container {
+      padding: 1rem 1rem 2rem 1rem; }
+      .contact-section .contact .contact-container h1 {
+        font-size: 24px;
+        letter-spacing: 0.2rem; }
+    .contact-section .contact #manual {
+      right: 4%;
+      transform: translateY(-30%); } }
 
 .skills-section {
   color: #444;
   text-align: center;
-  padding: 3rem;
+  padding: 3rem 5%;
   background-image: linear-gradient(120deg, #37ecba 0%, #72afd3 100%); }
 
 .skill-wrapper {
@@ -62,18 +115,19 @@
   margin: 0rem 1rem; }
 
 .projects {
-  padding: 3% 0;
+  padding: 3rem 5%;
   background-image: linear-gradient(260deg, #ddf0f8 0%, #ace0f9 100%); }
 
 .projects-container {
   display: flex;
-  flex-flow: row;
+  flex-flow: row wrap;
   justify-content: space-around; }
 
 .proj {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1rem;
   width: 20%;
   height: 250px;
   background: #eee;
@@ -81,7 +135,7 @@
   font-size: 1.2rem;
   box-shadow: 15px -15px 0px 0px #444; }
   .proj i {
-    margin-right: 14px;
+    margin: 0 1rem;
     font-size: 2rem; }
 
 .proj:hover {
@@ -89,9 +143,11 @@
   transform: translate(2%, -6%);
   transition: all 0.3s ease-out; }
 
+.contact-section {
+  background-image: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%); }
+
 .contact {
-  background-image: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%);
-  padding: 5% 20%; }
+  padding: 3rem 20%; }
   .contact .contact-container {
     border-radius: 8px;
     padding: 2rem;
@@ -159,7 +215,7 @@
   background: #444;
   color: white;
   width: 220px;
-  padding: 16px 4px 16px 0;
+  padding: 13px 4px 13px 0;
   border-radius: 6px;
   font-size: 13px;
   box-shadow: 10px 10px 40px -14px #000; }
@@ -212,6 +268,7 @@ body {
   border-image: linear-gradient(to bottom, #ff8f00, rgba(0, 0, 0, 0)) 1 100%; }
 
 .avatar {
+  content: url(../img/me.png);
   height: 200px;
   width: 200px;
   border-radius: 50%;
@@ -259,7 +316,8 @@ main .sm-heading {
 
 main .icons {
   padding: 1rem 0;
-  margin-top: 1rem; }
+  margin-top: 1rem;
+  font-size: 1.2rem; }
   main .icons a {
     padding: 0.5rem; }
 
@@ -276,8 +334,7 @@ section h1 {
 .intro {
   font-family: "Rancho", cursive;
   color: #444;
-  padding: 3rem;
-  text-align: justify;
+  padding: 3rem 5%;
   background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
   line-height: 1.4;
   letter-spacing: 0.1rem; }
@@ -300,3 +357,9 @@ footer {
     padding: 1rem; }
   footer .madewith {
     margin-top: 2rem; }
+
+.typewriter {
+  border-right: 3px solid;
+  animation: blink 0.4s step-end infinite;
+  letter-spacing: 2px;
+  transition: ease-out; }

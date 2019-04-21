@@ -7,7 +7,7 @@ const abc = () => {
   let displayText = "";
 
   displayText = text.substring(0, index);
-  type.innerHTML = '<span class="abc">' + displayText + "</span>";
+  type.innerHTML = '<span class="typewriter">' + displayText + "</span>";
 
   if (deleting) index -= 1;
   else index += 1;

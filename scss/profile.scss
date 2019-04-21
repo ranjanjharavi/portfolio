@@ -63,6 +63,7 @@ body {
 }
 
 .avatar {
+  content: url(../img/me.png);
   height: 200px;
   width: 200px;
   border-radius: 50%;
@@ -139,6 +140,7 @@ main {
   .icons {
     padding: 1rem 0;
     margin-top: 1rem;
+    font-size: 1.2rem;
     a {
       padding: 0.5rem;
     }
@@ -165,8 +167,7 @@ section {
   font-family: "Rancho", cursive;
 
   color: $primary-color;
-  padding: 3rem;
-  text-align: justify;
+  padding: 3rem 5%;
   background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
 
   line-height: 1.4;
@@ -203,4 +204,11 @@ footer {
   .madewith {
     margin-top: 2rem;
   }
+}
+
+.typewriter {
+  border-right: 3px solid;
+  animation: blink 0.4s step-end infinite;
+  letter-spacing: 2px;
+  transition: ease-out;
 }

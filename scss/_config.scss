@@ -42,6 +42,16 @@ $box-shadow: 0 0 40px -10px #000;
   }
 }
 
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+
 //Mixins
 @mixin easeOut {
   transition: all 0.5s ease-out;
@@ -49,7 +59,13 @@ $box-shadow: 0 0 40px -10px #000;
 
 //mixins for mobiles
 @mixin mediaMedium {
-  @media screen and (max-width: 768px) {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mediaSmall {
+  @media only screen and (max-width: 425px) {
     @content;
   }
 }
