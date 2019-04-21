@@ -7,7 +7,7 @@ $primary-color: #444;
 $primary-text-color: white;
 $secondary-text-color: #ff8f00;
 $opacity: 0.9;
-$box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.7);
+$box-shadow: 0 0 40px -10px #000;
 
 //Effects
 @keyframes zoomInOut {
@@ -16,6 +16,29 @@ $box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.7);
   }
   100% {
     transform: scale(1, 1);
+  }
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(3px, 0, 0);
   }
 }
 

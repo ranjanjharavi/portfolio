@@ -7,123 +7,31 @@
   100% {
     transform: scale(1, 1); } }
 
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0); }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0); }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-3px, 0, 0); }
+  40%,
+  60% {
+    transform: translate3d(3px, 0, 0); } }
+
 @media screen and (max-width: 768px) {
   .skills {
     display: flex;
     flex-flow: column nowrap; } }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; }
-
-html,
-body {
-  height: 100%;
-  font-family: "Roboto Mono", monospace; }
-
-.bgimg-1 {
-  position: relative;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; }
-
-.bgimg-1 {
-  background-image: url("../img/mountains.jpg");
-  min-height: 100%; }
-  .bgimg-1:after {
-    content: "";
-    position: absolute;
-    margin: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(68, 68, 68, 0.9);
-    z-index: 1; }
-
-.caption {
-  position: absolute;
-  left: 0;
-  top: 10vh;
-  width: 90%;
-  margin-left: 5%;
-  text-align: center;
-  z-index: 2;
-  padding: 3rem; }
-
-.caption-border {
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(to bottom, #ff8f00, rgba(0, 0, 0, 0)) 1 100%; }
-
-.avatar {
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
-  border: 5px solid #ff8f00;
-  animation: zoomInOut 4s forwards; }
-
-a {
-  color: white;
-  text-decoration: none; }
-  a:hover {
-    color: #ff8f00;
-    transition: all 0.5s ease-out; }
-
-main h1,
-main h2 {
-  color: white;
-  margin: 0;
-  font-weight: 400; }
-
-main .lg-heading {
-  margin-top: 2rem;
-  font-size: 4rem; }
-  main .lg-heading span {
-    color: #ff8f00; }
-
-main .sm-heading {
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  padding: 0.2rem 1rem; }
-
-main .icons {
-  margin-top: 1rem; }
-  main .icons a {
-    padding: 0.5rem; }
-
-.icon-size {
-  height: 48px;
-  width: 48px; }
-
-section h1 {
-  text-align: center;
-  padding-bottom: 2rem;
-  color: #444;
-  font-size: 28px; }
-
-.intro {
-  font-family: "Rancho", cursive;
-  color: #444;
-  text-align: center;
-  padding: 3rem;
-  text-align: justify;
-  background-image: linear-gradient(to top, #e4e7e7 0%, #b6b1b2 100%);
-  line-height: 1.4;
-  letter-spacing: 0.1rem; }
-  .intro h1 {
-    font-size: 3rem; }
-  .intro p {
-    font-family: "Rancho", cursive;
-    font-size: 2rem;
-    padding: 1rem 2rem 2rem 2rem; }
-
 .skills-section {
   color: #444;
   text-align: center;
   padding: 3rem;
-  background-image: linear-gradient(30deg, white 30%, #ebebf0 100%); }
+  background-image: linear-gradient(120deg, #37ecba 0%, #72afd3 100%); }
 
 .skill-wrapper {
   display: flex;
@@ -136,9 +44,10 @@ section h1 {
 .ongoing-wrapper {
   display: flex;
   flex-flow: column wrap;
-  box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 40px -10px #000;
   border-radius: 8px;
-  padding: 1rem; }
+  padding: 1rem;
+  background: white; }
 
 .subject {
   display: flex;
@@ -152,25 +61,41 @@ section h1 {
   justify-content: center;
   margin: 0rem 1rem; }
 
-footer {
-  background: #444;
-  min-height: 20%;
-  color: white;
-  font-size: 18px;
-  text-align: center;
-  padding-top: 1.5rem; }
-  footer .icons a {
-    padding: 1rem; }
-  footer .madewith {
-    margin-top: 2rem; }
+.projects {
+  padding: 3% 0;
+  background-image: linear-gradient(260deg, #ddf0f8 0%, #ace0f9 100%); }
+
+.projects-container {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around; }
+
+.proj {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 250px;
+  background: #eee;
+  color: #444;
+  font-size: 1.2rem;
+  box-shadow: 15px -15px 0px 0px #444; }
+  .proj i {
+    margin-right: 14px;
+    font-size: 2rem; }
+
+.proj:hover {
+  box-shadow: 0 0 30px -10px #000;
+  transform: translate(2%, -6%);
+  transition: all 0.3s ease-out; }
 
 .contact {
-  background-color: #fafafc;
-  padding: 4rem; }
+  background-image: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%);
+  padding: 5% 20%; }
   .contact .contact-container {
     border-radius: 8px;
     padding: 2rem;
-    box-shadow: 1px 1px 8px 0px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 40px -10px #000;
     background-color: white; }
     .contact .contact-container h1 {
       display: flex;
@@ -223,3 +148,155 @@ footer {
   height: 50px;
   margin: 0 auto;
   width: 50px; }
+
+.icon:hover {
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite; }
+
+#manual {
+  position: absolute;
+  right: 19%;
+  transform: translateY(-50%);
+  background: #444;
+  color: white;
+  width: 220px;
+  padding: 16px 4px 16px 0;
+  border-radius: 6px;
+  font-size: 13px;
+  box-shadow: 10px 10px 40px -14px #000; }
+  #manual span {
+    margin: 0 5px 0 15px; }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+html,
+body {
+  height: 100%;
+  font-family: "Roboto Mono", monospace; }
+
+.bgimg-1 {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; }
+
+.bgimg-1 {
+  background-image: url("../img/mountains.jpg");
+  min-height: 100%; }
+  .bgimg-1:after {
+    content: "";
+    position: absolute;
+    margin: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(68, 68, 68, 0.8);
+    z-index: 1; }
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 10vh;
+  width: 90%;
+  margin-left: 5%;
+  text-align: center;
+  z-index: 2;
+  padding: 3rem; }
+
+.caption-border {
+  border-width: 3px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom, #ff8f00, rgba(0, 0, 0, 0)) 1 100%; }
+
+.avatar {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  border: 5px solid #ff8f00;
+  animation: zoomInOut 4s forwards; }
+
+a {
+  color: white;
+  text-decoration: none; }
+  a:nth-child(1):hover {
+    color: #1ca1f2;
+    transition: all 0.5s ease-out; }
+  a:nth-child(2):hover {
+    color: #24292e;
+    transition: all 0.5s ease-out; }
+  a:nth-child(3):hover {
+    color: #03679b;
+    transition: all 0.5s ease-out; }
+  a:nth-child(4):hover {
+    color: #e1306c;
+    transition: all 0.5s ease-out; }
+  a:nth-child(5):hover {
+    color: #252525;
+    transition: all 0.5s ease-out; }
+  a:nth-child(6):hover {
+    color: #c74b3d;
+    transition: all 0.5s ease-out; }
+
+main h1,
+main h2 {
+  color: white;
+  margin: 0;
+  font-weight: 400; }
+
+main .lg-heading {
+  margin-top: 2rem;
+  font-size: 4rem; }
+  main .lg-heading span {
+    color: #ff8f00; }
+
+main .sm-heading {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  padding: 0.2rem 1rem; }
+
+main .icons {
+  padding: 1rem 0;
+  margin-top: 1rem; }
+  main .icons a {
+    padding: 0.5rem; }
+
+.icon-size {
+  height: 48px;
+  width: 48px; }
+
+section h1 {
+  text-align: center;
+  padding-bottom: 2rem;
+  color: #444;
+  font-size: 28px; }
+
+.intro {
+  font-family: "Rancho", cursive;
+  color: #444;
+  padding: 3rem;
+  text-align: justify;
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
+  line-height: 1.4;
+  letter-spacing: 0.1rem; }
+  .intro h1 {
+    font-size: 2.5rem; }
+    .intro h1:hover {
+      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
+  .intro p {
+    font-size: 1.5rem;
+    padding: 1rem 2rem 2rem 2rem; }
+
+footer {
+  background: #444;
+  min-height: 20%;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 1.5rem; }
+  footer .icons a {
+    padding: 1rem; }
+  footer .madewith {
+    margin-top: 2rem; }
