@@ -2,7 +2,7 @@
 .skills-section {
   color: $primary-color;
   text-align: center;
-  padding: 3rem 5%;
+  @include padding(3rem 5%);
   background-image: linear-gradient(120deg, #37ecba 0%, #72afd3 100%);
 }
 
@@ -22,14 +22,14 @@
   flex-flow: column wrap;
   box-shadow: $box-shadow;
   border-radius: 8px;
-  padding: 1rem;
+  @include padding(1rem);
   background: white;
 }
 
 .subject {
   display: flex;
   flex-flow: row wrap;
-  margin: 1.5rem 0;
+  @include margin(1.5rem 0);
   justify-content: center;
 }
 
@@ -37,5 +37,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0rem 1rem;
+  @include margin(0rem 1rem);
 }

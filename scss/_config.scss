@@ -9,6 +9,19 @@ $secondary-text-color: #ff8f00;
 $opacity: 0.9;
 $box-shadow: 0 0 40px -10px #000;
 
+//Mixins
+@mixin easeOut {
+  transition: all 0.5s ease-out;
+}
+
+@mixin padding($value) {
+  padding: $value;
+}
+
+@mixin margin($value) {
+  margin: $value;
+}
+
 //Effects
 @keyframes zoomInOut {
   0% {
@@ -52,12 +65,7 @@ $box-shadow: 0 0 40px -10px #000;
   }
 }
 
-//Mixins
-@mixin easeOut {
-  transition: all 0.5s ease-out;
-}
-
-//mixins for mobiles
+//mixins for responsiveness
 @mixin mediaMedium {
   @media only screen and (max-width: 768px) {
     @content;
@@ -66,6 +74,12 @@ $box-shadow: 0 0 40px -10px #000;
 
 @mixin mediaSmall {
   @media only screen and (max-width: 425px) {
+    @content;
+  }
+}
+
+@mixin mediaLaptop {
+  @media only screen and (max-width: 1340px) {
     @content;
   }
 }

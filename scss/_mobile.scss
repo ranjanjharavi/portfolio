@@ -1,51 +1,9 @@
-// Medium Size for Tablets 768px
-@include mediaMedium {
-  .skills {
-    display: flex;
-    flex-flow: column nowrap;
-    margin-top: 2rem;
-  }
-}
-
-//Small Size for Mobile 475px
-@include mediaSmall {
-  //landing page section
-  .image-container {
-    .avatar {
-      content: url(../img/me1.png);
+@include mediaLaptop {
+  body {
+    .skills-section {
+      @include padding(3rem 10%);
     }
   }
-
-  .bgimg-1 {
-    .caption {
-      padding: 1rem 2rem;
-
-      .lg-heading {
-        font-size: 2.5rem;
-        margin-top: 1rem;
-        line-height: 2.5rem;
-      }
-
-      .sm-heading {
-        margin-bottom: 1.5rem;
-        font-size: 20px;
-      }
-      .icons {
-        padding: 1.5rem 0 0 0;
-        font-size: 1rem;
-        line-height: 2rem;
-      }
-    }
-  }
-
-  //intro section
-  .intro {
-    h1 {
-      padding-bottom: 1.5rem;
-    }
-  }
-
-  //skills section
   .skills-section {
     .skill-wrapper {
       display: flex;
@@ -57,29 +15,96 @@
       .ongoing-wrapper {
         margin-top: 1rem;
       }
+      .subject {
+        .individual-sub {
+          @include padding(0.2rem);
+        }
+      }
     }
   }
 
-  //projects section
+  .projects-container {
+    .proj {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Medium Size for Tablets 768px
+@include mediaMedium {
+  .intro {
+    h1 {
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  .projects-container {
+    .proj {
+      display: flex;
+      flex-flow: column;
+      font-size: 1rem;
+      padding-left: 1rem;
+      i {
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+//Small Size for Mobile 475px
+@include mediaSmall {
+  .image-container {
+    .avatar {
+      content: url(../img/me1.png);
+    }
+  }
+
+  .bgimg-1 {
+    .caption {
+      @include padding(1rem 2rem);
+
+      .lg-heading {
+        font-size: 3rem;
+        margin-top: 1rem;
+        line-height: 3rem;
+      }
+
+      .sm-heading {
+        margin-bottom: 1.5rem;
+        font-size: 20px;
+      }
+      .icons {
+        @include padding(1.5rem 0 0 0);
+        font-size: 1rem;
+        line-height: 2rem;
+      }
+    }
+  }
+
+  body {
+    .skills-section {
+      @include padding(3rem 5%);
+    }
+  }
+
   .projects {
     .projects-container {
       flex-flow: column;
       justify-content: center;
-      padding: 1rem 1rem 0 1rem;
+      @include padding(1rem 1rem 0 1rem);
       .proj {
-        margin: 1rem 0;
+        @include margin(1rem 0);
         width: 90%;
       }
     }
   }
 
-  //contact section
   .contact-section {
     .contact {
-      padding: 3rem 5% 4rem 5%;
+      @include padding(3rem 5% 4rem 5%);
 
       .contact-container {
-        padding: 1rem 1rem 2rem 1rem;
+        @include padding(1rem 1rem 2rem 1rem);
 
         h1 {
           font-size: 24px;
@@ -87,6 +112,7 @@
         }
       }
 
+      //floating mail details
       #manual {
         right: 4%;
         transform: translateY(-30%);
