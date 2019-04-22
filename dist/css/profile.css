@@ -37,9 +37,7 @@
 
 @media only screen and (max-width: 425px) {
   .image-container .avatar {
-    content: url(../img/me1.png);
-    height: 150px;
-    width: 150px; }
+    content: url(../img/me1.png); }
   .bgimg-1 .caption {
     padding: 1rem 2rem; }
     .bgimg-1 .caption .lg-heading {
