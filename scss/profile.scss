@@ -63,12 +63,14 @@ body {
 }
 
 .avatar {
-  content: url(../img/me.png);
+  //content: url(../img/me.png);
   height: 200px;
   width: 200px;
   border-radius: 50%;
   border: 5px solid $secondary-text-color;
   animation: zoomInOut 4s forwards;
+  -webkit-animation: zoomInOut 4s forwards;
+  -moz-animation: zoomInOut 4s forwards;
 }
 
 a {
@@ -177,6 +179,9 @@ section {
     font-size: 2.5rem;
     &:hover {
       animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+      -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97)
+        forwards;
+      -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
     }
   }
 
@@ -210,6 +215,8 @@ footer {
 .typewriter {
   border-right: 3px solid;
   animation: blink 0.4s step-end infinite;
+  -webkit-animation: blink 0.4s step-end infinite;
+  -moz-animation: blink 0.4s step-end infinite;
   letter-spacing: 2px;
   transition: ease-out;
 }

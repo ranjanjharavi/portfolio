@@ -3,24 +3,36 @@
 @import url("https://fonts.googleapis.com/css?family=Rancho");
 @keyframes zoomInOut {
   0% {
-    transform: scale(0, 0); }
+    transform: scale(0, 0);
+    -webkit-transform: scale(0, 0);
+    -moz-transform: scale(0, 0); }
   100% {
-    transform: scale(1, 1); } }
+    transform: scale(1, 1);
+    -webkit-transform: scale(1, 1);
+    -moz-transform: scale(1, 1); } }
 
 @keyframes shake {
   10%,
   90% {
-    transform: translate3d(-1px, 0, 0); }
+    transform: translate3d(-1px, 0, 0);
+    -webkit-transform: translate3d(-1px, 0, 0);
+    -moz-transform: translate3d(-1px, 0, 0); }
   20%,
   80% {
-    transform: translate3d(2px, 0, 0); }
+    transform: translate3d(2px, 0, 0);
+    -webkit-transform: translate3d(2px, 0, 0);
+    -moz-transform: translate3d(2px, 0, 0); }
   30%,
   50%,
   70% {
-    transform: translate3d(-3px, 0, 0); }
+    transform: translate3d(-3px, 0, 0);
+    -webkit-transform: translate3d(-3px, 0, 0);
+    -moz-transform: translate3d(-3px, 0, 0); }
   40%,
   60% {
-    transform: translate3d(3px, 0, 0); } }
+    transform: translate3d(3px, 0, 0);
+    -webkit-transform: translate3d(3px, 0, 0);
+    -moz-transform: translate3d(3px, 0, 0); } }
 
 @keyframes blink {
   from,
@@ -30,7 +42,7 @@
     border-color: orange; } }
 
 @media only screen and (max-width: 767px) {
-  .bgimg-1 {
+  body .bgimg-1 {
     background-attachment: scroll; } }
 
 @media only screen and (max-width: 1340px) {
@@ -60,8 +72,6 @@
       font-size: 3rem; } }
 
 @media only screen and (max-width: 425px) {
-  .image-container .avatar {
-    content: url(../img/me1.png); }
   .bgimg-1 .caption {
     padding: 1rem 2rem; }
     .bgimg-1 .caption .lg-heading {
@@ -212,7 +222,9 @@
     .contact button:hover {
       color: white;
       background: #444;
-      transition: all 0.5s ease-out; }
+      transition: all 0.5s ease-out;
+      -webkit-transition: all 0.5s ease-out;
+      -moz-transition: all 0.5s ease-out; }
 
 .icon {
   fill: #444;
@@ -222,7 +234,9 @@
   width: 50px; }
 
 .icon:hover {
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite; }
+  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite; }
 
 #manual {
   position: absolute;
@@ -284,34 +298,47 @@ body {
   border-image: linear-gradient(to bottom, #ff8f00, rgba(0, 0, 0, 0)) 1 100%; }
 
 .avatar {
-  content: url(../img/me.png);
   height: 200px;
   width: 200px;
   border-radius: 50%;
   border: 5px solid #ff8f00;
-  animation: zoomInOut 4s forwards; }
+  animation: zoomInOut 4s forwards;
+  -webkit-animation: zoomInOut 4s forwards;
+  -moz-animation: zoomInOut 4s forwards; }
 
 a {
   color: white;
   text-decoration: none; }
   a:nth-child(1):hover {
     color: #1ca1f2;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
   a:nth-child(2):hover {
     color: #24292e;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
   a:nth-child(3):hover {
     color: #03679b;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
   a:nth-child(4):hover {
     color: #e1306c;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
   a:nth-child(5):hover {
     color: #252525;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
   a:nth-child(6):hover {
     color: #c74b3d;
-    transition: all 0.5s ease-out; }
+    transition: all 0.5s ease-out;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out; }
 
 main h1,
 main h2 {
@@ -357,7 +384,9 @@ section h1 {
   .intro h1 {
     font-size: 2.5rem; }
     .intro h1:hover {
-      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
+      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+      -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+      -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
   .intro p {
     font-size: 1.5rem;
     padding: 1rem 2rem 2rem 2rem; }
@@ -378,5 +407,7 @@ footer {
 .typewriter {
   border-right: 3px solid;
   animation: blink 0.4s step-end infinite;
+  -webkit-animation: blink 0.4s step-end infinite;
+  -moz-animation: blink 0.4s step-end infinite;
   letter-spacing: 2px;
   transition: ease-out; }
