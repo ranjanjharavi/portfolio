@@ -268,7 +268,10 @@
               </svg>
             </span>
           </h1>
-          <form action="POST" data-netlify="true">
+          <form action="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <p class="hidden" style="visibility:hidden;">
+              <input name="bot-field" />
+            </p>
             <input
               type="text"
               id="fullname"
