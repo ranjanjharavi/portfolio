@@ -3,7 +3,8 @@
   color: $primary-color;
   text-align: center;
   @include padding(3rem 5%);
-  background-image: linear-gradient(120deg, #37ecba 0%, #72afd3 100%);
+  // background-image: linear-gradient(120deg, #37ecba 0%, #72afd3 100%);
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
 }
 
 .skill-wrapper {
