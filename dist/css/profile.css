@@ -377,16 +377,15 @@ section h1 {
   color: #444;
   padding: 3rem 5%;
   background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
-  line-height: 1.2;
-  letter-spacing: 0.1rem; }
+  line-height: 1.2; }
   .intro h1 {
-    font-size: 1.5rem; }
+    font-size: 2rem; }
     .intro h1:hover {
       animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
       -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
       -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
   .intro p {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     padding: 1rem 2rem 2rem 2rem; }
 
 footer {
