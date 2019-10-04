@@ -1,6 +1,7 @@
 //Contact
 .contact-section {
-  background-image: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%);
+  //background-image: linear-gradient(120deg, #fff1eb 0%, #ace0f9 100%);
+  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
 }
 .contact {
   @include padding(3rem 15%);
@@ -16,8 +17,7 @@
       align-items: center;
       justify-content: center;
       padding-bottom: 1rem !important;
-      font-family: "Permanent Marker", cursive;
-      letter-spacing: 0.4rem;
+      letter-spacing: 0.1rem;
       span {
         @include margin(0 15px);
       }
