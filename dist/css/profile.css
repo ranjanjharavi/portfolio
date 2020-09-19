@@ -47,60 +47,67 @@
 
 @media only screen and (max-width: 1340px) {
   body .skills-section {
-    padding: 3rem 10%; }
+    padding: 4rem 10%; }
   .skills-section .skill-wrapper {
     display: flex;
     flex-flow: column nowrap; }
     .skills-section .skill-wrapper .current-wrapper {
-      margin-bottom: 1rem; }
+      margin-bottom: 1.5rem; }
     .skills-section .skill-wrapper .ongoing-wrapper {
-      margin-top: 1rem; }
+      margin-top: 1.5rem; }
     .skills-section .skill-wrapper .subject .individual-sub {
-      padding: 0.2rem; }
+      padding: 0.5rem 1rem; }
   .projects-container .proj {
     font-size: 1rem; } }
 
 @media only screen and (max-width: 768px) {
   .intro h1 {
     padding-bottom: 1.5rem; }
+  .intro p {
+    padding: 1rem 2rem 2rem 2rem; }
   .projects-container .proj {
     display: flex;
     flex-flow: column;
     font-size: 1rem;
-    padding-left: 1rem; }
+    padding: 2rem 1rem; }
     .projects-container .proj i {
-      font-size: 3rem; } }
+      font-size: 3rem;
+      margin-bottom: 1rem; } }
 
 @media only screen and (max-width: 425px) {
   .bgimg-1 .caption {
-    padding: 1rem 2rem; }
+    padding: 1.5rem 2rem; }
     .bgimg-1 .caption .lg-heading {
       font-size: 2.5rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       line-height: 2.5rem; }
     .bgimg-1 .caption .sm-heading {
       margin-bottom: 1.5rem;
       font-size: 20px; }
     .bgimg-1 .caption .icons {
-      padding: 1.5rem 0 0 0;
+      padding: 2rem 0 0 0;
       font-size: 1rem;
-      line-height: 2rem; }
+      line-height: 2rem;
+      letter-spacing: 0.3rem; }
   body .skills-section {
+    padding: 3rem 5%; }
+  .projects {
     padding: 3rem 5%; }
   .projects .projects-container {
     flex-flow: column;
     justify-content: center;
     padding: 1rem 1rem 0 1rem; }
     .projects .projects-container .proj {
-      margin: 1rem 0;
+      margin: 1.5rem auto;
       width: 90%; }
   .contact-section .contact {
     padding: 3rem 5% 4rem 5%; }
     .contact-section .contact .contact-container {
-      padding: 1rem 1rem 2rem 1rem; }
+      padding: 1.5rem 1rem 2rem 1rem; }
       .contact-section .contact .contact-container h1 {
         font-size: 24px;
-        letter-spacing: 0.2rem; }
+        letter-spacing: 0.2rem;
+        padding-bottom: 1.5rem; }
     .contact-section .contact #manual {
       right: 4%;
       transform: translateY(-30%); } }
@@ -114,9 +121,12 @@
 .skill-wrapper {
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-around; }
+  justify-content: space-around;
+  gap: 2rem; }
   .skill-wrapper h2 {
-    margin-top: 1rem; }
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    width: 100%; }
 
 .current-wrapper,
 .ongoing-wrapper {
@@ -124,23 +134,27 @@
   flex-flow: column wrap;
   box-shadow: 0 0 40px -10px #000;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 2rem 1.5rem;
   background: white; }
 
 .subject {
   display: flex;
   flex-flow: row wrap;
-  margin: 1.5rem 0;
-  justify-content: center; }
+  margin: 1.5rem 0 2rem 0;
+  justify-content: center;
+  gap: 1.5rem; }
 
 .individual-sub {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0rem 1rem; }
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  flex-direction: column;
+  font-size: 0.95rem; }
 
 .projects {
-  padding: 3rem 5%;
+  padding: 4rem 5%;
   background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%); }
 
 .projects-container {
@@ -152,17 +166,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
+  flex-direction: column;
+  margin-top: 2rem;
   width: 20%;
-  height: 250px;
+  height: 280px;
   background: #eee;
   color: #444;
   font-size: 1.2rem;
   box-shadow: 15px -15px 0px 0px #444;
-  text-overflow: ellipsis; }
+  text-overflow: ellipsis;
+  padding: 2rem 1rem; }
   .proj i {
-    margin: 0 1rem;
-    font-size: 2rem; }
+    margin-bottom: 1rem;
+    font-size: 3rem; }
 
 .proj:hover {
   box-shadow: 0 0 30px -10px #000;
@@ -173,10 +189,10 @@
   background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%); }
 
 .contact {
-  padding: 3rem 15%; }
+  padding: 4rem 15% 3rem 15%; }
   .contact .contact-container {
     border-radius: 8px;
-    padding: 2rem;
+    padding: 3rem 2.5rem;
     box-shadow: 0 0 40px -10px #000;
     background-color: white; }
     .contact .contact-container h1 {
@@ -194,25 +210,28 @@
   .contact #sub,
   .contact textarea {
     width: 100%;
-    padding: 8px;
+    padding: 12px 8px;
     border: none;
-    border-bottom: 1px solid #c9c2c2;
-    margin-bottom: 18px;
+    border-bottom: 2px solid #c9c2c2;
+    margin-bottom: 24px;
     resize: vertical;
-    font-size: 14px; }
+    font-size: 14px;
+    transition: border-color 0.3s ease; }
     .contact #fullname:focus,
     .contact #email:focus,
     .contact #sub:focus,
     .contact textarea:focus {
-      outline: none; }
+      outline: none;
+      border-bottom-color: #444; }
   .contact .cbtn {
     display: flex;
-    justify-content: center; }
+    justify-content: center;
+    margin-top: 2rem; }
   .contact button {
     background: white;
     color: #444;
-    padding: 12px 20px;
-    border: 1px solid #444;
+    padding: 14px 32px;
+    border: 2px solid #444;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
@@ -357,11 +376,12 @@ main .sm-heading {
   padding: 0.2rem 1rem; }
 
 main .icons {
-  padding: 1rem 0;
-  margin-top: 1rem;
-  font-size: 1.2rem; }
+  padding: 1.5rem 0;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.5rem; }
   main .icons a {
-    padding: 0.5rem; }
+    padding: 0.75rem; }
 
 .icon-size {
   height: 48px;
@@ -369,9 +389,10 @@ main .icons {
 
 section h1 {
   text-align: center;
-  padding-bottom: 2rem;
+  padding-bottom: 2.5rem;
   color: #444;
-  font-size: 28px; }
+  font-size: 28px;
+  font-weight: 500; }
 
 .intro {
   color: #444;
@@ -386,7 +407,10 @@ section h1 {
       -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
   .intro p {
     font-size: 1.3rem;
-    padding: 1rem 2rem 2rem 2rem; }
+    padding: 1rem 3rem 3rem 3rem;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 0 auto; }
 
 footer {
   background: #444;
@@ -394,12 +418,14 @@ footer {
   color: white;
   font-size: 18px;
   text-align: center;
-  padding-top: 1.5rem; }
+  padding: 2rem 1rem 1.5rem 1rem; }
+  footer .icons {
+    margin-bottom: 1.5rem; }
   footer .icons a {
-    padding: 1rem; }
+    padding: 0.5rem 1rem; }
   footer .madewith {
     margin-top: 2rem;
-    padding-bottom: 0.5rem; }
+    padding-bottom: 1rem; }
 
 .typewriter {
   border-right: 3px solid;
