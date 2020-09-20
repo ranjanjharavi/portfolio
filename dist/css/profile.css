@@ -62,9 +62,12 @@
 
 @media only screen and (max-width: 768px) {
   .intro h1 {
-    padding-bottom: 1.5rem; }
+    font-size: 2rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem; }
   .intro p {
-    padding: 1rem 2rem 2rem 2rem; }
+    padding: 1.5rem 2.5rem;
+    font-size: 1.05rem; }
   .projects-container .proj {
     display: flex;
     flex-flow: column;
@@ -75,6 +78,15 @@
       margin-bottom: 1rem; } }
 
 @media only screen and (max-width: 425px) {
+  .intro {
+    padding: 2.5rem 5%; }
+    .intro h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem; }
+    .intro p {
+      padding: 1.5rem 1.5rem;
+      font-size: 1rem;
+      line-height: 1.8; }
   .bgimg-1 .caption {
     padding: 1.5rem 2rem; }
     .bgimg-1 .caption .lg-heading {
@@ -396,21 +408,50 @@ section h1 {
 
 .intro {
   color: #444;
-  padding: 3rem 5%;
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
-  line-height: 1.2; }
+  padding: 4rem 5%;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  line-height: 1.6;
+  position: relative;
+  overflow: hidden; }
+  .intro::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff8f00 0%, #ffa500 50%, #ff8f00 100%); }
   .intro h1 {
-    font-size: 2rem; }
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 1rem; }
+    .intro h1::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #ff8f00; }
     .intro h1:hover {
       animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
       -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
       -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards; }
   .intro p {
-    font-size: 1.3rem;
-    padding: 1rem 3rem 3rem 3rem;
-    line-height: 1.8;
-    max-width: 900px;
-    margin: 0 auto; }
+    font-size: 1.15rem;
+    padding: 2rem 4rem;
+    line-height: 1.9;
+    max-width: 950px;
+    margin: 0 auto;
+    color: #555;
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid #ff8f00;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); }
 
 footer {
   background: #444;
