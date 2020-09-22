@@ -50,13 +50,14 @@
     padding: 4rem 10%; }
   .skills-section .skill-wrapper {
     display: flex;
-    flex-flow: column nowrap; }
-    .skills-section .skill-wrapper .current-wrapper {
-      margin-bottom: 1.5rem; }
+    flex-flow: column nowrap;
+    gap: 2rem; }
+    .skills-section .skill-wrapper .current-wrapper,
     .skills-section .skill-wrapper .ongoing-wrapper {
-      margin-top: 1.5rem; }
+      flex-basis: auto;
+      margin: 0; }
     .skills-section .skill-wrapper .subject .individual-sub {
-      padding: 0.5rem 1rem; }
+      padding: 1rem 1.2rem; }
   .projects-container .proj {
     font-size: 1rem; } }
 
@@ -87,6 +88,25 @@
       padding: 1.5rem 1.5rem;
       font-size: 1rem;
       line-height: 1.8; }
+  body .skills-section {
+    padding: 2.5rem 5%; }
+    .skills-section .skill-wrapper {
+      gap: 1.5rem; }
+    .skills-section .skill-wrapper h2 {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem; }
+    .skills-section .skill-wrapper .current-wrapper,
+    .skills-section .skill-wrapper .ongoing-wrapper {
+      padding: 1.5rem 1rem;
+      flex-basis: auto; }
+    .skills-section .skill-wrapper .subject {
+      gap: 1rem;
+      padding: 0.8rem 0;
+      margin: 1rem 0 1.5rem 0; }
+    .skills-section .skill-wrapper .subject .individual-sub {
+      padding: 0.8rem 0.8rem;
+      font-size: 0.85rem; }
   .bgimg-1 .caption {
     padding: 1.5rem 2rem; }
     .bgimg-1 .caption .lg-heading {
@@ -101,8 +121,6 @@
       font-size: 1rem;
       line-height: 2rem;
       letter-spacing: 0.3rem; }
-  body .skills-section {
-    padding: 3rem 5%; }
   .projects {
     padding: 3rem 5%; }
   .projects .projects-container {
@@ -127,43 +145,99 @@
 .skills-section {
   color: #444;
   text-align: center;
-  padding: 3rem 5%;
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%); }
+  padding: 4rem 5%;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  position: relative; }
+  .skills-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff8f00 0%, #ffa500 50%, #ff8f00 100%); }
 
 .skill-wrapper {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
-  gap: 2rem; }
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto; }
   .skill-wrapper h2 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-    width: 100%; }
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    letter-spacing: 0.5px;
+    position: relative;
+    padding-bottom: 0.8rem; }
+    .skill-wrapper h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 2px;
+      background: #ff8f00; }
 
 .current-wrapper,
 .ongoing-wrapper {
   display: flex;
   flex-flow: column wrap;
-  box-shadow: 0 0 40px -10px #000;
-  border-radius: 8px;
-  padding: 2rem 1.5rem;
-  background: white; }
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  background: white;
+  border-top: 4px solid #ff8f00;
+  transition: all 0.3s ease;
+  flex-basis: 45%;
+  min-width: 300px; }
+  .current-wrapper:hover,
+  .ongoing-wrapper:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); }
 
 .subject {
   display: flex;
   flex-flow: row wrap;
-  margin: 1.5rem 0 2rem 0;
+  margin: 1.5rem 0 2.5rem 0;
   justify-content: center;
-  gap: 1.5rem; }
+  gap: 1.2rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0; }
+  .subject:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0; }
 
 .individual-sub {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.5rem 0;
-  padding: 0.5rem 1rem;
+  margin: 0;
+  padding: 1rem 1.2rem;
   flex-direction: column;
-  font-size: 0.95rem; }
+  font-size: 0.9rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: #555;
+  font-weight: 500;
+  border: 2px solid transparent; }
+  .individual-sub:hover {
+    background: #fff3e0;
+    border-color: #ff8f00;
+    transform: scale(1.08);
+    box-shadow: 0 4px 15px rgba(255, 143, 0, 0.2); }
+  .individual-sub img {
+    margin-bottom: 0.6rem;
+    transition: transform 0.3s ease; }
+  .individual-sub:hover img {
+    transform: scale(1.15); }
 
 .projects {
   padding: 4rem 5%;
