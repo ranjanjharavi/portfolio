@@ -107,11 +107,14 @@
     flex-flow: column;
     font-size: 1rem;
     padding: 2rem 1rem;
+    height: 300px;
+    width: 85%;
   }
 
   .projects-container .proj i {
-    font-size: 3rem;
+    font-size: 2.8rem;
     margin-bottom: 1rem;
+    color: #ff8f00;
   }
 }
 
@@ -185,18 +188,32 @@
   }
 
   .projects {
-    padding: 3rem 5%;
+    padding: 2.5rem 5%;
+  }
+
+  .projects h1 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
   }
 
   .projects .projects-container {
     flex-flow: column;
     justify-content: center;
-    padding: 1rem 1rem 0 1rem;
+    padding: 0;
+    gap: 1.5rem;
   }
 
   .projects .projects-container .proj {
-    margin: 1.5rem auto;
+    margin: 0.5rem auto;
     width: 90%;
+    height: 300px;
+    font-size: 1rem;
+    padding: 2rem 1rem;
+  }
+
+  .projects .projects-container .proj i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
 
   .contact-section .contact {
@@ -339,13 +356,45 @@
 
 .projects {
   padding: 4rem 5%;
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #eeeff0 100%);
+  background: linear-gradient(135deg, #f9f5f1 0%, #e8e4e0 100%);
+  position: relative;
+}
+
+.projects::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff8f00 0%, #ffa500 50%, #ff8f00 100%);
+}
+
+.projects h1 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+}
+
+.projects h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #ff8f00;
 }
 
 .projects-container {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-around;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .proj {
@@ -353,26 +402,55 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top: 2rem;
-  width: 20%;
-  height: 280px;
-  background: #eee;
-  color: #444;
-  font-size: 1.2rem;
-  box-shadow: 15px -15px 0px 0px #444;
+  margin-top: 1rem;
+  width: 22%;
+  min-width: 240px;
+  height: 300px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  color: #333;
+  font-size: 1.15rem;
+  font-weight: 600;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
   text-overflow: ellipsis;
-  padding: 2rem 1rem;
+  padding: 2.5rem 1.5rem;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid #ff8f00;
+}
+
+.proj::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 143, 0, 0) 0%, rgba(255, 143, 0, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.proj:hover::before {
+  opacity: 1;
 }
 
 .proj i {
-  margin-bottom: 1rem;
-  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-size: 3.5rem;
+  color: #ff8f00;
+  transition: transform 0.4s ease;
+}
+
+.proj:hover i {
+  transform: scale(1.2) rotate(10deg);
 }
 
 .proj:hover {
-  box-shadow: 0 0 30px -10px #000;
-  transform: translate(2%, -6%);
-  transition: all 0.3s ease-out;
+  box-shadow: 0 20px 50px rgba(255, 143, 0, 0.25);
+  transform: translateY(-12px);
+  color: #ff8f00;
 }
 
 .contact-section {
