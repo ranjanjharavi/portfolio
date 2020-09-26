@@ -146,6 +146,23 @@
   #manual a {
     justify-content: center;
   }
+
+  footer {
+    padding: 3rem 1rem 2rem 1rem;
+  }
+
+  footer .icons {
+    gap: 1.2rem;
+  }
+
+  footer .icons a {
+    width: 48px;
+    height: 48px;
+  }
+
+  footer .madewith {
+    font-size: 13px;
+  }
 }
 
 @media only screen and (max-width: 425px) {
@@ -261,6 +278,32 @@
     letter-spacing: 0.2rem;
     padding-bottom: 1.5rem;
     margin-bottom: 1rem;
+  }
+
+  footer {
+    padding: 2.5rem 1rem 1.5rem 1rem;
+    min-height: auto;
+  }
+
+  footer .icons {
+    margin-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  footer .icons a {
+    width: 45px;
+    height: 45px;
+    padding: 0.5rem;
+  }
+
+  footer .icons a i {
+    font-size: 1.3rem;
+  }
+
+  footer .madewith {
+    font-size: 12px;
+    margin-top: 1.5rem;
+    padding: 1rem 0 0.5rem 0;
   }
 
 }
@@ -848,25 +891,92 @@ section h1 {
 }
 
 footer {
-  background: #444;
-  min-height: 20%;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  min-height: 22%;
   color: white;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
-  padding: 2rem 1rem 1.5rem 1rem;
+  padding: 3.5rem 1rem 2rem 1rem;
+  position: relative;
+  border-top: 1px solid rgba(255, 143, 0, 0.2);
+}
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ff8f00 50%, transparent 100%);
 }
 
 footer .icons {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 footer .icons a {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem;
+  color: white;
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 143, 0, 0.1);
+  border: 2px solid transparent;
+}
+
+footer .icons a:hover {
+  background: rgba(255, 143, 0, 0.25);
+  border-color: #ff8f00;
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(255, 143, 0, 0.3);
+}
+
+footer .icons a i {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+footer .icons a:hover i {
+  transform: scale(1.2);
 }
 
 footer .madewith {
-  margin-top: 2rem;
-  padding-bottom: 1rem;
+  margin-top: 2.5rem;
+  padding: 1.5rem 0 1rem 0;
+  border-top: 1px solid rgba(255, 143, 0, 0.15);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #ccc;
+}
+
+footer .madewith a {
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+footer .madewith a i {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
 }
 
 .typewriter {
