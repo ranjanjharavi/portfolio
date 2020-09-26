@@ -91,6 +91,22 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .bgimg-1 .caption .icons {
+    gap: 1.2rem;
+  }
+
+  .bgimg-1 .caption .icons a {
+    width: 55px;
+    height: 55px;
+  }
+
+  .bgimg-1 .caption .icons a i {
+    font-size: 1.4rem;
+    min-width: 1.4rem;
+    min-height: 1.4rem;
+    line-height: 1.4rem;
+  }
+
   .intro h1 {
     font-size: 2rem;
     padding-bottom: 1.5rem;
@@ -232,6 +248,19 @@
     font-size: 1rem;
     line-height: 2rem;
     letter-spacing: 0.3rem;
+    gap: 1rem;
+  }
+
+  .bgimg-1 .caption .icons a {
+    width: 50px;
+    height: 50px;
+  }
+
+  .bgimg-1 .caption .icons a i {
+    font-size: 1.3rem;
+    min-width: 1.3rem;
+    min-height: 1.3rem;
+    line-height: 1.3rem;
   }
 
   .projects {
@@ -809,14 +838,50 @@ main .sm-heading {
 }
 
 main .icons {
-  padding: 1.5rem 0;
-  margin-top: 1.5rem;
+  padding: 2rem 0;
+  margin-top: 2rem;
   font-size: 1.2rem;
   letter-spacing: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
 main .icons a {
-  padding: 0.75rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  color: white;
+  padding: 0;
+}
+
+main .icons a i {
+  font-size: 1.5rem !important;
+  display: block;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+main .icons a:hover {
+  background: rgba(255, 143, 0, 0.25);
+  border-color: #ff8f00;
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(255, 143, 0, 0.3);
+}
+
+main .icons a:hover i {
+  transform: scale(1.2);
 }
 
 .icon-size {
