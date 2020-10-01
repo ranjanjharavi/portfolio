@@ -4,11 +4,8 @@
   "description": "Portfolio Website for Ravi Ranjan",
   "main": "index.js",
   "scripts": {
-    "sass": "node-sass -w scss/ -o dist/css/ --recursive"
+    "check": "node --check dist/js/profile.js"
   },
   "author": "Ravi Ranjan",
-  "license": "MIT",
-  "dependencies": {
-    "node-sass": "^4.13.1"
-  }
+  "license": "MIT"
 }
