@@ -135,36 +135,6 @@
     color: #ff8f00;
   }
 
-  .contact .contact-container {
-    padding: 3rem 2rem;
-    border-radius: 12px;
-  }
-
-  .contact .contact-container h1 {
-    font-size: 1.8rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .contact #fullname,
-  .contact #email,
-  .contact #sub,
-  .contact textarea {
-    padding: 14px 10px;
-    margin-bottom: 18px;
-  }
-
-  #manual {
-    position: static;
-    transform: none;
-    width: 100%;
-    margin-top: 2rem;
-    text-align: center;
-  }
-
-  #manual a {
-    justify-content: center;
-  }
-
   footer {
     padding: 3rem 1rem 2rem 1rem;
   }
@@ -291,23 +261,6 @@
 
   .projects .projects-container .proj i {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .contact-section .contact {
-    padding: 2.5rem 5% 3rem 5%;
-    position: relative;
-  }
-
-  .contact-section .contact .contact-container {
-    padding: 2.5rem 1.5rem 2rem 1.5rem;
-    border-radius: 12px;
-  }
-
-  .contact-section .contact .contact-container h1 {
-    font-size: 1.8rem;
-    letter-spacing: 0.2rem;
-    padding-bottom: 1.5rem;
     margin-bottom: 1rem;
   }
 
@@ -556,154 +509,6 @@
   color: #ff8f00;
 }
 
-.contact-section {
-  background: linear-gradient(135deg, #f5f1ed 0%, #e0d9d0 100%);
-  position: relative;
-}
-
-.contact-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ff8f00 0%, #ffa500 50%, #ff8f00 100%);
-}
-
-.contact {
-  padding: 4rem 12% 3rem 12%;
-  position: relative;
-}
-
-.contact .contact-container {
-  border-radius: 16px;
-  padding: 4rem 3.5rem;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  border: 1px solid rgba(255, 143, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.contact .contact-container:hover {
-  box-shadow: 0 20px 60px rgba(255, 143, 0, 0.15);
-}
-
-.contact .contact-container h1 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 2rem !important;
-  letter-spacing: 0.1rem;
-  font-size: 2.2rem;
-  font-weight: 300;
-  color: #333;
-  margin-bottom: 1rem;
-  position: relative; }
-  .contact .contact-container h1::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background: #ff8f00; }
-
-.contact .contact-container h1 span {
-  margin: 0 15px;
-}
-
-.contact .contact-container form {
-  padding: 1rem 0;
-}
-
-.contact #fullname,
-.contact #email,
-.contact #sub,
-.contact textarea {
-  width: 100%;
-  padding: 16px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  resize: vertical;
-  font-size: 15px;
-  transition: all 0.3s ease;
-  background-color: #f9f9f9;
-  font-family: inherit; }
-
-.contact #fullname:focus,
-.contact #email:focus,
-.contact #sub:focus,
-.contact textarea:focus {
-  outline: none;
-  background-color: white;
-  border-color: #ff8f00;
-  box-shadow: 0 0 0 3px rgba(255, 143, 0, 0.1); }
-
-.contact .cbtn {
-  display: flex;
-  justify-content: center;
-  margin-top: 3rem;
-}
-
-.contact button {
-  background: linear-gradient(135deg, #ff8f00 0%, #ffa500 100%);
-  color: white;
-  padding: 16px 48px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 1px;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  box-shadow: 0 8px 25px rgba(255, 143, 0, 0.3);
-  text-transform: uppercase;
-  position: relative;
-  overflow: hidden; }
-
-.contact button::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s; }
-
-.contact button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(255, 143, 0, 0.4); }
-
-.contact button:hover::before {
-  width: 300px;
-  height: 300px; }
-
-.icon {
-  fill: #ff8f00;
-  opacity: 1;
-  height: 60px;
-  margin: 0 auto;
-  width: 60px;
-  transition: all 0.3s ease;
-}
-
-.icon:hover {
-  fill: #ffa500;
-  transform: scale(1.1);
-  animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-  -webkit-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-  -moz-animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-}
-
-#manual {
-  display: none;
-}
 
 * {
   margin: 0;
@@ -1083,18 +888,6 @@ body {
 
 img {
   max-width: 100%;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 :focus-visible {
@@ -1562,14 +1355,6 @@ img {
   font-size: 0.94rem;
 }
 
-.contact-section {
-  border-top: 0;
-}
-
-.contact textarea {
-  min-height: 140px;
-}
-
 @media only screen and (max-width: 800px) {
   .profile-layout,
   .credentials-layout {
@@ -1645,7 +1430,7 @@ img {
   }
 }
 
-/* Compact rhythm for the skills and contact sections. */
+/* Compact rhythm for the skills section. */
 .skills-section {
   padding: 3.25rem 5% 3.5rem;
 }
@@ -1697,51 +1482,6 @@ img {
   margin-bottom: 0;
 }
 
-.contact {
-  padding: 3rem 8% 2.5rem;
-}
-
-.contact .contact-container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2.5rem 2.5rem 2.25rem;
-}
-
-.contact .contact-container h1 {
-  padding-bottom: 1rem !important;
-  margin-bottom: 0.25rem;
-  font-size: 2rem;
-}
-
-.contact .contact-container h1 span {
-  margin: 0 10px;
-}
-
-.contact .icon {
-  width: 48px;
-  height: 48px;
-}
-
-.contact .contact-container form {
-  padding: 0.5rem 0 0;
-}
-
-.contact #fullname,
-.contact #email,
-.contact #sub,
-.contact textarea {
-  padding: 12px 10px;
-  margin-bottom: 12px;
-}
-
-.contact textarea {
-  min-height: 120px;
-}
-
-.contact .cbtn {
-  margin-top: 1.25rem;
-}
-
 .projects-container .proj.project-card .project-icon i {
   margin-bottom: 0;
   font-size: inherit;
@@ -1765,30 +1505,6 @@ img {
     padding: 1.1rem 1rem 1.25rem;
   }
 
-  .contact {
-    padding: 2.25rem 5% 2rem;
-  }
-
-  .contact .contact-container {
-    padding: 2rem 1.25rem 1.5rem;
-  }
-
-  .contact .contact-container h1 {
-    font-size: 1.65rem;
-  }
-
-  .contact .contact-container h1 span {
-    margin: 0 6px;
-  }
-
-  .contact .icon {
-    width: 42px;
-    height: 42px;
-  }
-
-  .contact .cbtn {
-    margin-top: 0.75rem;
-  }
 }
 
 .profile-section .section-intro p {
@@ -1878,63 +1594,6 @@ img {
 
 .projects-container .proj.project-card .project-link:hover i {
   transform: translateX(2px);
-}
-
-.contact .contact-container {
-  border-top: 3px solid var(--accent);
-}
-
-.contact-lede {
-  max-width: 56ch;
-  margin: 0 auto 1.25rem;
-  color: var(--muted-ink);
-  font-size: 0.94rem;
-  line-height: 1.65;
-  text-align: center;
-}
-
-.contact #manual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  position: static;
-  width: auto;
-  margin: 1.25rem auto 0;
-  color: var(--muted-ink);
-  font-size: 0.86rem;
-}
-
-.contact #manual a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--accent-dark);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.contact #manual a:hover {
-  color: var(--ink);
-}
-
-@media only screen and (max-width: 560px) {
-  .contact-lede {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-  }
-
-  .contact #manual {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.35rem;
-    text-align: center;
-  }
-
-  .contact #manual a {
-    justify-content: center;
-    width: 100%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
