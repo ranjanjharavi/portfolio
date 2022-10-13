@@ -71,22 +71,6 @@
     padding: 4rem 10%;
   }
 
-  .skills-section .skill-wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 2rem;
-  }
-
-  .skills-section .skill-wrapper .current-wrapper,
-  .skills-section .skill-wrapper .ongoing-wrapper {
-    flex-basis: auto;
-    margin: 0;
-  }
-
-  .skills-section .skill-wrapper .subject .individual-sub {
-    padding: 1rem 1.2rem;
-  }
-
   .projects-container .proj {
     font-size: 1rem;
   }
@@ -171,33 +155,6 @@
 
   body .skills-section {
     padding: 2.5rem 5%;
-  }
-
-  .skills-section .skill-wrapper {
-    gap: 1.5rem;
-  }
-
-  .skills-section .skill-wrapper h2 {
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .skills-section .skill-wrapper .current-wrapper,
-  .skills-section .skill-wrapper .ongoing-wrapper {
-    padding: 1.5rem 1rem;
-    flex-basis: auto;
-  }
-
-  .skills-section .skill-wrapper .subject {
-    gap: 1rem;
-    padding: 0.8rem 0;
-    margin: 1rem 0 1.5rem 0;
-  }
-
-  .skills-section .skill-wrapper .subject .individual-sub {
-    padding: 0.8rem 0.8rem;
-    font-size: 0.85rem;
   }
 
   .bgimg-1 .caption {
@@ -310,58 +267,6 @@
   background: linear-gradient(90deg, #ff8f00 0%, #ffa500 50%, #ff8f00 100%);
 }
 
-.skill-wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
-  gap: 2.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.skill-wrapper h2 {
-  margin-top: 2rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #333;
-  letter-spacing: 0.5px;
-  position: relative;
-  padding-bottom: 0.8rem;
-}
-
-.skill-wrapper h2::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 2px;
-  background: #ff8f00;
-}
-
-.current-wrapper,
-.ongoing-wrapper {
-  display: flex;
-  flex-flow: column wrap;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  border-radius: 12px;
-  padding: 2.5rem 2rem;
-  background: white;
-  border-top: 4px solid #ff8f00;
-  transition: all 0.3s ease;
-  flex-basis: 45%;
-  min-width: 300px;
-}
-
-.current-wrapper:hover,
-.ongoing-wrapper:hover {
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
-  transform: translateY(-5px);
-}
-
 .subject {
   display: flex;
   flex-flow: row wrap;
@@ -464,8 +369,8 @@
   height: 300px;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   color: #333;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
   text-overflow: ellipsis;
   padding: 2.5rem 1.5rem;
@@ -751,16 +656,14 @@ section h1 {
 }
 
 .intro p {
-  font-size: 1.15rem;
-  padding: 2rem 4rem;
-  line-height: 1.9;
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
+  line-height: 1.8;
   max-width: 950px;
   margin: 0 auto;
   color: #555;
   background: rgba(255, 255, 255, 0.7);
   border-left: 4px solid #ff8f00;
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 footer {
@@ -1293,6 +1196,7 @@ img {
   color: var(--ink);
   text-decoration: none;
   transition: background 0.2s ease;
+  padding: 0px 20px;
 }
 
 .credential-row:hover {
@@ -1442,44 +1346,77 @@ img {
 
 .skill-wrapper {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.75rem 1.35rem;
   max-width: 1120px;
+  margin: 0 auto;
+  padding: 1.75rem 1.8rem 1.9rem;
+  border: 1px solid rgba(48, 52, 59, 0.08);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: var(--soft-shadow);
+  text-align: left;
 }
 
-.skill-wrapper .current-wrapper,
-.skill-wrapper .ongoing-wrapper {
+.skill-group {
   min-width: 0;
+}
+
+.skill-group h2 {
+  margin: 0 0 0.75rem;
+  padding: 0 0 0.55rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.skill-group h2::after {
+  display: none;
+}
+
+.skill-group .subject {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  align-items: stretch;
+  gap: 0.65rem;
   margin: 0;
-  padding: 1.35rem 1.35rem 1.5rem;
-  border-radius: 10px;
+  padding: 0;
+  border: 0;
 }
 
-.skill-wrapper h2 {
-  margin-top: 0.9rem;
-  margin-bottom: 0.7rem;
-  padding-bottom: 0.55rem;
-  font-size: 1.15rem;
+.skill-group .individual-sub {
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  min-height: 76px;
+  padding: 0.65rem 0.45rem;
+  border: 1px solid rgba(48, 52, 59, 0.08);
+  border-radius: 8px;
+  background: #f6f8fa;
+  color: var(--ink);
+  cursor: default;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.skill-wrapper .subject {
-  gap: 0.7rem;
-  margin: 0.7rem 0 1.1rem;
-  padding: 0.55rem 0;
+.skill-group .individual-sub:hover {
+  border-color: rgba(255, 143, 0, 0.65);
+  background: #fff3e0;
+  box-shadow: 0 6px 14px rgba(255, 143, 0, 0.14);
+  transform: translateY(-2px);
 }
 
-.skill-wrapper .individual-sub {
-  flex-direction: row;
-  gap: 0.55rem;
-  min-height: 56px;
-  padding: 0.65rem 0.8rem;
-  font-size: 0.86rem;
-}
-
-.skill-wrapper .individual-sub img {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 0;
+.skill-group .individual-sub img {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  object-fit: contain;
 }
 
 .projects-container .proj.project-card .project-icon i {
@@ -1489,8 +1426,9 @@ img {
 
 @media only screen and (max-width: 900px) {
   .skill-wrapper {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.35rem 1rem;
+    padding: 1.5rem;
   }
 }
 
@@ -1500,11 +1438,26 @@ img {
     padding-bottom: 2.75rem;
   }
 
-  .skill-wrapper .current-wrapper,
-  .skill-wrapper .ongoing-wrapper {
-    padding: 1.1rem 1rem 1.25rem;
+  .skill-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    padding: 1.25rem 1rem 1.4rem;
   }
 
+  .skill-group h2 {
+    font-size: 0.95rem;
+  }
+
+  .skill-group .subject {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+
+  .skill-group .individual-sub {
+    min-height: 72px;
+    padding: 0.55rem 0.35rem;
+    font-size: 0.74rem;
+  }
 }
 
 .profile-section .section-intro p {
