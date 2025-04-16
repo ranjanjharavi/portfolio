@@ -1,0 +1,224 @@
+/* -- CSS Custom Properties -- */
+:root {
+  /* Brand colours */
+  --accent: #ff8f00;
+  --accent-light: #ffb74d;
+  --accent-dark: #e65100;
+  --accent-glow: rgba(255, 143, 0, 0.35);
+
+  /* Dark palette (default) */
+  --bg-deep: #0a0a0f;
+  --bg-primary: #0f1117;
+  --bg-surface: #161922;
+  --bg-elevated: #1c2030;
+  --bg-card: rgba(22, 25, 34, 0.85);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 143, 0, 0.5);
+
+  --text-primary: #f0f2f5;
+  --text-secondary: #9ca3b0;
+  --text-muted: #636b7d;
+
+  --nav-bg: rgb(15, 17, 23);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 8px 30px rgba(255, 143, 0, 0.2);
+
+  /* Layout */
+  --max-w: 1200px;
+  --section-py: clamp(4rem, 8vw, 7rem);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+
+  /* Typography */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", "Fira Code", "Roboto Mono", monospace;
+
+  color-scheme: dark;
+}
+
+
+/* -- Light theme overrides -- */
+[data-theme="light"] {
+  --bg-deep: #f8f9fc;
+  --bg-primary: #ffffff;
+  --bg-surface: #f0f2f5;
+  --bg-elevated: #e8eaef;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(255, 143, 0, 0.6);
+
+  --text-primary: #1a1d26;
+  --text-secondary: #5a6175;
+  --text-muted: #8891a4;
+
+  --nav-bg: rgb(255, 255, 255);
+  --glass-border: rgba(0, 0, 0, 0.08);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.1);
+  --shadow-accent: 0 8px 30px rgba(255, 143, 0, 0.15);
+
+  color-scheme: light;
+}
+
+
+/* -- Global Reset -- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+
+/* -- Utility -- */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2rem);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.section {
+  padding: var(--section-py) 0;
+  position: relative;
+}
+
+
+/* -- Section Headers -- */
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.section-title-left {
+  text-align: left;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  max-width: 55ch;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+.section-subtitle-left {
+  text-align: left;
+  margin: 0;
+}
+
+
+/* -- Buttons -- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #1a1000;
+  box-shadow: var(--shadow-accent);
+}
+
+.btn-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(255, 143, 0, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: rgba(255, 143, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+.btn-sm {
+  padding: 0.55rem 1.2rem;
+  font-size: 0.82rem;
+}
+
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 1.1rem;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 143, 0, 0.12);
+  color: var(--accent);
+}
