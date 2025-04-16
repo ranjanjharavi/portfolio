@@ -4,7 +4,8 @@
   "description": "Portfolio Website for Ravi Ranjan",
   "main": "index.js",
   "scripts": {
-    "check": "node --check dist/js/profile.js"
+    "check": "node --check src/js/main.js",
+    "serve": "python3 -m http.server 8000 --bind 127.0.0.1 --directory src"
   },
   "author": "Ravi Ranjan",
   "license": "MIT"
