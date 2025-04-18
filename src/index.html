@@ -5,6 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
+  <script>
+    {
+      const colorScheme = localStorage.getItem("color-scheme");
+      if (colorScheme) {
+        document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+        document.documentElement.dataset.theme = colorScheme === "dark" ? "dark" : "light";
+      } else {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
+      }
+    }
+  </script>
 
   <title>Ravi Ranjan | Senior Software Engineer</title>
   <meta name="description"

@@ -15,7 +15,7 @@
     },
     { passive: true }
   );
-  
+
   /* -- Mobile Menu -- */
   const mobileToggle = document.getElementById("mobile-menu-toggle");
   const navLinksContainer = document.getElementById("nav-links");
@@ -55,5 +55,29 @@
       }
     });
   }
+  
+  /* -- Theme Toggle -- */
+  const themeToggle = document.getElementById("theme-toggle");
+  const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    metaColorScheme.content = theme;
+    localStorage.setItem("color-scheme", theme);
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.dataset.theme;
+    setTheme(current === "dark" ? "light" : "dark");
+  });
+
+  // Listen for system theme changes
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      if (!localStorage.getItem("color-scheme")) {
+        document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+      }
+    });
 
 })();
