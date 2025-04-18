@@ -15,7 +15,6 @@
     },
     { passive: true }
   );
-
   /* -- Mobile Menu -- */
   const mobileToggle = document.getElementById("mobile-menu-toggle");
   const navLinksContainer = document.getElementById("nav-links");
@@ -55,7 +54,6 @@
       }
     });
   }
-  
   /* -- Theme Toggle -- */
   const themeToggle = document.getElementById("theme-toggle");
   const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
@@ -79,5 +77,30 @@
         document.documentElement.dataset.theme = e.matches ? "dark" : "light";
       }
     });
+  /* -- Role Text Rotation -- */
+  const roles = [
+    "Senior Software Engineer",
+    "Full-Stack Developer",
+    "REST API Specialist",
+    ".NET & Node.js Engineer",
+    "Microservices Architect",
+    "Open-Source Contributor",
+  ];
+  let roleIndex = 0;
+  const roleEl = document.getElementById("rotating-role");
+
+  function rotateRole() {
+    roleEl.style.opacity = "0";
+    roleEl.style.transform = "translateY(12px)";
+
+    setTimeout(() => {
+      roleIndex = (roleIndex + 1) % roles.length;
+      roleEl.textContent = roles[roleIndex];
+      roleEl.style.opacity = "1";
+      roleEl.style.transform = "translateY(0)";
+    }, 400);
+  }
+
+  setInterval(rotateRole, 3000);
 
 })();
