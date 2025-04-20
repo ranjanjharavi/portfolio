@@ -102,5 +102,59 @@
   }
 
   setInterval(rotateRole, 3000);
+  /* -- Starfield Canvas -- */
+  const canvas = document.getElementById("starfield");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  const STAR_COUNT = 220;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.6 + 0.3,
+        opacity: Math.random() * 0.7 + 0.3,
+        speed: Math.random() * 0.3 + 0.05,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinklePhase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function drawStars(time) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach((star) => {
+      const flicker =
+        Math.sin(time * star.twinkleSpeed + star.twinklePhase) * 0.3 + 0.7;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * flicker})`;
+      ctx.fill();
+
+      // Slow drift upward
+      star.y -= star.speed;
+      if (star.y < -5) {
+        star.y = canvas.height + 5;
+        star.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resizeCanvas();
+  createStars();
+  requestAnimationFrame(drawStars);
+
+  window.addEventListener("resize", () => {
+    resizeCanvas();
+    createStars();
+  });
 
 })();
