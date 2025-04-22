@@ -156,5 +156,51 @@
     resizeCanvas();
     createStars();
   });
+  /* -- Skills Tabs -- */
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabPanels = document.querySelectorAll(".tab-panel");
+
+  tabButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetTab = btn.dataset.tab;
+
+      tabButtons.forEach((b) => {
+        b.classList.remove("active");
+        b.setAttribute("aria-selected", "false");
+      });
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected", "true");
+
+      tabPanels.forEach((panel) => {
+        panel.classList.remove("active");
+        panel.hidden = true;
+      });
+
+      const target = document.getElementById(`tab-${targetTab}`);
+      if (target) {
+        target.classList.add("active");
+        target.hidden = false;
+      }
+    });
+  });
+
+  /* -- Scroll-to-Top Button -- */
+  const scrollTopBtn = document.getElementById("scroll-top");
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (window.scrollY > 500) {
+        scrollTopBtn.classList.add("visible");
+      } else {
+        scrollTopBtn.classList.remove("visible");
+      }
+    },
+    { passive: true }
+  );
+
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
 })();
