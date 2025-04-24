@@ -1,107 +1,6 @@
 (function () {
   "use strict";
-  /* -- Header scroll behaviour -- */
-  const header = document.getElementById("site-header");
 
-  window.addEventListener(
-    "scroll",
-    () => {
-      const scrollY = window.scrollY;
-      if (scrollY > 50) {
-        header.classList.add("scrolled");
-      } else {
-        header.classList.remove("scrolled");
-      }
-    },
-    { passive: true }
-  );
-  /* -- Mobile Menu -- */
-  const mobileToggle = document.getElementById("mobile-menu-toggle");
-  const navLinksContainer = document.getElementById("nav-links");
-
-  if (mobileToggle && navLinksContainer) {
-    function setMobileMenu(open) {
-      navLinksContainer.classList.toggle("open", open);
-      mobileToggle.setAttribute("aria-expanded", String(open));
-      mobileToggle.setAttribute(
-        "aria-label",
-        open ? "Close navigation menu" : "Open navigation menu"
-      );
-    }
-
-    mobileToggle.addEventListener("click", () => {
-      setMobileMenu(!navLinksContainer.classList.contains("open"));
-    });
-
-    navLinksContainer.querySelectorAll(".nav-link").forEach((link) => {
-      link.addEventListener("click", () => setMobileMenu(false));
-    });
-
-    document.addEventListener("click", (e) => {
-      if (
-        navLinksContainer.classList.contains("open") &&
-        !navLinksContainer.contains(e.target) &&
-        !mobileToggle.contains(e.target)
-      ) {
-        setMobileMenu(false);
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && navLinksContainer.classList.contains("open")) {
-        setMobileMenu(false);
-        mobileToggle.focus();
-      }
-    });
-  }
-  /* -- Theme Toggle -- */
-  const themeToggle = document.getElementById("theme-toggle");
-  const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
-
-  function setTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    metaColorScheme.content = theme;
-    localStorage.setItem("color-scheme", theme);
-  }
-
-  themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme;
-    setTheme(current === "dark" ? "light" : "dark");
-  });
-
-  // Listen for system theme changes
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => {
-      if (!localStorage.getItem("color-scheme")) {
-        document.documentElement.dataset.theme = e.matches ? "dark" : "light";
-      }
-    });
-  /* -- Role Text Rotation -- */
-  const roles = [
-    "Senior Software Engineer",
-    "Full-Stack Developer",
-    "REST API Specialist",
-    ".NET & Node.js Engineer",
-    "Microservices Architect",
-    "Open-Source Contributor",
-  ];
-  let roleIndex = 0;
-  const roleEl = document.getElementById("rotating-role");
-
-  function rotateRole() {
-    roleEl.style.opacity = "0";
-    roleEl.style.transform = "translateY(12px)";
-
-    setTimeout(() => {
-      roleIndex = (roleIndex + 1) % roles.length;
-      roleEl.textContent = roles[roleIndex];
-      roleEl.style.opacity = "1";
-      roleEl.style.transform = "translateY(0)";
-    }, 400);
-  }
-
-  setInterval(rotateRole, 3000);
   /* -- Starfield Canvas -- */
   const canvas = document.getElementById("starfield");
   const ctx = canvas.getContext("2d");
@@ -156,6 +55,144 @@
     resizeCanvas();
     createStars();
   });
+
+  /* -- Role Text Rotation -- */
+  const roles = [
+    "Senior Software Engineer",
+    "Full-Stack Developer",
+    "REST API Specialist",
+    "Node.js & Typescript Developer",
+    "React.js Developer",
+    "C# & .NET Engineer",
+    "Microservices Architect",
+    "Open Source Contributor",
+    "Tech Enthusiast",
+    "Problem Solver",
+    "Continuous Learner",
+    "Team Player",
+  ];
+  let roleIndex = 0;
+  const roleEl = document.getElementById("rotating-role");
+
+  function rotateRole() {
+    roleEl.style.opacity = "0";
+    roleEl.style.transform = "translateY(12px)";
+
+    setTimeout(() => {
+      roleIndex = (roleIndex + 1) % roles.length;
+      roleEl.textContent = roles[roleIndex];
+      roleEl.style.opacity = "1";
+      roleEl.style.transform = "translateY(0)";
+    }, 400);
+  }
+
+  setInterval(rotateRole, 3000);
+
+  /* -- Theme Toggle -- */
+  const themeToggle = document.getElementById("theme-toggle");
+  const metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    metaColorScheme.content = theme;
+    localStorage.setItem("color-scheme", theme);
+  }
+
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.dataset.theme;
+    setTheme(current === "dark" ? "light" : "dark");
+  });
+
+  // Listen for system theme changes
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      if (!localStorage.getItem("color-scheme")) {
+        document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+      }
+    });
+
+  /* -- Header scroll behaviour -- */
+  const header = document.getElementById("site-header");
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 50) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    },
+    { passive: true }
+  );
+
+  /* -- Active nav link on scroll -- */
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll("section[id]");
+
+  function updateActiveLink() {
+    const scrollPos = window.scrollY + 120;
+
+    sections.forEach((section) => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute("id");
+
+      if (scrollPos >= top && scrollPos < top + height) {
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${id}`) {
+            link.classList.add("active");
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener("scroll", updateActiveLink, { passive: true });
+
+  /* -- Mobile Menu -- */
+  const mobileToggle = document.getElementById("mobile-menu-toggle");
+  const navLinksContainer = document.getElementById("nav-links");
+
+  if (mobileToggle && navLinksContainer) {
+    function setMobileMenu(open) {
+      navLinksContainer.classList.toggle("open", open);
+      mobileToggle.setAttribute("aria-expanded", String(open));
+      mobileToggle.setAttribute(
+        "aria-label",
+        open ? "Close navigation menu" : "Open navigation menu"
+      );
+    }
+
+    mobileToggle.addEventListener("click", () => {
+      setMobileMenu(!navLinksContainer.classList.contains("open"));
+    });
+
+    navLinksContainer.querySelectorAll(".nav-link").forEach((link) => {
+      link.addEventListener("click", () => setMobileMenu(false));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        navLinksContainer.classList.contains("open") &&
+        !navLinksContainer.contains(e.target) &&
+        !mobileToggle.contains(e.target)
+      ) {
+        setMobileMenu(false);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navLinksContainer.classList.contains("open")) {
+        setMobileMenu(false);
+        mobileToggle.focus();
+      }
+    });
+  }
+
   /* -- Skills Tabs -- */
   const tabButtons = document.querySelectorAll(".tab-btn");
   const tabPanels = document.querySelectorAll(".tab-panel");
@@ -202,6 +239,33 @@
   scrollTopBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+  /* -- Scroll Reveal (Intersection Observer) -- */
+  const revealEls = document.querySelectorAll(
+    ".section-header, .about-layout, .timeline-item, .project-card, " +
+    ".skills-tabs, .credentials-layout, .education-row, .awards-row, " +
+    ".contact-layout, .project-archive, .info-card"
+  );
+
+  revealEls.forEach((el) => el.classList.add("reveal"));
+
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      threshold: 0.1,
+      rootMargin: "0px 0px -60px 0px",
+    }
+  );
+
+  revealEls.forEach((el) => revealObserver.observe(el));
+
   /* -- Contact form -- */
   const contactForm = document.getElementById("contact-form");
 
@@ -219,8 +283,7 @@
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       );
 
-      window.location.href = `mailto:ranjanjharavi@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:hey@raviranjanjha.com?subject=${subject}&body=${body}`;
     });
   }
-
 })();

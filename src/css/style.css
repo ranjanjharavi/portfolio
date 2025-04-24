@@ -41,7 +41,6 @@
   color-scheme: dark;
 }
 
-
 /* -- Light theme overrides -- */
 [data-theme="light"] {
   --bg-deep: #f8f9fc;
@@ -66,7 +65,6 @@
 
   color-scheme: light;
 }
-
 
 /* -- Global Reset -- */
 *,
@@ -107,7 +105,6 @@ a {
   outline-offset: 4px;
 }
 
-
 /* -- Utility -- */
 .container {
   max-width: var(--max-w);
@@ -123,7 +120,6 @@ a {
   padding: var(--section-py) 0;
   position: relative;
 }
-
 
 /* -- Section Headers -- */
 .section-header {
@@ -154,7 +150,6 @@ a {
   text-align: left;
   margin: 0;
 }
-
 
 /* -- Buttons -- */
 .btn {
@@ -223,7 +218,6 @@ a {
   color: var(--accent);
 }
 
-
 /* -- Starfield Canvas -- */
 #starfield {
   position: fixed;
@@ -276,7 +270,6 @@ a {
 [data-theme="light"] .star-dust {
   opacity: 0.35;
 }
-
 
 /* -- HEADER / NAV -- */
 .site-header {
@@ -547,7 +540,6 @@ a {
   }
 }
 
-
 /* -- HERO -- */
 .hero-section {
   position: relative;
@@ -691,7 +683,6 @@ a {
   }
 }
 
-
 /* -- ABOUT -- */
 .about-section {
   background: var(--bg-primary);
@@ -792,7 +783,6 @@ a {
   }
 }
 
-
 /* -- EXPERIENCE (TIMELINE) -- */
 .experience-section {
   background: var(--bg-surface);
@@ -891,7 +881,6 @@ a {
   color: var(--text-secondary);
   font-style: italic;
 }
-
 
 /* -- PROJECTS -- */
 .projects-section {
@@ -1068,7 +1057,6 @@ a {
   }
 }
 
-
 /* -- SKILLS (TABS) -- */
 .skills-section {
   background: var(--bg-surface);
@@ -1169,7 +1157,6 @@ a {
   height: 22px;
   object-fit: contain;
 }
-
 
 /* -- CREDENTIALS -- */
 .credentials-section {
@@ -1338,7 +1325,6 @@ a.credential-row:hover {
   }
 }
 
-
 /* -- CONTACT -- */
 .contact-section {
   background: var(--bg-surface);
@@ -1438,7 +1424,6 @@ a.credential-row:hover {
     grid-template-columns: 1fr;
   }
 }
-
 
 /* -- FOOTER -- */
 .site-footer {
@@ -1580,4 +1565,32 @@ a.credential-row:hover {
 .scroll-top-btn:hover {
   background: var(--accent-light);
   transform: translateY(-4px);
+}
+
+/* -- SCROLL REVEAL ANIMATIONS -- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -- REDUCED MOTION -- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
