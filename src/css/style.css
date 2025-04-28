@@ -486,7 +486,8 @@ a {
   }
 
   .nav-links {
-    display: grid;
+    /* hidden backdrop-filter can still paint a ghost panel while scrolling. */ 
+    display: none;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.25rem;
     width: 100%;
@@ -506,6 +507,7 @@ a {
   }
 
   .nav-links.open {
+    display: grid;
     visibility: visible;
     opacity: 1;
     pointer-events: auto;
@@ -1580,10 +1582,24 @@ a.credential-row:hover {
   transform: translateY(0);
 }
 
+/* On smaller screens, keep content steady instead of revealing cards mid-scroll. */
+@media (max-width: 768px) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* -- REDUCED MOTION -- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 
   *,

@@ -5,6 +5,8 @@
   const canvas = document.getElementById("starfield");
   const ctx = canvas.getContext("2d");
   let stars = [];
+  let starFrame;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const STAR_COUNT = 220;
 
   function resizeCanvas() {
@@ -37,23 +39,36 @@
       ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * flicker})`;
       ctx.fill();
 
-      // Slow drift upward
-      star.y -= star.speed;
-      if (star.y < -5) {
-        star.y = canvas.height + 5;
-        star.x = Math.random() * canvas.width;
+      if (!reducedMotion.matches) {
+        // Slow drift upward only when motion is allowed.
+        star.y -= star.speed;
+        if (star.y < -5) {
+          star.y = canvas.height + 5;
+          star.x = Math.random() * canvas.width;
+        }
       }
     });
-    requestAnimationFrame(drawStars);
+    if (!reducedMotion.matches) starFrame = requestAnimationFrame(drawStars);
+  }
+
+  function updateStarfieldMotion() {
+    cancelAnimationFrame(starFrame);
+    if (reducedMotion.matches) {
+      drawStars(0);
+    } else {
+      starFrame = requestAnimationFrame(drawStars);
+    }
   }
 
   resizeCanvas();
   createStars();
-  requestAnimationFrame(drawStars);
+  updateStarfieldMotion();
+  reducedMotion.addEventListener("change", updateStarfieldMotion);
 
   window.addEventListener("resize", () => {
     resizeCanvas();
     createStars();
+    updateStarfieldMotion();
   });
 
   /* -- Role Text Rotation -- */
@@ -75,6 +90,7 @@
   const roleEl = document.getElementById("rotating-role");
 
   function rotateRole() {
+    if (reducedMotion.matches) return;
     roleEl.style.opacity = "0";
     roleEl.style.transform = "translateY(12px)";
 
