@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Folio — Local Markdown Scratchpad</title>
+
+    <!-- Google Fonts: Newsreader (Editorial Display), Plus Jakarta Sans (UI), JetBrains Mono (Markdown/Code) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CDN Libraries: Marked (GFM), DOMPurify, Lucide Icons -->
+    <script defer src="https://cdn.jsdelivr.net/npm/marked@16.4.2/lib/marked.umd.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.556.0/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
+
+    <!-- Include Scratchpad CSS -->
+    <link rel="stylesheet" href="./css/scratchpad.css" />
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <div class="brand">
+          <span class="brand-mark"><span class="brand-dot"></span>Folio</span>
+          <span class="brand-subtitle">Scratchpad</span>
+        </div>
+        <div class="masthead-tools">
+          <label class="global-search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <span class="sr-only">Search across all documents and notes</span>
+            <input
+              id="global-search"
+              type="search"
+              placeholder="Search all documents &amp; notes..."
+              autocomplete="off"
+            />
+          </label>
+          <span class="storage-pill" title="All documents and notes are stored locally in your browser's IndexedDB">
+            <span class="dot"></span>
+            <span id="db-status-text">IndexedDB Ready</span>
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <p id="dependency-status" class="dependency-error" role="alert" hidden></p>
+
+      <div class="workspace">
+        <!-- Left Rail: Documents -->
+        <aside class="doc-rail" aria-label="Documents">
+          <div class="rail-header">
+            <div class="rail-title-row">
+              <h2>Documents</h2>
+              <span id="doc-total" class="rail-count"></span>
+            </div>
+            <form id="new-doc-form" class="new-doc-form" autocomplete="off">
+              <label for="new-doc-title" class="sr-only">New document title</label>
+              <input
+                id="new-doc-title"
+                type="text"
+                maxlength="90"
+                placeholder="New scratch document..."
+                required
+              />
+              <button type="submit" class="primary" aria-label="Create document" data-tooltip="Create document">
+                <i data-lucide="plus" aria-hidden="true"></i>New
+              </button>
+            </form>
+          </div>
+
+          <div class="rail-FilterBar">
+            <span>Pinned on top</span>
+            <label>
+              Sort
+              <select id="doc-sort">
+                <option value="updated">Recently active</option>
+                <option value="created">Newest created</option>
+                <option value="title">Title A–Z</option>
+              </select>
+            </label>
+          </div>
+
+          <ul id="doc-list" class="doc-list" aria-label="Saved documents"></ul>
+        </aside>
+
+        <!-- Right Stage: Active Document + Note Composer + Timeline -->
+        <section id="doc-stage" class="doc-stage" aria-label="Selected document workspace"></section>
+      </div>
+
+      <output id="status" class="status-bar" aria-live="polite" aria-atomic="true"></output>
+    </main>
+
+    <!-- Confirmation Dialog (Discard Draft / Delete Note / Delete Document) -->
+    <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-copy">
+      <h2 id="confirm-title">Confirm action</h2>
+      <p id="confirm-copy"></p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel" type="button" data-action="confirm-cancel" autofocus>Cancel</button>
+        <button id="confirm-accept" type="button" class="danger" data-action="confirm-accept">Confirm</button>
+      </div>
+    </dialog>
+
+    <!-- Rename Document Dialog -->
+    <dialog id="rename-dialog" aria-labelledby="rename-heading">
+      <h2 id="rename-heading">Rename document</h2>
+      <form id="rename-form" class="dialog-form">
+        <label for="rename-input">Document title</label>
+        <input id="rename-input" type="text" maxlength="90" required autocomplete="off" />
+        <div class="confirm-actions">
+          <button type="button" data-action="cancel-rename">Cancel</button>
+          <button type="submit" class="primary">Save title</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./js/scratchpad.js"></script>
+  </body>
+</html>
