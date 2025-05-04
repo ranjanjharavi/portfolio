@@ -585,10 +585,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? "Saving note…"
       : draftCount;
     // Enable these controls when their implementation is added.
-    stageEl.querySelectorAll('[data-action="toggle-pin"], [data-action="rename-doc"], [data-action="delete-doc"], [data-editor-mode], [data-format], [data-action], #note-body').forEach((control) => {
+    stageEl.querySelectorAll('[data-action="toggle-pin"], [data-action="rename-doc"], [data-action="delete-doc"], [data-editor-mode], [data-format]').forEach((control) => {
       control.disabled = true;
     });
-    submitBtn.disabled = true;
   }
 
   function renderDocumentList(matches = sortedDocuments()) {
@@ -682,6 +681,152 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
+  // Submit Note (Add or Update)
+  async function persistNote(doc, note) {
+    const updatedAt = note.updatedAt || note.createdAt;
+    const { notes, ...docRecord } = doc;
+    if (db) {
+      await dbSaveNote(db, { ...docRecord, updatedAt }, note);
+    }
+
+    const index = doc.notes.findIndex((saved) => saved.id === note.id);
+    if (index === -1) doc.notes.unshift(note);
+    else doc.notes[index] = note;
+    doc.updatedAt = updatedAt;
+  }
+
+  document.addEventListener("submit", async (event) => {
+    if (!event.target.matches(".note-editor")) return;
+    event.preventDefault();
+    const doc = selectedDocument();
+    if (!doc || savingDocuments.has(doc.id)) return;
+    const draft = draftFor(doc);
+    if (!draft.body.trim()) return;
+
+    const body = draft.body;
+    const now = new Date().toISOString();
+    const editing = Boolean(draft.editingId);
+    const original = doc.notes.find((note) => note.id === draft.editingId);
+    if (editing && !original) {
+      announce("This note no longer exists. Your draft is still in the editor.");
+      return;
+    }
+
+    const note = editing
+      ? { ...original, body, updatedAt: now }
+      : { id: crypto.randomUUID(), documentId: doc.id, body, createdAt: now };
+
+    savingDocuments.add(doc.id);
+    updateEditorControls();
+    try {
+      await persistNote(doc, note);
+
+      // Keep typing during a save attached to the same note for the next save.
+      if (drafts.get(doc.id) === draft) {
+        if (draft.body === body) drafts.delete(doc.id);
+        else draft.editingId = note.id;
+      }
+
+      if (state.selectedId === doc.id) {
+        const textarea = stageEl.querySelector("#note-body");
+        const selection =
+          document.activeElement === textarea
+            ? [
+                textarea.selectionStart,
+                textarea.selectionEnd,
+                textarea.selectionDirection,
+              ]
+            : null;
+        const restoreFocus =
+          selection || event.target.contains(document.activeElement);
+        render();
+        if (state.selectedId === doc.id && restoreFocus) {
+          focusEditor();
+          if (selection && drafts.get(doc.id) === draft) {
+            stageEl.querySelector("#note-body")?.setSelectionRange(...selection);
+          }
+        }
+      } else {
+        renderDocumentList();
+        refreshIcons();
+      }
+      const actionVerb = editing ? "updated" : "added";
+      announce(
+        db
+          ? `Note ${actionVerb} in IndexedDB.`
+          : "Note saved in memory only. It will be lost when this page is closed.",
+      );
+    } catch {
+      announce("Could not save note. Your draft is still in the editor. Try saving again.");
+    } finally {
+      savingDocuments.delete(doc.id);
+      updateEditorControls();
+    }
+  });
+
+  // Interactive Markdown Checkboxes inside Saved Notes
+  stageEl.addEventListener("change", async (event) => {
+    const box = event.target.closest(
+      'input[type="checkbox"][data-checkbox-index]',
+    );
+    if (!box) return;
+    const card = box.closest("[data-note-card]");
+    if (!card) return;
+
+    const doc = selectedDocument();
+    const note = doc?.notes.find((n) => n.id === card.dataset.noteCard);
+    if (!note) return;
+    if (savingDocuments.has(doc.id)) {
+      box.checked = !box.checked;
+      announce("Wait for this document's note to finish saving, then try again.");
+      return;
+    }
+
+    const targetIdx = Number(box.dataset.checkboxIndex);
+    let currentIdx = 0;
+    const body = note.body.replace(
+      /^(\s*[-*+]\s+\[)([ xX])(\])/gm,
+      (full, pre, mark, post) => {
+        if (currentIdx++ === targetIdx) {
+          return `${pre}${box.checked ? "x" : " "}${post}`;
+        }
+        return full;
+      },
+    );
+    savingDocuments.add(doc.id);
+    updateEditorControls();
+    try {
+      await persistNote(doc, {
+        ...note,
+        body,
+        updatedAt: new Date().toISOString(),
+      });
+      if (state.selectedId === doc.id) render();
+      else {
+        renderDocumentList();
+        refreshIcons();
+      }
+      announce("Checklist item updated.");
+    } catch {
+      box.checked = !box.checked;
+      announce("Could not save checklist change. Try checking the item again.");
+    } finally {
+      savingDocuments.delete(doc.id);
+      updateEditorControls();
+    }
+  });
+
+  // Global Search & Textarea Input
+  document.addEventListener("input", (event) => {
+    if (event.target.id === "note-body") {
+      const draft = draftFor();
+      if (draft) {
+        draft.body = event.target.value;
+        updateEditorControls();
+      }
+    }
+  });
+
   function selectDocument(id) {
     if (state.selectedId === id) return;
     guardUnsavedDraft(() => {
@@ -694,8 +839,68 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function discardDraft() {
+    guardUnsavedDraft(() => {
+      drafts.delete(state.selectedId);
+      render();
+      focusEditor();
+      announce("Draft discarded.");
+    });
+  }
+
+  function editNote(noteId) {
+    guardUnsavedDraft(() => {
+      const doc = selectedDocument();
+      const note = doc?.notes.find((n) => n.id === noteId);
+      if (!note) return;
+      drafts.set(doc.id, {
+        body: note.body,
+        editingId: note.id,
+        mode: "write",
+      });
+      render();
+      focusEditor();
+    });
+  }
+
+  function deleteNote(noteId) {
+    const doc = selectedDocument();
+    if (!doc) return;
+    confirmAction(
+      "Delete this note?",
+      "This removes the entry from the timeline. Other notes in this document remain untouched.",
+      "Delete note",
+      async () => {
+        if (db) await dbDelete(db, "notes", noteId);
+        doc.notes = doc.notes.filter((n) => n.id !== noteId);
+        if (draftFor(doc)?.editingId === noteId) {
+          drafts.delete(doc.id);
+        }
+        render();
+        focusEditor();
+        announce("Note deleted from IndexedDB.");
+      },
+    );
+  }
+
+  async function copyNote(noteId) {
+    const doc = selectedDocument();
+    const note = doc?.notes.find((n) => n.id === noteId);
+    if (!note) return;
+    try {
+      await navigator.clipboard.writeText(note.body);
+      announce("Note Markdown copied to clipboard.");
+    } catch {
+      announce("Could not access clipboard.");
+    }
+  }
+
   const actionHandlers = {
     "cancel-rename": () => renameDialog.close(),
+    discard: discardDraft,
+    "edit-note": (btn) => editNote(btn.dataset.note),
+    "delete-note": (btn) => deleteNote(btn.dataset.note),
+    "copy-note": (btn) => copyNote(btn.dataset.note),
     "confirm-cancel": () => {
       pendingAction = undefined;
       confirmDialog.close();
