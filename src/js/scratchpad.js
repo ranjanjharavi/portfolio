@@ -585,7 +585,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? "Saving note…"
       : draftCount;
     // Enable these controls when their implementation is added.
-    stageEl.querySelectorAll('[data-action="toggle-pin"], [data-action="rename-doc"], [data-action="delete-doc"], [data-editor-mode], [data-format]').forEach((control) => {
+    stageEl.querySelectorAll('[data-action="toggle-pin"], [data-action="rename-doc"], [data-action="delete-doc"]').forEach((control) => {
       control.disabled = true;
     });
   }
@@ -651,6 +651,45 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   /* Selection-aware Markdown Formatting (Expanded with Code & Checklist) */
+  function applyFormatting(name) {
+    const textarea = stageEl.querySelector("#note-body");
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selection = textarea.value.slice(start, end);
+
+    const isMultilineCode = name === "code" && selection.includes("\n");
+    const formats = {
+      bold: ["**", "**", "bold text"],
+      italic: ["*", "*", "italic text"],
+      code: isMultilineCode
+        ? ["```\n", "\n```", "code block"]
+        : ["`", "`", "code"],
+      link: ["[", "](https://example.com)", "link text"],
+      list: ["- ", "", "list item"],
+      checklist: ["- [ ] ", "", "task item"],
+      quote: ["> ", "", "quote"],
+    };
+
+    const [prefix, suffix, placeholder] = formats[name];
+    const needsNewline =
+      ["list", "checklist", "quote"].includes(name) &&
+      start > 0 &&
+      textarea.value[start - 1] !== "\n";
+    const linePrefix = needsNewline ? "\n" : "";
+
+    const replacement =
+      linePrefix + prefix + (selection || placeholder) + suffix;
+    textarea.setRangeText(replacement, start, end, "end");
+    draftFor().body = textarea.value;
+    textarea.focus();
+
+    const selStart = start + linePrefix.length + prefix.length;
+    const selEnd = selStart + (selection || placeholder).length;
+    textarea.setSelectionRange(selStart, selEnd);
+    updateEditorControls();
+  }
+
   /* Actions & Event Handlers */
 
   // Create New Document
@@ -921,6 +960,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       selectDocument(button.dataset.docId);
       return;
     }
+    if (button.dataset.editorMode) {
+      const draft = draftFor();
+      if (draft) {
+        draft.mode = button.dataset.editorMode;
+        render();
+        stageEl.querySelector(`[data-editor-mode="${draft.mode}"]`)?.focus();
+      }
+      return;
+    }
+    if (button.dataset.format) {
+      applyFormatting(button.dataset.format);
+      return;
+    }
     if (
       savingDocuments.has(state.selectedId) &&
       ["toggle-pin", "rename-doc", "delete-doc", "discard", "edit-note", "delete-note"]
@@ -930,6 +982,46 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
     actionHandlers[button.dataset.action]?.(button);
+  });
+
+  // Keyboard Shortcuts: Escape for dialogs, Cmd/Ctrl+Enter to submit, Arrow keys for Write|Preview tabs
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && (confirmDialog.open || renameDialog.open)) {
+      event.preventDefault();
+      pendingAction = undefined;
+      confirmDialog.close();
+      renameDialog.close();
+      return;
+    }
+
+    if (
+      (event.metaKey || event.ctrlKey) &&
+      event.key === "Enter" &&
+      event.target.id === "note-body"
+    ) {
+      event.preventDefault();
+      const form = stageEl.querySelector(".note-editor");
+      const submitBtn = form?.querySelector('[type="submit"]');
+      if (submitBtn && !submitBtn.disabled) {
+        form.requestSubmit();
+      }
+      return;
+    }
+
+    const tab = event.target.closest('[role="tab"]');
+    if (!tab || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key))
+      return;
+    event.preventDefault();
+    const tabs = [
+      ...tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]'),
+    ];
+    const current = tabs.indexOf(tab);
+    let index =
+      (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) %
+      tabs.length;
+    if (event.key === "Home") index = 0;
+    if (event.key === "End") index = tabs.length - 1;
+    tabs[index].click();
   });
 
   if (!globalThis.marked || !globalThis.DOMPurify || !globalThis.lucide) {
