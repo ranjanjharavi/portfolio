@@ -114,10 +114,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const confirmDialog = document.querySelector("#confirm-dialog");
   const renameDialog = document.querySelector("#rename-dialog");
 
-  // Discovery controls become available with their handlers in phase 5.
-  document.querySelector("#global-search").disabled = true;
-  document.querySelector("#doc-sort").disabled = true;
-
   const fullDateFormat = new Intl.DateTimeFormat("en", {
     month: "short",
     day: "numeric",
@@ -584,10 +580,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     metaEl.textContent = saving
       ? "Saving note…"
       : draftCount;
-    // Enable these controls when their implementation is added.
-    stageEl.querySelectorAll('[data-action="toggle-pin"], [data-action="rename-doc"], [data-action="delete-doc"]').forEach((control) => {
-      control.disabled = true;
-    });
   }
 
   function renderDocumentList(matches = sortedDocuments()) {
@@ -857,6 +849,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Global Search & Textarea Input
   document.addEventListener("input", (event) => {
+    if (event.target.id === "global-search") {
+      state.query = event.target.value;
+      render();
+    }
     if (event.target.id === "note-body") {
       const draft = draftFor();
       if (draft) {
@@ -865,6 +861,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
   });
+
+  // Sort Selector
+  document.querySelector("#doc-sort").addEventListener("change", (event) => {
+    state.sort = event.target.value;
+    render();
+  });
+
+  // Rename Document Form
+  document
+    .querySelector("#rename-form")
+    .addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const doc = selectedDocument();
+      if (!doc) return;
+      const input = document.querySelector("#rename-input");
+      const newTitle = input.value.trim();
+      if (!newTitle) return;
+
+      doc.title = newTitle;
+      doc.updatedAt = new Date().toISOString();
+      const { notes, ...docRecord } = doc;
+      if (db) await dbPut(db, "documents", docRecord);
+
+      renameDialog.close();
+      render();
+      announce(`Renamed document to "${newTitle}".`);
+    });
 
   function selectDocument(id) {
     if (state.selectedId === id) return;
@@ -876,6 +899,61 @@ document.addEventListener("DOMContentLoaded", async () => {
         .querySelector(`[data-doc-id="${id}"]`)
         ?.focus({ preventScroll: true });
     });
+  }
+
+  async function togglePin() {
+    const doc = selectedDocument();
+    if (!doc) return;
+    doc.pinned = !doc.pinned;
+    const { notes, ...docRecord } = doc;
+    if (db) await dbPut(db, "documents", docRecord);
+    render();
+    stageEl.querySelector('[data-action="toggle-pin"]')?.focus();
+    announce(
+      doc.pinned ? `"${doc.title}" pinned to top.` : `"${doc.title}" unpinned.`,
+    );
+  }
+
+  function openRenameDialog() {
+    const doc = selectedDocument();
+    if (!doc) return;
+    const input = document.querySelector("#rename-input");
+    input.value = doc.title;
+    renameDialog.showModal();
+    input.focus();
+    input.select();
+  }
+
+  function deleteDocument() {
+    const doc = selectedDocument();
+    if (!doc) return;
+    confirmAction(
+      "Delete document?",
+      `This permanently deletes "${doc.title}" and its ${noteLabel(doc.notes.length)} from IndexedDB.`,
+      "Delete document",
+      async () => {
+        if (db) await dbDeleteDocumentAndNotes(db, doc.id);
+        documents = documents.filter((d) => d.id !== doc.id);
+        drafts.delete(doc.id);
+
+        if (documents.length === 0) {
+          const now = new Date().toISOString();
+          const fallback = {
+            id: crypto.randomUUID(),
+            title: "Quick Scratch",
+            pinned: true,
+            createdAt: now,
+            updatedAt: now,
+          };
+          if (db) await dbPut(db, "documents", fallback);
+          documents = [{ ...fallback, notes: [] }];
+        }
+
+        state.selectedId = sortedDocuments()[0]?.id ?? null;
+        render();
+        announce(`Deleted "${doc.title}".`);
+      },
+    );
   }
 
   function discardDraft() {
@@ -935,6 +1013,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   const actionHandlers = {
+    "toggle-pin": togglePin,
+    "rename-doc": openRenameDialog,
+    "delete-doc": deleteDocument,
     "cancel-rename": () => renameDialog.close(),
     discard: discardDraft,
     "edit-note": (btn) => editNote(btn.dataset.note),
