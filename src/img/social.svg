@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <style>@font-face{font-family:Manrope;src:url('../fonts/manrope-latin-variable.woff2') format('woff2');font-weight:400 700}text{font-family:Manrope,sans-serif}</style>
+  <rect width="1200" height="630" fill="#f6f7f4"/>
+  <rect x="64" y="48" width="64" height="64" rx="16" fill="#365c45"/>
+  <text x="77" y="91" font-size="36" letter-spacing="-3" font-weight="700" fill="#fff">rr.</text>
+  <text x="152" y="78" font-size="20" font-weight="600" fill="#202921">Ravi Ranjan</text>
+  <text x="152" y="104" font-size="14" fill="#5c655c">Senior software engineer</text>
+  <circle cx="897" cy="80" r="4" fill="#365c45"/>
+  <text x="913" y="85" font-size="14" fill="#365c45">Bengaluru, India</text>
+  <text x="64" y="288" font-size="96" font-weight="500" letter-spacing="-6" fill="#202921">Thoughtful code.</text>
+  <text x="64" y="384" font-size="96" font-weight="500" letter-spacing="-6" fill="#626b62">Reliable systems.</text>
+  <rect x="0" y="502" width="1200" height="128" fill="#e4e9df"/>
+  <text x="64" y="560" font-size="18" font-weight="600" fill="#365c45">Web applications</text>
+  <text x="296" y="560" font-size="18" font-weight="600" fill="#365c45">REST APIs</text>
+  <text x="460" y="560" font-size="18" font-weight="600" fill="#365c45">Microservices</text>
+  <text x="64" y="592" font-size="14" fill="#5c655c">7+ years of building with the whole system in mind.</text>
+  <text x="909" y="574" font-size="18" fill="#365c45">raviranjanjha.com</text>
+</svg>
