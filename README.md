@@ -4,14 +4,15 @@ A lightweight, single-page static portfolio.
 
 ## Features
 
-- Responsive single-page layout with mobile navigation
-- Light/dark theme support with saved preference
-- Animated canvas starfield effects, and scroll-to-top control
+- Responsive portfolio with a full-height, keyboard-accessible mobile menu
+- Light mode by default, with a manual dark mode toggle and saved preference
+- Selected projects, career history, technical toolkit, and credentials
+- Scroll reveals and a word-by-word tagline, respecting reduced motion
 
 
 ## Tech stack
 
-Vanilla HTML, CSS, and JavaScript. The site also uses Google Fonts (Inter) and Font Awesome icons loaded from CDNs.
+Vanilla HTML, CSS, and JavaScript. Google Fonts, and Phosphor icons.
 
 ## Run locally
 
@@ -33,10 +34,11 @@ npm run check
 
 ```text
 src/
-├── index.html      # Page content and metadata
-├── css/style.css   # Responsive styles and themes
-├── js/main.js      # Interactive behavior and animations
-└── img/            # Profile image and favicon
+├── index.html      # Portfolio content and metadata
+├── 404.html        # Branded not-found page
+├── style.css       # Portfolio styles and themes
+├── main.js         # Portfolio interactions and reveals
+└── img/            # Avatar, favicon, icons, and social sharing image
 ```
 
 ## License
