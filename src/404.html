@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f6f7f4" />
+  <meta name="robots" content="noindex" />
+  <title>Page not found | Ravi Ranjan</title>
+  <meta name="description"
+    content="This page could not be found. Return to Ravi Ranjan's portfolio to explore his work or get in touch." />
+  <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+  <link rel="stylesheet" href="./style.css" />
+  <script>
+    (() => {
+      let saved;
+      try { saved = localStorage.getItem("color-scheme"); } catch { }
+      const theme = saved === "dark" ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
+    })();
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <main class="not-found" id="main">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">rr.</span><span>Ravi Ranjan</span></a>
+    <p class="eyebrow">404 / A missing connection</p>
+    <h1>This path ends here.<br />The work doesn't.</h1>
+    <p>The page you're looking for may have moved, or the address may be incomplete. Let's get you back to familiar
+      ground.</p>
+    <a class="button button-primary" href="./">Back to the portfolio <svg class="icon" aria-hidden="true">
+        <use href="./img/icons.svg#arrow-right" />
+      </svg></a>
+    <a class="text-link" href="mailto:hey@raviranjanjha.com">Or get in touch</a>
+  </main>
+</body>
+
+</html>
