@@ -14,6 +14,16 @@
         const theme = saved === "dark" ? "dark" : "light";
         document.documentElement.dataset.theme = theme;
         document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
+
+        if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !new URLSearchParams(location.search).has("still")) {
+          document.documentElement.classList.add("motion-ready");
+          // Keep the page readable if the main script cannot load.
+          setTimeout(() => {
+            if (!document.documentElement.classList.contains("motion-initialized")) {
+              document.documentElement.classList.remove("motion-ready");
+            }
+          }, 2500);
+        }
       })();
     </script>
     <title>Ravi Ranjan | Senior Software Engineer</title>
@@ -48,7 +58,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
 
     <!-- Site header -->
-    <header class="site-header" id="site-header">
+    <header class="site-header" id="site-header" data-hero style="--d: 0ms">
       <a class="brand" href="#hero" aria-label="Ravi Ranjan, home">
         <span class="brand-mark" aria-hidden="true">rr.</span>
         <span>Ravi Ranjan</span>
@@ -136,7 +146,7 @@
       <!-- Hero section -->
       <section class="hero" id="hero" aria-labelledby="hero-title">
         <div class="container">
-          <div class="hero-topline">
+          <div class="hero-topline" data-hero style="--d: 60ms">
             <p class="eyebrow">
               Senior software engineer
               <span class="topline-divider">/</span>
@@ -150,15 +160,14 @@
           <div class="hero-layout">
             <div class="hero-copy">
               <h1 id="hero-title">
-                Thoughtful code.
-                <br />
-                Reliable systems.
+                <span class="hero-line" data-hero style="--d: 120ms">Thoughtful code.</span>
+                <span class="hero-line" data-hero style="--d: 180ms">Reliable systems.</span>
               </h1>
-              <p class="hero-description">
+              <p class="hero-description" data-hero style="--d: 240ms">
                 I'm Ravi. I build web applications, APIs, and microservices that connect the dots between a good
                 interface and a dependable backend.
               </p>
-              <div class="hero-action">
+              <div class="hero-action" data-hero style="--d: 300ms">
                 <a class="button button-primary" href="#contact">
                   Start a conversation
                   <svg class="icon" aria-hidden="true">
@@ -167,7 +176,7 @@
                 </a>
                 <span class="action-note">Have a role or project in mind?</span>
               </div>
-              <p class="hero-current">
+              <p class="hero-current" data-hero style="--d: 360ms">
                 <span class="status-dot" aria-hidden="true"></span>
                 Currently building at
                 <strong>Akamai Technologies</strong>
@@ -177,12 +186,30 @@
             <!-- Stacked System visual -->
             <figure
               class="system-visual"
+              data-motion-card
+              data-story="system"
+              style="--d: 300ms"
               aria-label="My engineering focus: React interfaces, Node.js and .NET Core APIs, PostgreSQL and SQL Server data, with Redis and RabbitMQ connecting services.">
               <div class="visual-top">
                 <span class="visual-label">The whole system in mind</span>
                 <svg class="icon" aria-hidden="true">
                   <use href="./img/icons.svg#code" />
                 </svg>
+                <button
+                  class="icon-button motion-toggle"
+                  id="motion-toggle"
+                  type="button"
+                  aria-label="Pause visual animations"
+                  aria-pressed="false"
+                  title="Pause visual animations"
+                  hidden>
+                  <svg class="icon motion-pause" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M5 4h3v12H5zm7 0h3v12h-3z" />
+                  </svg>
+                  <svg class="icon motion-play" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="m6 3 11 7-11 7z" />
+                  </svg>
+                </button>
               </div>
               <div class="system-stack" aria-hidden="true">
                 <div class="system-layer layer-interface">
@@ -239,7 +266,7 @@
               </figcaption>
             </figure>
           </div>
-          <div class="hero-proof" aria-label="Professional highlights">
+          <div class="hero-proof" aria-label="Professional highlights" data-hero style="--d: 420ms">
             <div>
               <strong>7+ years</strong>
               <span>Building production software</span>
@@ -425,7 +452,7 @@
             </p>
           </div>
           <div class="projects-grid">
-            <article class="project-card project-wide" data-reveal>
+            <article class="project-card project-wide" data-reveal data-story="bookmark">
               <div
                 class="project-preview"
                 aria-label="Concept preview of azkmark, showing a saved bookmark in an Engineering collection with a Markdown note.">
@@ -495,7 +522,7 @@
                 </a>
               </div>
             </article>
-            <article class="project-card" data-reveal>
+            <article class="project-card" data-reveal data-story="url">
               <div
                 class="project-preview preview-url"
                 aria-label="Concept preview of URL Transformer, showing a source URL and a redirect with a token.">
@@ -564,7 +591,7 @@
                 </a>
               </div>
             </article>
-            <article class="project-card" data-reveal>
+            <article class="project-card" data-reveal data-story="headers">
               <div
                 class="project-preview preview-reqkit"
                 aria-label="Concept preview of ReqKit, showing a temporary request header profile for an exact HTTPS host.">

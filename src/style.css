@@ -27,6 +27,9 @@
   --error: #a32929;
   --shadow: 0 8px 32px rgb(32 41 33 / 5%);
   --curve: cubic-bezier(0.22, 1, 0.36, 1);
+  --e: cubic-bezier(0.16, 1, 0.3, 1);
+  --e2: cubic-bezier(0.33, 1, 0.68, 1);
+  --io: cubic-bezier(0.65, 0, 0.35, 1);
   --space-0: 0;
   --space-25: 2px;
   --space-50: 4px;
@@ -294,6 +297,7 @@ summary:active {
 
 /* One compact, floating navigation surface. */
 .site-header {
+  --motion-base: translateX(-50%);
   position: fixed;
   top: var(--space-200);
   left: 50%;
@@ -530,6 +534,9 @@ summary:active {
   line-height: 1;
   font-weight: 500;
   letter-spacing: -0.065em;
+}
+.hero-line {
+  display: block;
   background: linear-gradient(
     to right,
     var(--heading-start),
@@ -574,11 +581,14 @@ summary:active {
 }
 .system-visual {
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
   padding: var(--space-300);
   background: var(--surface-soft);
   border-radius: 16px;
 }
 .visual-top {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -592,6 +602,7 @@ summary:active {
   font-weight: 600;
 }
 .system-layer {
+  position: relative;
   display: flex;
   align-items: start;
   gap: var(--space-200);
@@ -638,7 +649,8 @@ summary:active {
   margin-top: var(--space-50);
 }
 .layer-services {
-  transform: translateX(-16px);
+  --layer-offset: -16px;
+  transform: translateX(var(--layer-offset));
 }
 .system-connector {
   display: flex;
@@ -808,6 +820,8 @@ summary:active {
   border-color: var(--accent-bright);
 }
 .project-preview {
+  overflow: hidden;
+  isolation: isolate;
   background: var(--surface-soft);
   padding: var(--space-300);
   min-height: 320px;
@@ -1679,7 +1693,21 @@ details[open] > summary .plus::after {
   max-width: 480px;
 }
 
-/* Only JS-enabled observers opt content into a reveal. */
+/* Motion is opt-in: a missing script never leaves content hidden. */
+.motion-ready [data-hero] {
+  opacity: 0;
+  filter: blur(2px);
+  transform: var(--motion-base, translateY(0)) translateY(6px);
+  transition:
+    transform 800ms var(--e) var(--d, 0ms),
+    opacity 600ms var(--e2) var(--d, 0ms),
+    filter 600ms var(--e2) var(--d, 0ms);
+}
+.motion-ready [data-hero].is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: var(--motion-base, translateY(0));
+}
 .reveal-pending {
   opacity: 0;
   transform: translateY(32px);
@@ -1687,17 +1715,138 @@ details[open] > summary .plus::after {
     opacity 700ms var(--curve),
     transform 700ms var(--curve);
 }
+.project-card.reveal-pending,
+.motion-ready [data-motion-card] {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(24px) scale(0.985);
+  transition:
+    transform 900ms var(--e) var(--d, 0ms),
+    opacity 600ms var(--e2) var(--d, 0ms),
+    filter 750ms var(--e2) var(--d, 0ms);
+}
 .reveal-pending.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  .reveal-pending,
-  .reveal-pending.is-visible {
-    transform: none;
-  }
-  .tagline-word {
+.project-card.reveal-pending.is-visible,
+.motion-ready [data-motion-card].is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+.reveal-pending .motion-item {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(10px);
+  transition:
+    transform 1050ms var(--e) calc(var(--d, 0ms) + var(--item-delay)),
+    opacity 750ms var(--e2) calc(var(--d, 0ms) + var(--item-delay)),
+    filter 750ms var(--e2) calc(var(--d, 0ms) + var(--item-delay));
+}
+.reveal-pending.is-visible .motion-item {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+}
+/* Keep the services card's deliberate offset when its entrance lands. */
+.reveal-pending .layer-services.motion-item {
+  transform: translate(var(--layer-offset), 10px);
+}
+.reveal-pending.is-visible .layer-services.motion-item {
+  transform: translateX(var(--layer-offset));
+}
+.story-node {
+  position: relative;
+}
+.story-node::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--accent);
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  opacity: var(--story-focus, 0);
+  pointer-events: none;
+}
+.system-layer > .icon {
+  transform: scale(var(--story-scale, 1));
+}
+.system-connector > span:first-child {
+  position: relative;
+}
+.system-connector > span:first-child::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 3px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+  opacity: var(--packet-opacity, 0);
+  transform: translateY(var(--packet-y, -10px));
+  pointer-events: none;
+}
+.typing-target {
+  position: relative;
+}
+.typing-visual {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.typing-char {
+  position: relative;
+}
+.typing-char.is-current::after {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 1px;
+  height: 1.1em;
+  background: var(--accent);
+  opacity: var(--caret-opacity, 1);
+}
+/* The pause control shares the existing icon's space, without changing layout. */
+.motion-toggle {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  background: var(--surface-soft);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms var(--e2);
+}
+.system-visual:hover .motion-toggle,
+.motion-toggle:focus-visible,
+.motion-toggle[aria-pressed="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+.motion-toggle:hover {
+  background: var(--surface-soft);
+}
+.motion-toggle:active {
+  transform: translateY(-50%);
+}
+.motion-play,
+.motion-toggle[aria-pressed="true"] .motion-pause {
+  display: none;
+}
+.motion-toggle[aria-pressed="true"] .motion-play {
+  display: block;
+}
+@media (hover: none) {
+  .motion-toggle {
     opacity: 1;
+    pointer-events: auto;
   }
 }
 @media (max-width: 1000px) {
@@ -2054,7 +2203,7 @@ details[open] > summary .plus::after {
     padding: var(--space-100);
   }
   .layer-services {
-    transform: translateX(-8px);
+    --layer-offset: -8px;
   }
 }
 @media (max-width: 389px) {
@@ -2092,7 +2241,19 @@ details[open] > summary .plus::after {
   *::before,
   *::after {
     animation: none !important;
-    transition: opacity 300ms var(--curve) !important;
+    transition: none !important;
+  }
+  .reveal-pending,
+  .reveal-pending .motion-item {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .reveal-pending .layer-services.motion-item {
+    transform: translateX(var(--layer-offset));
+  }
+  .tagline-word {
+    opacity: 1;
   }
   a:hover > .icon,
   .button:hover,
