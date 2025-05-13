@@ -531,7 +531,7 @@ summary:active {
 .hero h1 {
   max-width: 680px;
   font-size: var(--text-7xl);
-  line-height: 1;
+  line-height: 1.15;
   font-weight: 500;
   letter-spacing: -0.065em;
 }
@@ -2075,7 +2075,7 @@ details[open] > summary .plus::after {
   }
   .hero h1 {
     font-size: var(--text-6xl);
-    line-height: 1;
+    line-height: 1.15;
   }
   .hero-proof {
     gap: var(--space-300);
@@ -2121,7 +2121,7 @@ details[open] > summary .plus::after {
   }
   .hero h1 {
     font-size: var(--text-7xl);
-    line-height: 1;
+    line-height: 1.15;
   }
   .hero-description {
     max-width: 560px;
@@ -2174,7 +2174,7 @@ details[open] > summary .plus::after {
   }
   .hero h1 {
     font-size: var(--text-5xl);
-    line-height: 1;
+    line-height: 1.15;
   }
   .hero-description {
     font-size: var(--text-base);
