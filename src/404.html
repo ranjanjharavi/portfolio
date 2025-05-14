@@ -11,6 +11,9 @@
       name="description"
       content="This page could not be found. Return to Ravi Ranjan's portfolio to explore his work or get in touch." />
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
     <script>
       (() => {
@@ -18,17 +21,23 @@
         try {
           saved = localStorage.getItem("color-scheme");
         } catch {}
-        const theme = saved === "dark" ? "dark" : "light";
-        document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
+        const systemTheme = matchMedia("(prefers-color-scheme: dark)");
+        const hasSavedTheme = saved === "dark" || saved === "light";
+        function applyTheme() {
+          const theme = hasSavedTheme ? saved : systemTheme.matches ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+          document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
+        }
+        applyTheme();
+        systemTheme.addEventListener("change", applyTheme);
       })();
     </script>
   </head>
 
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <main class="not-found" id="main">
-      <a class="brand" href="./">
+    <main class="not-found" id="main" tabindex="-1">
+      <a class="brand" href="/">
         <span class="brand-mark" aria-hidden="true">rr.</span>
         <span>Ravi Ranjan</span>
       </a>
@@ -42,7 +51,7 @@
         The page you're looking for may have moved, or the address may be incomplete. Let's get you back to familiar
         ground.
       </p>
-      <a class="button button-primary" href="./">
+      <a class="button button-primary" href="/">
         Back to the portfolio
         <svg class="icon" aria-hidden="true">
           <use href="./img/icons.svg#arrow-right" />

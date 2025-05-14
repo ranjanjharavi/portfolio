@@ -5,6 +5,12 @@
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const stillMode = new URLSearchParams(location.search).has("still");
   const themeToggle = document.getElementById("theme-toggle");
+  const systemTheme = matchMedia("(prefers-color-scheme: dark)");
+  let explicitTheme = null;
+  try {
+    const saved = localStorage.getItem("color-scheme");
+    if (saved === "dark" || saved === "light") explicitTheme = saved;
+  } catch {}
 
   function applyTheme(theme) {
     root.dataset.theme = theme;
@@ -15,11 +21,14 @@
     themeToggle?.setAttribute("aria-pressed", String(theme === "dark"));
   }
 
-  applyTheme(root.dataset.theme === "dark" ? "dark" : "light");
+  applyTheme(explicitTheme ?? (systemTheme.matches ? "dark" : "light"));
   themeToggle?.addEventListener("click", () => {
-    const theme = root.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(theme);
-    try { localStorage.setItem("color-scheme", theme); } catch {}
+    explicitTheme = root.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(explicitTheme);
+    try { localStorage.setItem("color-scheme", explicitTheme); } catch {}
+  });
+  systemTheme.addEventListener("change", () => {
+    if (!explicitTheme) applyTheme(systemTheme.matches ? "dark" : "light");
   });
 
   // The native menu dialog provides focus containment, Escape, and focus restoration.
@@ -136,7 +145,12 @@
     if (element.dataset.story === "system") {
       const layers = element.querySelectorAll(".system-layer");
       const connectors = element.querySelectorAll(".system-connector");
-      return (time) => {
+      return (time, selected = null) => {
+        if (selected !== null) {
+          layers.forEach((layer, index) => focusNode(layer, index === selected ? 1 : 0));
+          connectors.forEach((connector) => connector.style.setProperty("--packet-opacity", "0"));
+          return;
+        }
         layers.forEach((layer, index) => {
           const start = 0.3 + index * 1.8;
           focusNode(layer, track([[0, 0], [start, 0], [start + 0.35, 1], [start + 1.1, 1], [start + 1.5, 0], [storyDuration, 0]], time));
@@ -160,7 +174,16 @@
       const deleteEnd = deleteStart + typing.length * 0.035;
       const typeStart = deleteEnd + 0.3;
       const typeEnd = typeStart + typing.length * 0.06;
-      return (time) => {
+      return (time, selected = null) => {
+        if (selected !== null) {
+          typing.draw(typing.length, time);
+          focusNode(source, selected === 0 ? 1 : 0);
+          focusNode(result, selected === 1 ? 1 : 0);
+          resolveNode(result, 1);
+          arrow.style.transform = "";
+          return;
+        }
+        focusNode(result, 0);
         let count = typing.length;
         if (time >= deleteStart && time < deleteEnd) count -= Math.floor((time - deleteStart) / 0.035);
         else if (time >= deleteEnd && time < typeStart) count = 0;
@@ -178,7 +201,16 @@
       const result = element.querySelector(".demo-result");
       const arrow = element.querySelector(".demo-arrow .icon");
       const token = element.querySelector(".url-token");
-      return (time) => {
+      return (time, selected = null) => {
+        if (selected !== null) {
+          focusNode(source, selected === 0 ? 1 : 0);
+          focusNode(result, selected === 1 ? 1 : 0);
+          resolveNode(result, 1);
+          token.style.opacity = "1";
+          token.style.filter = "";
+          arrow.style.transform = "";
+          return;
+        }
         focusNode(source, track([[0, 0], [0.4, 1], [1.2, 1], [1.7, 0], [storyDuration, 0]], time));
         resolveNode(result, track([[0, 1], [0.6, 1], [1.1, 0.2], [2.2, 0.2], [3.1, 1], [storyDuration, 1]], time));
         const opacity = track([[0, 1], [0.6, 1], [1, 0], [2.2, 0], [2.9, 1], [storyDuration, 1]], time);
@@ -194,7 +226,15 @@
     const header = element.querySelector(".rule-header");
     const status = element.querySelector(".rule-status");
     const badge = element.querySelector(".demo-badge");
-    return (time) => {
+    return (time, selected = null) => {
+      if (selected !== null) {
+        focusNode(host, selected === 0 ? 1 : 0);
+        focusNode(header, selected === 1 ? 1 : 0);
+        resolveNode(header, 1);
+        status.style.opacity = "1";
+        badge.style.transform = "";
+        return;
+      }
       focusNode(host, track([[0, 0], [0.5, 1], [1.4, 1], [2, 0], [storyDuration, 0]], time));
       resolveNode(header, track([[0, 1], [0.6, 1], [1.2, 0.15], [2, 0.15], [2.9, 1], [storyDuration, 1]], time), 10);
       status.style.opacity = String(track([[0, 1], [0.6, 1], [1.1, 0.35], [2.3, 0.35], [2.9, 1], [storyDuration, 1]], time));
@@ -210,7 +250,51 @@
     elapsed: 0,
     offset: index * 0.6,
     visible: false,
+    hovered: false,
+    focused: false,
+    hoveredNode: null,
+    focusedNode: null,
   }));
+
+  // Pause only the inspected card; hover and keyboard focus select its individual nodes.
+  stories.forEach((story) => {
+    function inspect() {
+      if (story.hovered || story.focused) story.draw(0, story.hoveredNode ?? story.focusedNode);
+      refreshStoryClock();
+    }
+    story.element.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+      story.hovered = true;
+      inspect();
+    });
+    story.element.addEventListener("pointerleave", () => {
+      story.hovered = false;
+      story.hoveredNode = null;
+      inspect();
+    });
+    story.element.querySelectorAll(".story-node").forEach((node, index) => {
+      node.addEventListener("pointerenter", (event) => {
+        if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+        story.hoveredNode = index;
+        inspect();
+      });
+      node.addEventListener("pointerleave", () => {
+        story.hoveredNode = null;
+        inspect();
+      });
+    });
+    story.element.addEventListener("focusin", (event) => {
+      story.focused = true;
+      const node = event.target.closest(".story-node");
+      story.focusedNode = node ? Array.from(story.element.querySelectorAll(".story-node")).indexOf(node) : null;
+      inspect();
+    });
+    story.element.addEventListener("focusout", (event) => {
+      story.focused = story.element.contains(event.relatedTarget);
+      if (!story.focused) story.focusedNode = null;
+      inspect();
+    });
+  });
 
   function stopStoryClock() {
     if (storyFrame !== null) cancelAnimationFrame(storyFrame);
@@ -220,7 +304,7 @@
 
   function shouldRunStories() {
     return motionAllowed() && !storiesPaused && !document.hidden && !mobileMenu?.open
-      && stories.some((story) => story.visible);
+      && stories.some((story) => story.visible && !story.hovered && !story.focused);
   }
 
   function drawStories(now) {
@@ -232,7 +316,7 @@
     const dt = previousFrame === null ? 0 : Math.min((now - previousFrame) / 1000, 0.08);
     previousFrame = now;
     stories.forEach((story) => {
-      if (!story.visible || !story.element.classList.contains("is-visible")) return;
+      if (!story.visible || story.hovered || story.focused || !story.element.classList.contains("is-visible")) return;
       story.elapsed += dt;
       // Each section owns its clock. Leaving the viewport does not skip any beats.
       const time = Math.max(0, story.elapsed - 2.4 - story.offset) % storyDuration;
@@ -249,7 +333,7 @@
   revealElements.forEach((element) => {
     let items = [];
     if (element.matches(".project-card")) {
-      items = element.querySelectorAll(".preview-toolbar, .url-demo, .reqkit-demo, .open-source-art > *, .project-content > *");
+      items = element.querySelectorAll(".preview-toolbar, .url-demo, .reqkit-demo, .project-content > *");
     } else if (element.matches(".system-visual")) {
       items = element.querySelectorAll(".visual-top, .system-layer, .system-connector, figcaption");
     }
@@ -264,7 +348,7 @@
     revealObserver = new IntersectionObserver((entries) => {
       const sectionStaggers = new Map();
       entries.forEach((entry) => {
-        if (!entry.isIntersecting || entry.intersectionRatio < 0.3) return;
+        if (!entry.isIntersecting) return;
         const element = entry.target;
         if (element.matches(".project-card")) {
           const section = element.closest("section");
@@ -275,7 +359,7 @@
         element.classList.add("is-visible");
         revealObserver.unobserve(element);
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0, rootMargin: "0px 0px -48px 0px" });
     revealElements.forEach((element) => {
       if (motionAllowed()) {
         element.classList.add("reveal-pending");
@@ -292,6 +376,14 @@
     });
     stories.forEach((story) => storyObserver.observe(story.element));
   } else revealElements.forEach((element) => element.classList.add("is-visible"));
+
+  // Keyboard navigation must never land inside a still-hidden reveal.
+  document.addEventListener("focusin", (event) => {
+    const reveal = event.target.closest(".reveal-pending");
+    if (!reveal) return;
+    reveal.classList.add("is-visible");
+    revealObserver?.unobserve(reveal);
+  });
 
   // Two paints establish the empty state before CSS transitions are triggered.
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -316,6 +408,7 @@
 
   motionToggle?.addEventListener("click", () => {
     storiesPaused = !storiesPaused;
+    if (storiesPaused) stories.forEach((story) => story.draw(0));
     const label = `${storiesPaused ? "Resume" : "Pause"} visual animations`;
     motionToggle.setAttribute("aria-pressed", String(storiesPaused));
     motionToggle.setAttribute("aria-label", label);

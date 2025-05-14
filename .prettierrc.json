@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "printWidth": 120,
+        "tabWidth": 2,
+        "useTabs": false,
+        "bracketSameLine": true,
+        "singleAttributePerLine": false,
+        "htmlWhitespaceSensitivity": "ignore",
+        "endOfLine": "lf"
+      }
+    }
+  ]
+}

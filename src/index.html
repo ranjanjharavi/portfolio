@@ -11,11 +11,19 @@
         try {
           saved = localStorage.getItem("color-scheme");
         } catch {}
-        const theme = saved === "dark" ? "dark" : "light";
+        const theme =
+          saved === "dark" || saved === "light"
+            ? saved
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
         document.documentElement.dataset.theme = theme;
         document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
 
-        if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !new URLSearchParams(location.search).has("still")) {
+        if (
+          !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+          !new URLSearchParams(location.search).has("still")
+        ) {
           document.documentElement.classList.add("motion-ready");
           // Keep the page readable if the main script cannot load.
           setTimeout(() => {
@@ -49,7 +57,9 @@
     <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300..800&display=swap"
+      rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
     <script src="./main.js" defer></script>
   </head>
@@ -66,9 +76,9 @@
 
       <nav class="desktop-nav" aria-label="Primary navigation">
         <a class="nav-link active" href="#hero" aria-current="location">Home</a>
-        <a class="nav-link" href="#projects">Work</a>
         <a class="nav-link" href="#about">About</a>
         <a class="nav-link" href="#experience">Experience</a>
+        <a class="nav-link" href="#projects">Work</a>
         <a class="nav-link" href="#contact">Contact</a>
       </nav>
 
@@ -113,16 +123,16 @@
           Home
           <span>01</span>
         </a>
-        <a href="#projects" style="--item: 1">
-          Selected work
+        <a href="#about" style="--item: 1">
+          About me
           <span>02</span>
         </a>
-        <a href="#about" style="--item: 2">
-          About me
+        <a href="#experience" style="--item: 2">
+          Experience
           <span>03</span>
         </a>
-        <a href="#experience" style="--item: 3">
-          Experience
+        <a href="#projects" style="--item: 3">
+          Selected work
           <span>04</span>
         </a>
         <a href="#skills" style="--item: 4">
@@ -164,8 +174,8 @@
                 <span class="hero-line" data-hero style="--d: 180ms">Reliable systems.</span>
               </h1>
               <p class="hero-description" data-hero style="--d: 240ms">
-                I'm Ravi. I build web applications, APIs, and microservices that connect the dots between a good
-                interface and a dependable backend.
+                I'm Ravi. I architect and build web platforms, high-concurrency APIs, and resilient backend systems that
+                bridge fast interfaces with dependable infrastructure.
               </p>
               <div class="hero-action" data-hero style="--d: 300ms">
                 <a class="button button-primary" href="#contact">
@@ -174,11 +184,11 @@
                     <use href="./img/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
-                <span class="action-note">Have a role or project in mind?</span>
+                <span class="action-note">Have a role or architectural problem in mind?</span>
               </div>
               <p class="hero-current" data-hero style="--d: 360ms">
                 <span class="status-dot" aria-hidden="true"></span>
-                Currently building at
+                Leading platform initiatives at
                 <strong>Akamai Technologies</strong>
               </p>
             </div>
@@ -189,7 +199,7 @@
               data-motion-card
               data-story="system"
               style="--d: 300ms"
-              aria-label="My engineering focus: React interfaces, Node.js and .NET Core APIs, PostgreSQL and SQL Server data, with Redis and RabbitMQ connecting services.">
+              aria-label="My engineering focus: React and TypeScript interfaces; Node.js, .NET Core, and Go services; PostgreSQL, SQL Server, Redis, and Linode data and infrastructure.">
               <div class="visual-top">
                 <span class="visual-label">The whole system in mind</span>
                 <svg class="icon" aria-hidden="true">
@@ -211,49 +221,61 @@
                   </svg>
                 </button>
               </div>
-              <div class="system-stack" aria-hidden="true">
-                <div class="system-layer layer-interface">
+              <div class="system-stack">
+                <div
+                  class="system-layer layer-interface"
+                  role="img"
+                  tabindex="0"
+                  aria-label="Interface: built for people. React, TypeScript, Web APIs.">
                   <span class="layer-number">01</span>
                   <div>
                     <span class="layer-label">The interface</span>
                     <strong>Built for people.</strong>
-                    <span class="layer-tech">React · JavaScript · TypeScript</span>
+                    <span class="layer-tech">React · TypeScript · Web APIs</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#brackets-curly" />
                   </svg>
                 </div>
-                <div class="system-connector">
+                <div class="system-connector" aria-hidden="true">
                   <span></span>
-                  <span>Clear contracts</span>
+                  <span>Explicit contracts &amp; edge auth</span>
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#arrow-down" />
                   </svg>
                 </div>
-                <div class="system-layer layer-services">
+                <div
+                  class="system-layer layer-services"
+                  role="img"
+                  tabindex="0"
+                  aria-label="Services: designed to connect. Node.js, .NET Core, Go, REST APIs.">
                   <span class="layer-number">02</span>
                   <div>
                     <span class="layer-label">The services</span>
                     <strong>Designed to connect.</strong>
-                    <span class="layer-tech">Node.js · .NET Core · REST APIs</span>
+                    <span class="layer-tech">Node.js · .NET Core · Go · REST APIs</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#code" />
                   </svg>
                 </div>
-                <div class="system-connector">
+                <div class="system-connector" aria-hidden="true">
                   <span></span>
-                  <span>Reliable foundations</span>
+                  <span>Zero-downtime foundations</span>
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#arrow-down" />
                   </svg>
                 </div>
-                <div class="system-layer layer-data">
+                <div
+                  class="system-layer layer-data"
+                  role="img"
+                  tabindex="0"
+                  aria-label="Data and infrastructure: made to hold up. PostgreSQL, SQL Server, Redis, Linode.">
                   <span class="layer-number">03</span>
                   <div>
-                    <span class="layer-label">The data</span>
+                    <span class="layer-label">The data &amp; infrastructure</span>
                     <strong>Made to hold up.</strong>
-                    <span class="layer-tech">PostgreSQL · SQL Server</span>
+                    <span class="layer-tech">PostgreSQL · SQL Server · Redis · Linode</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#stack" />
@@ -262,7 +284,7 @@
               </div>
               <figcaption>
                 <span class="status-dot" aria-hidden="true"></span>
-                One connected approach, across the stack.
+                Hover or focus a layer to inspect it.
               </figcaption>
             </figure>
           </div>
@@ -303,19 +325,22 @@
               Beyond the code.
             </h2>
             <p>
-              I'm a senior software engineer at Akamai Technologies, based in Bengaluru. My work spans the full stack,
-              from the first interaction to the services and data behind it.
+              I'm a senior software engineer at Akamai Technologies in Bengaluru. I lead technical initiatives across
+              platform architecture, authentication, failover systems, and developer tooling—caring just as much about
+              database query plans as I do about interface latency.
             </p>
             <div class="about-person">
-              <img
-                src="./img/me.png"
-                alt="Illustrated avatar of Ravi at a laptop"
-                width="56"
-                height="56"
-                loading="lazy" />
+              <div class="person-badge" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                  <g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 43V25m0 6c0-7 5-9 10-7M31 43V25m0 6c0-7 5-9 10-7" />
+                  </g>
+                  <circle cx="49" cy="42" r="2.5" fill="currentColor" />
+                </svg>
+              </div>
               <div>
                 <strong>Ravi Ranjan</strong>
-                <span>Curious by nature. Practical by choice.</span>
+                <span>Curious by nature. Pragmatic by choice.</span>
               </div>
             </div>
           </div>
@@ -337,8 +362,11 @@
             <article>
               <span class="benefit-number">03</span>
               <div>
-                <h3>Practical tools for real work</h3>
-                <p>From production web applications to small browser extensions that solve a specific daily problem.</p>
+                <h3>Local-first developer craft</h3>
+                <p>
+                  Whether it's an enterprise platform or a small browser extension, I favor fast, zero-bloat tools that
+                  respect user context.
+                </p>
               </div>
             </article>
           </div>
@@ -371,10 +399,6 @@
               <br />
               that adds up.
             </h2>
-            <p>
-              7+ years of working on web applications, developer tooling, healthcare products, and the services that
-              connect them.
-            </p>
             <a
               class="text-link"
               href="https://www.linkedin.com/in/ranjanjharavi/"
@@ -392,18 +416,18 @@
                 <span class="company-monogram" aria-hidden="true">a.</span>
                 <div>
                   <h3>Akamai Technologies</h3>
-                  <p>Bengaluru, India</p>
                 </div>
                 <span class="current-badge">Current</span>
               </div>
               <div class="role-entry">
                 <p class="role-period">July 2024 — present</p>
-                <h4>Senior software engineer</h4>
+                <h4>Senior Software Engineer</h4>
+                <p class="role-products">Akamai TechDocs &amp; Internal tooling</p>
               </div>
               <div class="role-entry">
                 <p class="role-period">April 2021 — July 2024</p>
-                <h4>Software engineer II</h4>
-                <p>Akamai TechDocs &amp; internal tooling</p>
+                <h4>Software Engineer II</h4>
+                <p class="role-products">Akamai TechDocs &amp; Internal tooling</p>
               </div>
             </article>
             <article class="company-group" data-reveal>
@@ -414,18 +438,17 @@
                     Advanced
                     <span>/ OneAdvanced</span>
                   </h3>
-                  <p>Bengaluru, India</p>
                 </div>
               </div>
               <div class="role-entry">
                 <p class="role-period">February 2020 — April 2021</p>
-                <h4>Software engineer</h4>
-                <p>Docman 10 &amp; Carenotes Integration API</p>
+                <h4>Software Engineer</h4>
+                <p class="role-products">Docman 10 &amp; Carenotes Integration API</p>
               </div>
               <div class="role-entry">
                 <p class="role-period">March 2018 — January 2020</p>
-                <h4>Associate software engineer</h4>
-                <p>CareSys &amp; CareSys Mobile</p>
+                <h4>Associate Software Engineer</h4>
+                <p class="role-products">CareSys &amp; CareSys Mobile</p>
               </div>
             </article>
           </div>
@@ -448,13 +471,15 @@
               </h2>
             </div>
             <p>
-              A few things I've built and contributed to. Real problems, practical solutions, and code you can explore.
+              A selection of browser tools I've built and open source work I've contributed to. Explore the projects and
+              the code behind them.
             </p>
           </div>
           <div class="projects-grid">
             <article class="project-card project-wide" data-reveal data-story="bookmark">
               <div
                 class="project-preview"
+                role="group"
                 aria-label="Concept preview of azkmark, showing a saved bookmark in an Engineering collection with a Markdown note.">
                 <div class="preview-toolbar">
                   <span class="preview-dots" aria-hidden="true">
@@ -471,7 +496,11 @@
                     <br />
                     Keep the context.
                   </span>
-                  <div class="demo-field">
+                  <div
+                    class="demo-field"
+                    role="img"
+                    tabindex="0"
+                    aria-label="Bookmark in Engineering: Designing REST APIs">
                     <span>Collection · Engineering</span>
                     <strong>Designing REST APIs</strong>
                   </div>
@@ -481,7 +510,11 @@
                     </svg>
                     <span>Add a note in Markdown</span>
                   </div>
-                  <div class="demo-field demo-result">
+                  <div
+                    class="demo-field demo-result"
+                    role="img"
+                    tabindex="0"
+                    aria-label="Saved note: Keep API contracts clear and explicit">
                     <span>Saved note</span>
                     <strong>Keep API contracts clear and explicit.</strong>
                   </div>
@@ -490,7 +523,7 @@
               <div class="project-content">
                 <div class="project-meta">
                   <span>Browser extension</span>
-                  <span>04</span>
+                  <span>01</span>
                 </div>
                 <h3>
                   <a href="https://github.com/ranjanjharavi/azkmark" target="_blank" rel="noopener noreferrer">
@@ -525,6 +558,7 @@
             <article class="project-card" data-reveal data-story="url">
               <div
                 class="project-preview preview-url"
+                role="group"
                 aria-label="Concept preview of URL Transformer, showing a source URL and a redirect with a token.">
                 <div class="preview-toolbar">
                   <span class="preview-dots" aria-hidden="true">
@@ -537,7 +571,7 @@
                 </div>
                 <div class="url-demo">
                   <span class="demo-label">Your destination, connected.</span>
-                  <div class="demo-field">
+                  <div class="demo-field" role="img" tabindex="0" aria-label="Source URL: app.example.com/dashboard">
                     <span>Source URL</span>
                     <strong>app.example.com/dashboard</strong>
                   </div>
@@ -547,7 +581,11 @@
                     </svg>
                     <span>Parameter rules + your token</span>
                   </div>
-                  <div class="demo-field demo-result">
+                  <div
+                    class="demo-field demo-result"
+                    role="img"
+                    tabindex="0"
+                    aria-label="Redirect URL: app.example.com/dashboard with token parameter">
                     <span>Ready to redirect</span>
                     <strong>
                       app.example.com/dashboard
@@ -559,7 +597,7 @@
               <div class="project-content">
                 <div class="project-meta">
                   <span>Browser extension</span>
-                  <span>01</span>
+                  <span>02</span>
                 </div>
                 <h3>
                   <a href="https://github.com/ranjanjharavi/urltransformer" target="_blank" rel="noopener noreferrer">
@@ -593,19 +631,20 @@
             </article>
             <article class="project-card" data-reveal data-story="headers">
               <div
-                class="project-preview preview-reqkit"
-                aria-label="Concept preview of ReqKit, showing a temporary request header profile for an exact HTTPS host.">
+                class="project-preview preview-headerkit"
+                role="group"
+                aria-label="Concept preview of HeaderKit, showing a temporary request header profile for an exact HTTPS host.">
                 <div class="preview-toolbar">
                   <span class="preview-dots" aria-hidden="true">
                     <i></i>
                     <i></i>
                     <i></i>
                   </span>
-                  <span>ReqKit</span>
+                  <span>HeaderKit</span>
                   <span class="preview-label">Concept preview</span>
                 </div>
-                <div class="reqkit-demo">
-                  <div class="reqkit-heading">
+                <div class="headerkit-demo">
+                  <div class="headerkit-heading">
                     <span class="demo-label">
                       The right headers.
                       <br />
@@ -613,7 +652,11 @@
                     </span>
                     <span class="demo-badge">Temporary</span>
                   </div>
-                  <div class="request-rule">
+                  <div
+                    class="request-rule"
+                    role="img"
+                    tabindex="0"
+                    aria-label="HTTPS host api.example.com, profile active">
                     <span>HTTPS host</span>
                     <strong>api.example.com</strong>
                     <span class="rule-status">
@@ -621,7 +664,11 @@
                       Profile active
                     </span>
                   </div>
-                  <div class="request-rule rule-header">
+                  <div
+                    class="request-rule rule-header"
+                    role="img"
+                    tabindex="0"
+                    aria-label="Authorization header: Bearer token">
                     <span>Authorization</span>
                     <strong>Bearer eyJ…</strong>
                   </div>
@@ -631,11 +678,11 @@
               <div class="project-content">
                 <div class="project-meta">
                   <span>Browser extension</span>
-                  <span>02</span>
+                  <span>03</span>
                 </div>
                 <h3>
-                  <a href="https://github.com/ranjanjharavi/ReqKit" target="_blank" rel="noopener noreferrer">
-                    ReqKit
+                  <a href="https://github.com/ranjanjharavi/HeaderKit" target="_blank" rel="noopener noreferrer">
+                    HeaderKit
                     <svg class="icon" aria-hidden="true">
                       <use href="./img/icons.svg#arrow-up-right" />
                     </svg>
@@ -652,60 +699,61 @@
                 </div>
                 <a
                   class="text-link"
-                  href="https://github.com/ranjanjharavi/ReqKit"
+                  href="https://github.com/ranjanjharavi/HeaderKit"
                   target="_blank"
                   rel="noopener noreferrer">
                   Explore the code
                   <svg class="icon" aria-hidden="true">
                     <use href="./img/icons.svg#arrow-up-right" />
                   </svg>
-                  <span class="sr-only">for ReqKit</span>
-                </a>
-              </div>
-            </article>
-            <article class="project-card project-wide" data-reveal>
-              <div class="open-source-art" aria-hidden="true">
-                <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#brackets-curly" />
-                </svg>
-                <span>Better, together.</span>
-                <span class="open-source-caption">A contribution to the open web.</span>
-              </div>
-              <div class="project-content">
-                <div class="project-meta">
-                  <span>Open source · October to December 2019</span>
-                  <span>03</span>
-                </div>
-                <h3>
-                  <a href="https://github.com/OpenLiveWriter/OpenLiveWriter" target="_blank" rel="noopener noreferrer">
-                    OpenLiveWriter
-                    <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-up-right" />
-                    </svg>
-                  </a>
-                </h3>
-                <p>
-                  Contributed bug fixes to this .NET Foundation project, working within an established codebase and its
-                  open source community.
-                </p>
-                <div class="tags">
-                  <span>C#</span>
-                  <span>.NET</span>
-                  <span>Open source</span>
-                </div>
-                <a
-                  class="text-link"
-                  href="https://github.com/OpenLiveWriter/OpenLiveWriter"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  Explore the project
-                  <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
-                  </svg>
+                  <span class="sr-only">for HeaderKit</span>
                 </a>
               </div>
             </article>
           </div>
+          <section class="open-source-work" aria-labelledby="open-source-title" data-reveal>
+            <div>
+              <h3 id="open-source-title">Open source</h3>
+              <p>Alongside my own tools, I've contributed to existing open source software.</p>
+            </div>
+            <article>
+              <h4>
+                <a href="https://github.com/OpenLiveWriter/OpenLiveWriter" target="_blank" rel="noopener noreferrer">
+                  OpenLiveWriter
+                  <svg class="icon" aria-hidden="true">
+                    <use href="./img/icons.svg#arrow-up-right" />
+                  </svg>
+                </a>
+              </h4>
+              <p class="role-period">October — December 2019</p>
+              <p>
+                Contributed bug fixes to this .NET Foundation desktop publishing project, working within an established
+                C# codebase and its open source community.
+              </p>
+              <div class="tags">
+                <span>C#</span>
+                <span>.NET</span>
+                <span>Open source</span>
+              </div>
+            </article>
+          </section>
+
+          <aside class="lab-callout" aria-labelledby="lab-title" data-reveal>
+            <div>
+              <h3 id="lab-title">More projects at <a href="https://yupcode.com" target="_blank" rel="noopener noreferrer">yupcode.com</a></h3>
+              <p>
+                Beyond this selection, my software lab brings together command line tools, local apps, and systems
+                experiments, with project notes and source links.
+              </p>
+            </div>
+            <a class="text-link" href="https://yupcode.com/#projects" target="_blank" rel="noopener noreferrer">
+              Explore the software lab
+              <svg class="icon" aria-hidden="true">
+                <use href="./img/icons.svg#arrow-up-right" />
+              </svg>
+            </a>
+          </aside>
+
           <details class="earlier-work" data-reveal>
             <summary>
               <span>Earlier explorations</span>
@@ -714,7 +762,7 @@
             </summary>
             <div class="earlier-grid">
               <article>
-                <span class="eyebrow">December 2016 to January 2017</span>
+                <span class="eyebrow">December 2016 — January 2017</span>
                 <h3>Hostel management system</h3>
                 <p>
                   A three tier web application for students, rooms, amenities, canteen information, and group
@@ -726,7 +774,7 @@
                 </div>
               </article>
               <article>
-                <span class="eyebrow">July to August 2016</span>
+                <span class="eyebrow">July — August 2016</span>
                 <h3>Subnetwork design</h3>
                 <p>
                   A network for 46 computers, with virtual routers, web, mail, DNS and Samba servers, firewalls, and
@@ -737,13 +785,22 @@
                   <span>Security</span>
                 </div>
               </article>
-              <p class="archive-note">
-                Also explored:
-                <strong>Chatter</strong>
-                and
-                <strong>Taskello</strong>
-                . Small projects, useful lessons.
-              </p>
+              <article>
+                <h3>Chatter</h3>
+                <p>An Android chat application for exchanging messages and staying connected on mobile.</p>
+                <div class="tags">
+                  <span>Android</span>
+                  <span>Messaging</span>
+                </div>
+              </article>
+              <article>
+                <h3>Taskello</h3>
+                <p>Task management software with a Kanban board for organizing tasks and tracking their progress.</p>
+                <div class="tags">
+                  <span>Task management</span>
+                  <span>Kanban</span>
+                </div>
+              </article>
             </div>
           </details>
         </div>
@@ -769,13 +826,13 @@
           <ol class="approach-steps" data-reveal>
             <li>
               <span class="step-number">01 / Understand</span>
-              <h3>Find the actual problem.</h3>
-              <p>Start with the people, the constraints, and what the software needs to make possible.</p>
+              <h3>Find the actual bottleneck.</h3>
+              <p>Start with the user workflow, failure modes, and operational constraints before writing code.</p>
             </li>
             <li>
               <span class="step-number">02 / Design</span>
-              <h3>Connect the pieces.</h3>
-              <p>Think through the interface, API contracts, service boundaries, and data together.</p>
+              <h3>Keep boundaries explicit.</h3>
+              <p>Design UI states, API schemas, service timeouts, and database indexes as one connected system.</p>
             </li>
             <li>
               <span class="step-number">03 / Build</span>
@@ -786,24 +843,24 @@
           <div class="toolkit" data-reveal>
             <div class="toolkit-heading">
               <h3>The tools behind the work</h3>
-              <p>Languages, frameworks, and platforms I work with.</p>
+              <p>Production languages, data engines, and infrastructure I rely on.</p>
             </div>
             <div class="toolkit-groups">
               <div>
-                <h4>Languages</h4>
-                <p>C# · JavaScript · TypeScript · C · Java · HTML5 · CSS3 · Python</p>
+                <h4>Languages &amp; runtimes</h4>
+                <p>TypeScript · JavaScript · C# · SQL · Python · HTML / CSS</p>
               </div>
               <div>
-                <h4>Frameworks &amp; services</h4>
-                <p>React.js · Node.js · .NET Core · Express.js · RabbitMQ · Redis</p>
+                <h4>Applications &amp; services</h4>
+                <p>React · Node.js · .NET Core · Express · REST APIs · Chrome extensions</p>
               </div>
               <div>
-                <h4>Data</h4>
-                <p>PostgreSQL · SQL Server · Firebase</p>
+                <h4>Data &amp; messaging</h4>
+                <p>PostgreSQL · SQL Server · Redis · RabbitMQ</p>
               </div>
               <div>
-                <h4>Tools &amp; platforms</h4>
-                <p>Git · Docker · Linux / Ubuntu · VS Code · Visual Studio</p>
+                <h4>Infrastructure &amp; workflow</h4>
+                <p>Docker · Linux · Git · Nginx · SaltStack</p>
               </div>
             </div>
           </div>
@@ -994,11 +1051,11 @@
                 <span class="plus" aria-hidden="true"></span>
               </summary>
               <p>
-                Yes. The selected projects link directly to their repositories. You can also explore more on
-                <a href="https://github.com/ranjanjharavi" target="_blank" rel="noopener noreferrer">
-                  my GitHub profile
-                </a>
-                .
+                Yes. The open source projects here link to their repositories. Visit
+                <a href="https://yupcode.com/" target="_blank" rel="noopener noreferrer">yupcode.com</a>
+                for the broader collection of tools and experiments, or browse
+                <a href="https://github.com/ranjanjharavi" target="_blank" rel="noopener noreferrer">GitHub</a>
+                for more source code.
               </p>
             </details>
             <details>
@@ -1160,6 +1217,12 @@
           Ravi Ranjan
         </p>
         <span>Built with care, in Bengaluru.</span>
+        <a class="footer-lab" href="https://yupcode.com/" target="_blank" rel="noopener noreferrer">
+          Software lab · yupcode.com
+          <svg class="icon" aria-hidden="true">
+            <use href="./img/icons.svg#arrow-up-right" />
+          </svg>
+        </a>
       </div>
     </footer>
   </body>

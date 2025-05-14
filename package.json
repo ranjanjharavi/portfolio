@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "check": "node --check src/main.js",
+    "fmt": "npx prettier --write 'src/**/*.html'",
     "serve": "python3 -m http.server 8000 --bind 127.0.0.1 --directory src"
   },
   "author": "Ravi Ranjan",
