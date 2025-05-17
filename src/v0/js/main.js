@@ -32,8 +32,7 @@
   function drawStars(time) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     stars.forEach((star) => {
-      const flicker =
-        Math.sin(time * star.twinkleSpeed + star.twinklePhase) * 0.3 + 0.7;
+      const flicker = Math.sin(time * star.twinkleSpeed + star.twinklePhase) * 0.3 + 0.7;
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * flicker})`;
@@ -120,13 +119,11 @@
   });
 
   // Listen for system theme changes
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", (e) => {
-      if (!localStorage.getItem("color-scheme")) {
-        document.documentElement.dataset.theme = e.matches ? "dark" : "light";
-      }
-    });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem("color-scheme")) {
+      document.documentElement.dataset.theme = e.matches ? "dark" : "light";
+    }
+  });
 
   /* -- Header scroll behaviour -- */
   const header = document.getElementById("site-header");
@@ -141,7 +138,7 @@
         header.classList.remove("scrolled");
       }
     },
-    { passive: true }
+    { passive: true },
   );
 
   /* -- Active nav link on scroll -- */
@@ -177,10 +174,7 @@
     function setMobileMenu(open) {
       navLinksContainer.classList.toggle("open", open);
       mobileToggle.setAttribute("aria-expanded", String(open));
-      mobileToggle.setAttribute(
-        "aria-label",
-        open ? "Close navigation menu" : "Open navigation menu"
-      );
+      mobileToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
     }
 
     mobileToggle.addEventListener("click", () => {
@@ -249,7 +243,7 @@
         scrollTopBtn.classList.remove("visible");
       }
     },
-    { passive: true }
+    { passive: true },
   );
 
   scrollTopBtn.addEventListener("click", () => {
@@ -259,8 +253,8 @@
   /* -- Scroll Reveal (Intersection Observer) -- */
   const revealEls = document.querySelectorAll(
     ".section-header, .about-layout, .timeline-item, .project-card, " +
-    ".skills-tabs, .credentials-layout, .education-row, .awards-row, " +
-    ".contact-layout, .project-archive, .info-card"
+      ".skills-tabs, .credentials-layout, .education-row, .awards-row, " +
+      ".contact-layout, .project-archive, .info-card",
   );
 
   revealEls.forEach((el) => el.classList.add("reveal"));
@@ -277,7 +271,7 @@
     {
       threshold: 0.1,
       rootMargin: "0px 0px -60px 0px",
-    }
+    },
   );
 
   revealEls.forEach((el) => revealObserver.observe(el));
@@ -295,9 +289,7 @@
       const email = String(data.get("email") || "").trim();
       const message = String(data.get("message") || "").trim();
       const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-      );
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
 
       window.location.href = `mailto:hey@raviranjanjha.com?subject=${subject}&body=${body}`;
     });
