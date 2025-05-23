@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <script src="../shared/theme.js"></script>
+    <meta
+      name="description"
+      content="A local Mermaid scratchpad. Write diagram code, preview it live, and save diagrams in your browser." />
+    <title>Folio | Diagrams</title>
+    <link rel="icon" type="image/svg+xml" href="../shared/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300..800&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/recursive@5.3.0/crsv.css" />
+    <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="stylesheet" href="../folio/folio.css" />
+    <link rel="stylesheet" href="./mermaid.css" />
+    <script type="module" src="./mermaid.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#source">Skip to editor</a>
+    <header class="folio-masthead">
+      <div class="folio-masthead-inner">
+        <div class="folio-brand">
+          <a class="folio-mark" href="../" aria-label="Folio, portfolio">
+            <span class="folio-dot"></span>
+            Folio
+          </a>
+          <span class="folio-tool-name">Diagrams</span>
+        </div>
+        <div class="folio-masthead-tools">
+          <nav class="folio-nav" aria-label="Related tools"><a href="../scratchpad/">Scratchpad</a></nav>
+          <span class="storage-pill">
+            <span class="folio-dot"></span>
+            Stored in this browser
+          </span>
+          <button id="theme-toggle" class="folio-theme-toggle" type="button" aria-label="Switch to dark theme" hidden>
+            <svg class="folio-theme-icon theme-moon" aria-hidden="true"><use href="../shared/icons.svg#moon" /></svg>
+            <svg class="folio-theme-icon theme-sun" aria-hidden="true"><use href="../shared/icons.svg#sun" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <noscript><p class="notice error">JavaScript is required to edit and render diagrams.</p></noscript>
+      <p id="storage-error" class="notice error" role="alert" hidden></p>
+      <div id="dependency-error" class="notice error dependency-error" role="alert" hidden>
+        <span>
+          Mermaid could not load. Check your internet connection, then try again. Your source is still available.
+        </span>
+        <button id="retry-load" type="button">Retry loading</button>
+      </div>
+
+      <div class="library-bar" aria-label="Diagram library">
+        <label class="library-picker" for="diagram-list">
+          <span class="field-label">Your diagrams</span>
+          <select id="diagram-list" disabled>
+            <option>Opening library…</option>
+          </select>
+        </label>
+        <button id="new-diagram" class="primary" type="button" disabled>
+          <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#plus" /></svg>
+          New diagram
+        </button>
+      </div>
+
+      <section id="workspace" class="workspace" aria-label="Diagram workspace">
+        <div class="document-bar">
+          <label class="title-field" for="diagram-title">
+            <span class="sr-only">Diagram title</span>
+            <input
+              id="diagram-title"
+              type="text"
+              maxlength="90"
+              placeholder="Untitled diagram"
+              autocomplete="off"
+              disabled />
+          </label>
+          <span id="save-status" class="save-status" role="status">Opening local storage…</span>
+          <button
+            id="delete-diagram"
+            class="icon-button danger"
+            type="button"
+            aria-label="Delete diagram"
+            title="Delete diagram"
+            disabled>
+            <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#trash-2" /></svg>
+          </button>
+        </div>
+
+        <section id="editor-panel" class="editor-panel" aria-labelledby="source-heading">
+          <div class="panel-heading">
+            <h2 id="source-heading">
+              <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#code" /></svg>
+              Mermaid source
+            </h2>
+          </div>
+          <label class="sr-only" for="source">Mermaid diagram code</label>
+          <textarea
+            id="source"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+            aria-describedby="source-hint"
+            placeholder="Paste or write Mermaid code…"
+            disabled></textarea>
+          <div class="editor-footer">
+            <div
+              id="editor-height"
+              class="editor-resize editor-resize-height"
+              role="separator"
+              tabindex="0"
+              aria-label="Resize source editor height"
+              aria-orientation="horizontal"
+              aria-controls="source"
+              aria-valuemin="250"
+              aria-valuemax="1100"
+              aria-valuenow="450"></div>
+            <span id="source-count">0 lines</span>
+            <button id="download-source" class="quiet-button" type="button" disabled>
+              <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#download" /></svg>
+              Source
+            </button>
+          </div>
+          <div
+            id="editor-width"
+            class="editor-resize editor-resize-width"
+            role="separator"
+            tabindex="0"
+            aria-label="Resize source editor width"
+            aria-orientation="vertical"
+            aria-controls="editor-panel"
+            aria-valuemin="30"
+            aria-valuemax="70"
+            aria-valuenow="43"></div>
+        </section>
+
+        <section id="preview-panel" class="preview-panel" aria-labelledby="preview-heading">
+          <div class="panel-heading">
+            <h2 id="preview-heading">
+              <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#diagram" /></svg>
+              Preview
+            </h2>
+            <div class="preview-actions" role="group" aria-label="Preview actions">
+              <div id="download-actions" class="download-actions">
+                <button
+                  id="download-toggle"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="download-formats"
+                  disabled>
+                  Download
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <div id="download-formats" class="download-formats" role="group" aria-label="Download format" hidden>
+                  <button id="download-svg" type="button" disabled>
+                    <strong>SVG</strong>
+                    <span>Scalable vector</span>
+                  </button>
+                  <button id="download-png" type="button" disabled>
+                    <strong>PNG</strong>
+                    <span>Image</span>
+                  </button>
+                </div>
+              </div>
+              <button id="open-preview" type="button" disabled>
+                Open preview in new tab
+                <span aria-hidden="true">↗</span>
+              </button>
+              <button id="fullscreen-preview" type="button" disabled>Expand preview</button>
+            </div>
+          </div>
+          <div class="preview-body">
+            <div
+              id="preview-viewport"
+              class="preview-viewport"
+              aria-label="Rendered diagram"
+              tabindex="0"
+              aria-busy="false">
+              <div id="preview-empty" class="preview-empty">
+                <svg class="empty-icon" aria-hidden="true"><use href="../shared/icons.svg#diagram" /></svg>
+                <h3>Paste Mermaid code to preview a diagram</h3>
+              </div>
+              <div id="diagram-canvas" class="diagram-canvas" hidden></div>
+            </div>
+            <div id="syntax-error" class="syntax-error" role="alert" hidden>
+              <strong>Couldn't render this code</strong>
+              <pre id="syntax-message"></pre>
+              <span id="preview-retained" hidden>The last valid preview is shown above.</span>
+            </div>
+            <p id="preview-feedback" class="preview-feedback" role="status" hidden></p>
+          </div>
+          <div class="preview-footer">
+            <span id="preview-status" role="status">Waiting for code</span>
+            <div class="zoom-controls" role="group" aria-label="Preview zoom">
+              <button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out" title="Zoom out" disabled>
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#minus" /></svg>
+              </button>
+              <output id="zoom-level" aria-label="Zoom level">100%</output>
+              <button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in" title="Zoom in" disabled>
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#plus" /></svg>
+              </button>
+              <button
+                id="zoom-fit"
+                class="icon-button"
+                type="button"
+                aria-label="Fit diagram to screen"
+                title="Fit to screen"
+                disabled>
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#fit" /></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <footer class="workspace-footer">
+        <p id="source-hint">
+          Raw Mermaid or a
+          <code>```mermaid</code>
+          block. Changes save automatically.
+        </p>
+        <p>
+          <a href="https://mermaid.js.org/intro/syntax-reference.html" target="_blank" rel="noopener noreferrer">
+            Syntax guide ↗
+          </a>
+          ·
+          <a href="https://mermaid.js.org" target="_blank" rel="noopener noreferrer">Mermaid 12.3.0</a>
+        </p>
+      </footer>
+      <output id="status" class="status-message" aria-live="polite"></output>
+    </main>
+
+    <dialog id="fullscreen-dialog" class="fullscreen-dialog" aria-labelledby="preview-heading"></dialog>
+    <dialog id="delete-dialog" aria-labelledby="delete-heading" aria-describedby="delete-copy">
+      <form method="dialog">
+        <h2 id="delete-heading">Delete this diagram?</h2>
+        <p id="delete-copy">
+          This removes the saved source from this browser. Download a copy first if you want to keep it.
+        </p>
+        <div class="dialog-actions">
+          <button value="cancel" autofocus>Keep diagram</button>
+          <button value="delete" class="danger-solid">Delete diagram</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="render-sandbox" class="render-sandbox" aria-hidden="true" inert></div>
+  </body>
+</html>
