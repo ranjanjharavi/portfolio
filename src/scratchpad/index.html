@@ -1,49 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light" />
-    <title>Folio — Local Markdown Scratchpad</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <script src="../shared/theme.js"></script>
+    <title>Folio | Scratchpad</title>
 
-    <!-- Google Fonts: Newsreader (Editorial Display), Plus Jakarta Sans (UI), JetBrains Mono (Markdown/Code) -->
+    <link rel="icon" type="image/svg+xml" href="../shared/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300..800&display=swap"
+      rel="stylesheet" />
 
-    <!-- CDN Libraries: Marked (GFM), DOMPurify, Lucide Icons -->
+    <!-- CDN Libraries: Marked (GFM) and DOMPurify -->
     <script defer src="https://cdn.jsdelivr.net/npm/marked@16.4.2/lib/marked.umd.js" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.556.0/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js"
+      crossorigin="anonymous"></script>
 
-    <!-- Include Scratchpad CSS -->
+    <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="stylesheet" href="../folio/folio.css" />
     <link rel="stylesheet" href="./scratchpad.css" />
   </head>
   <body>
-    <header class="masthead">
-      <div class="masthead-inner">
-        <div class="brand">
-          <span class="brand-mark"><span class="brand-dot"></span>Folio</span>
-          <span class="brand-subtitle">Scratchpad</span>
+    <a class="skip-link" href="#doc-stage">Skip to document</a>
+    <header class="folio-masthead">
+      <div class="folio-masthead-inner">
+        <div class="folio-brand">
+          <a class="folio-mark" href="../" aria-label="Folio, portfolio">
+            <span class="folio-dot"></span>
+            Folio
+          </a>
+          <span class="folio-tool-name">Scratchpad</span>
         </div>
-        <div class="masthead-tools">
+        <div class="folio-masthead-tools">
+          <nav class="folio-nav" aria-label="Related tools"><a href="../mermaid/">Diagrams</a></nav>
           <label class="global-search">
-            <i data-lucide="search" aria-hidden="true"></i>
+            <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#search" /></svg>
             <span class="sr-only">Search across all documents and notes</span>
             <input
               id="global-search"
               type="search"
               placeholder="Search all documents &amp; notes..."
-              autocomplete="off"
-            />
+              autocomplete="off" />
           </label>
           <span class="storage-pill" title="All documents and notes are stored locally in your browser's IndexedDB">
-            <span class="dot"></span>
+            <span class="folio-dot"></span>
             <span id="db-status-text">IndexedDB Ready</span>
           </span>
+          <button id="theme-toggle" class="folio-theme-toggle" type="button" aria-label="Switch to dark theme" hidden>
+            <svg class="folio-theme-icon theme-moon" aria-hidden="true"><use href="../shared/icons.svg#moon" /></svg>
+            <svg class="folio-theme-icon theme-sun" aria-hidden="true"><use href="../shared/icons.svg#sun" /></svg>
+          </button>
         </div>
       </div>
     </header>
@@ -61,15 +73,10 @@
             </div>
             <form id="new-doc-form" class="new-doc-form" autocomplete="off">
               <label for="new-doc-title" class="sr-only">New document title</label>
-              <input
-                id="new-doc-title"
-                type="text"
-                maxlength="90"
-                placeholder="New scratch document..."
-                required
-              />
+              <input id="new-doc-title" type="text" maxlength="90" placeholder="New scratch document..." required />
               <button type="submit" class="primary" aria-label="Create document" data-tooltip="Create document">
-                <i data-lucide="plus" aria-hidden="true"></i>New
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#plus" /></svg>
+                New
               </button>
             </form>
           </div>
@@ -90,7 +97,7 @@
         </aside>
 
         <!-- Right Stage: Active Document + Note Composer + Timeline -->
-        <section id="doc-stage" class="doc-stage" aria-label="Selected document workspace"></section>
+        <section id="doc-stage" class="doc-stage" aria-label="Selected document workspace" tabindex="-1"></section>
       </div>
 
       <output id="status" class="status-bar" aria-live="polite" aria-atomic="true"></output>
@@ -102,7 +109,7 @@
       <p id="confirm-copy"></p>
       <div class="confirm-actions">
         <button id="confirm-cancel" type="button" data-action="confirm-cancel" autofocus>Cancel</button>
-        <button id="confirm-accept" type="button" class="danger" data-action="confirm-accept">Confirm</button>
+        <button id="confirm-accept" type="button" class="danger-solid" data-action="confirm-accept">Confirm</button>
       </div>
     </dialog>
 
@@ -112,6 +119,7 @@
       <form id="rename-form" class="dialog-form">
         <label for="rename-input">Document title</label>
         <input id="rename-input" type="text" maxlength="90" required autocomplete="off" />
+        <p id="rename-error" role="alert"></p>
         <div class="confirm-actions">
           <button type="button" data-action="cancel-rename">Cancel</button>
           <button type="submit" class="primary">Save title</button>
@@ -119,6 +127,6 @@
       </form>
     </dialog>
 
-    <script src="./scratchpad.js"></script>
+    <script type="module" src="./app.js"></script>
   </body>
 </html>

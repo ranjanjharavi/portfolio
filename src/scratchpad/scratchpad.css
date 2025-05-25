@@ -1,89 +1,18 @@
 :root {
-  /* Harbor: cool blue surfaces and deep ocean accents. */
-  color-scheme: light;
-  --canvas: #edf3f7;
-  --rail: #e3ecf2;
-  --paper: #f9fcfe;
-  --paper-elevated: #ffffff;
-  --composer-well: #eaf1f6;
-
-  --ink: #1c3443;
-  --ink-secondary: #465f70;
-  --ink-tertiary: #536a79;
-  --ink-rgb: 28, 52, 67;
-
-  --rule: #cddce5;
-  --control-rule: #a8bdcc;
-  --control-bg: #e0ebf2;
-
-  --accent: #225d7a;
-  --accent-hover: #174861;
-  --accent-soft: #deedf5;
-  --accent-border: #8fb5cb;
-  --on-accent: #ffffff;
-
   --pin-gold: #795913;
   --pin-soft: #f8efcf;
   --pin-border: #d5c288;
-
-  --danger: #ad3542;
-  --danger-hover: #8b2532;
-  --danger-soft: #fbe7e9;
-  --success: #28654e;
-  --code-bg: #1c3443;
-  --code-ink: #e7f2f9;
-  --selection: #c5deed;
-
-  /* Typography */
-  --display-font: "Newsreader", Georgia, serif;
-  --body-font:
-    "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono-font: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
-  --radius-sm: 5px;
-  --radius-md: 8px;
+  --code-bg: #202921;
+  --code-ink: #efefea;
+  --radius: 8px;
   --radius-lg: 12px;
 }
 
-* {
-  box-sizing: border-box;
-  letter-spacing: 0;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-body {
-  margin: 0;
-  background: var(--canvas);
-  color: var(--ink);
-  font: 14px/1.5 var(--body-font);
-  -webkit-font-smoothing: antialiased;
-}
-
-::selection {
-  background: var(--selection);
-  color: var(--ink);
-}
-
-input,
-textarea {
-  caret-color: var(--accent);
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: var(--ink-tertiary);
-  opacity: 1;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
+[data-theme="dark"] {
+  --pin-gold: #f1d487;
+  --pin-soft: #3b3220;
+  --pin-border: #70603c;
+  --code-bg: var(--bg);
 }
 
 button,
@@ -92,69 +21,6 @@ input,
 textarea,
 select {
   -webkit-tap-highlight-color: transparent;
-}
-
-button:disabled {
-  cursor: default;
-  opacity: 0.42;
-}
-
-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 36px;
-  padding: 6px 12px;
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-sm);
-  background: var(--paper);
-  color: var(--ink);
-  font-weight: 500;
-  font-size: 13px;
-  cursor: pointer;
-  transition:
-    background 120ms ease,
-    border-color 120ms ease,
-    color 120ms ease;
-}
-
-button:hover:not(:disabled) {
-  background: var(--accent-soft);
-  border-color: var(--accent-border);
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-a {
-  color: var(--accent);
-  text-underline-offset: 3px;
-}
-
-h1,
-h2,
-h3,
-p {
-  margin-top: 0;
-}
-
-svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 /* Tooltip Pattern */
@@ -172,84 +38,32 @@ svg {
   max-width: 210px;
   padding: 5px 9px;
   border-radius: 4px;
-  background: var(--ink);
-  color: var(--paper);
-  font: 500 11px/1.35 var(--body-font);
+  background: var(--text);
+  color: var(--bg);
+  font: 500 11px/1.35 var(--font-sans);
   pointer-events: none;
-  box-shadow: 0 4px 12px rgba(var(--ink-rgb), 0.18);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 18%);
 }
 [data-tooltip]:hover::after,
 [data-tooltip]:focus-visible::after {
   display: block;
 }
 
-/* Top Editorial Masthead */
-.masthead {
-  border-bottom: 1px solid var(--control-rule);
-  background: var(--paper);
-}
-
-.masthead-inner {
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 14px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font: 600 26px/1 var(--display-font);
-  color: var(--ink);
-  letter-spacing: -0.02em;
-}
-
-.brand-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  display: inline-block;
-}
-
-.brand-subtitle {
-  font-size: 12px;
-  color: var(--ink-secondary);
-}
-
-.masthead-tools {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-  justify-content: flex-end;
-}
-
 .global-search {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: min(100%, 380px);
+  flex: 0 1 360px;
+  min-width: 180px;
   padding: 0 11px;
-  background: var(--canvas);
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-sm);
-  color: var(--ink-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
 }
 
 .global-search:focus-within {
-  background: var(--paper-elevated);
+  background: var(--surface);
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
@@ -265,48 +79,28 @@ svg {
   font-size: 13px;
 }
 
-.storage-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--rail);
-  border: 1px solid var(--rule);
-  font-size: 11px;
-  color: var(--ink-secondary);
-  white-space: nowrap;
-}
-
-.storage-pill .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-}
-
 /* Main Shell & Two-Column Workspace */
 .shell {
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 22px 28px 36px;
+  max-width: var(--folio-width);
+  margin-inline: auto;
+  padding: 24px var(--folio-gutter) 36px;
 }
 
 .dependency-error {
   padding: 12px 16px;
   margin-bottom: 16px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   background: var(--danger-soft);
-  color: var(--danger);
+  color: var(--error);
   font-size: 13px;
 }
 
 .workspace {
   display: grid;
   grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-md);
-  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
   min-height: calc(100dvh - 150px);
   overflow: hidden;
 }
@@ -315,14 +109,14 @@ svg {
 .doc-rail {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--rule);
-  background: var(--rail);
+  border-right: 1px solid var(--border);
+  background: var(--surface-soft);
   min-width: 0;
 }
 
 .rail-header {
   padding: 16px 16px 12px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--border);
 }
 
 .rail-title-row {
@@ -335,13 +129,13 @@ svg {
 
 .rail-title-row h2 {
   margin: 0;
-  font: 600 18px/1.2 var(--display-font);
+  font: 600 18px/1.2 var(--font-sans);
 }
 
 .rail-count {
   font-size: 11px;
-  color: var(--ink-secondary);
-  font-family: var(--mono-font);
+  color: var(--muted);
+  font-family: var(--font-mono);
 }
 
 .new-doc-form {
@@ -354,9 +148,9 @@ svg {
   min-width: 0;
   min-height: 36px;
   padding: 6px 10px;
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-sm);
-  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
   font-size: 13px;
 }
 
@@ -366,18 +160,18 @@ svg {
   justify-content: space-between;
   gap: 8px;
   padding: 8px 16px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--border);
   font-size: 11px;
-  color: var(--ink-secondary);
-  background: var(--composer-well);
+  color: var(--muted);
+  background: var(--bg);
 }
 
 .rail-FilterBar select {
   min-height: 28px;
   padding: 2px 8px;
-  border: 1px solid var(--control-rule);
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background: var(--paper);
+  background: var(--surface);
   font-size: 11px;
 }
 
@@ -390,7 +184,7 @@ svg {
 }
 
 .doc-row {
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--border);
 }
 
 .doc-select {
@@ -401,17 +195,19 @@ svg {
   border-left: 3px solid transparent;
   border-radius: 0;
   text-align: left;
+  /* Document titles may wrap even though toolbar buttons stay on one line. */
+  white-space: normal;
   background: transparent;
 }
 
 .doc-select:hover:not(:disabled) {
-  background: var(--accent-soft);
+  background: var(--surface-soft);
   border-color: transparent;
 }
 
 .doc-select[aria-pressed="true"] {
   border-left-color: var(--accent);
-  background: var(--paper);
+  background: var(--surface);
 }
 
 .doc-row-meta {
@@ -420,7 +216,7 @@ svg {
   justify-content: space-between;
   gap: 8px;
   font-size: 11px;
-  color: var(--ink-secondary);
+  color: var(--muted);
 }
 
 .pin-badge {
@@ -442,8 +238,8 @@ svg {
 .doc-row-title {
   display: block;
   margin: 6px 0 6px;
-  font: 600 17px/1.3 var(--display-font);
-  color: var(--ink);
+  font: 600 17px/1.3 var(--font-sans);
+  color: var(--text);
   overflow-wrap: anywhere;
 }
 
@@ -453,7 +249,7 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--ink-secondary);
+  color: var(--muted);
   font-size: 12px;
   font-weight: 400;
 }
@@ -464,7 +260,7 @@ svg {
   justify-content: space-between;
   gap: 8px;
   font-size: 11px;
-  color: var(--ink-tertiary);
+  color: var(--muted);
 }
 
 .note-pill {
@@ -484,7 +280,7 @@ svg {
 .match-badge {
   padding: 1px 6px;
   border-radius: 4px;
-  background: var(--accent-soft);
+  background: var(--surface-soft);
   color: var(--accent);
   font-weight: 600;
   font-size: 10px;
@@ -494,7 +290,7 @@ svg {
 .doc-stage {
   min-width: 0;
   padding: 28px 36px 40px;
-  background: var(--paper);
+  background: var(--surface);
   display: flex;
   flex-direction: column;
 }
@@ -511,7 +307,7 @@ svg {
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 18px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--border);
   margin-bottom: 22px;
 }
 
@@ -525,15 +321,16 @@ svg {
   align-items: center;
   gap: 10px;
   font-size: 11px;
-  color: var(--ink-secondary);
+  color: var(--muted);
   margin-bottom: 6px;
-  font-family: var(--mono-font);
+  font-family: var(--font-mono);
 }
 
 .doc-title {
   margin: 0;
-  font: 600 32px/1.18 var(--display-font);
-  color: var(--ink);
+  font: 600 32px/1.18 var(--font-sans);
+  letter-spacing: -0.04em;
+  color: var(--text);
   overflow-wrap: anywhere;
 }
 
@@ -551,7 +348,7 @@ svg {
   padding: 6px;
   border-color: transparent;
   background: transparent;
-  color: var(--ink-secondary);
+  color: var(--muted);
 }
 
 .icon-button.is-pinned {
@@ -560,40 +357,18 @@ svg {
   border-color: var(--pin-border);
 }
 
-.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--on-accent);
-}
-
-.primary:hover:not(:disabled) {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-}
-
-.danger {
-  background: var(--danger);
-  border-color: var(--danger);
-  color: var(--on-accent);
-}
-
-.danger:hover:not(:disabled) {
-  background: var(--danger-hover);
-  border-color: var(--danger-hover);
-}
-
 .delete-btn:hover:not(:disabled) {
   background: var(--danger-soft);
-  color: var(--danger);
+  color: var(--error);
   border-color: transparent;
 }
 
-/* Markdown Composer (Inspired by bookmark-notes.html) */
+/* Markdown Composer */
 .note-editor {
   overflow: hidden;
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-md);
-  background: var(--paper-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
   margin-bottom: 28px;
 }
 
@@ -607,9 +382,9 @@ svg {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--border);
   padding: 7px 10px;
-  background: var(--composer-well);
+  background: var(--bg);
 }
 
 .editor-modes {
@@ -623,21 +398,21 @@ svg {
   border-color: transparent;
   background: transparent;
   font-size: 12px;
-  color: var(--ink-secondary);
+  color: var(--muted);
 }
 
 .editor-modes button[aria-selected="true"] {
-  border-color: var(--control-rule);
-  background: var(--paper-elevated);
-  color: var(--ink);
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
   font-weight: 600;
 }
 
 .editor-kind {
   padding-right: 4px;
   font-size: 11px;
-  font-family: var(--mono-font);
-  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  color: var(--muted);
 }
 
 .editor-kind.is-editing {
@@ -650,8 +425,8 @@ svg {
   flex-wrap: wrap;
   gap: 2px;
   padding: 6px 10px 2px;
-  border-bottom: 1px dashed var(--rule);
-  background: var(--paper-elevated);
+  border-bottom: 1px dashed var(--border);
+  background: var(--surface);
 }
 
 .format-tools .icon-button {
@@ -676,8 +451,8 @@ svg {
   border: 0;
   border-radius: 0;
   background: transparent;
-  font: 13.5px/1.65 var(--mono-font);
-  color: var(--ink);
+  font: 13.5px/1.65 var(--font-mono);
+  color: var(--text);
 }
 
 .note-editor textarea:focus {
@@ -687,12 +462,12 @@ svg {
 .editor-preview {
   padding: 14px 16px;
   min-height: 125px;
-  background: var(--paper-elevated);
+  background: var(--surface);
 }
 
 .editor-preview:empty::before {
   content: "Nothing to preview yet. Write some Markdown first.";
-  color: var(--ink-tertiary);
+  color: var(--muted);
   font-size: 13px;
   font-style: italic;
 }
@@ -704,18 +479,18 @@ svg {
   flex-wrap: wrap;
   gap: 8px;
   padding: 8px 12px;
-  border-top: 1px solid var(--rule);
-  background: var(--composer-well);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
 }
 
 .draft-meta {
-  color: var(--ink-secondary);
+  color: var(--muted);
   font-size: 11px;
-  font-family: var(--mono-font);
+  font-family: var(--font-mono);
 }
 
 .kbd-hint {
-  color: var(--ink-tertiary);
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -742,18 +517,18 @@ svg {
 
 .stream-header h3 {
   margin: 0;
-  font: 600 19px/1.3 var(--display-font);
+  font: 600 19px/1.3 var(--font-sans);
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
 .stream-count {
-  font: 500 12px/1 var(--mono-font);
-  color: var(--ink-secondary);
+  font: 500 12px/1 var(--font-mono);
+  color: var(--muted);
   padding: 3px 7px;
   border-radius: 999px;
-  background: var(--rail);
+  background: var(--surface-soft);
 }
 
 .note-history {
@@ -766,7 +541,7 @@ svg {
   position: relative;
   padding: 0 0 24px 22px;
   margin-left: 5px;
-  border-left: 1px solid var(--control-rule);
+  border-left: 1px solid var(--border);
 }
 
 .note-entry::before {
@@ -778,7 +553,7 @@ svg {
   height: 8px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 4px var(--paper);
+  box-shadow: 0 0 0 4px var(--surface);
 }
 
 .note-entry:last-child {
@@ -787,16 +562,16 @@ svg {
 }
 
 .note-card {
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-md);
-  background: var(--paper-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
   padding: 12px 16px 14px;
   transition: border-color 140ms ease;
 }
 
 .note-card.is-being-edited {
   border-color: var(--accent);
-  background: var(--accent-soft);
+  background: var(--surface-soft);
 }
 
 .entry-header {
@@ -807,19 +582,19 @@ svg {
   min-height: 28px;
   margin-bottom: 8px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--canvas);
+  border-bottom: 1px solid var(--bg);
 }
 
 .entry-header time {
   font-size: 11.5px;
   font-weight: 600;
-  font-family: var(--mono-font);
-  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  color: var(--muted);
 }
 
 .edited-tag {
   font-weight: 400;
-  color: var(--ink-tertiary);
+  color: var(--muted);
   margin-left: 8px;
   font-size: 11px;
   font-style: italic;
@@ -840,7 +615,7 @@ svg {
 
 /* Markdown Typography */
 .markdown {
-  color: var(--ink);
+  color: var(--text);
   font-size: 14px;
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -868,8 +643,8 @@ svg {
 .markdown h3,
 .markdown h4 {
   margin: 16px 0 8px;
-  font: 600 19px/1.35 var(--display-font);
-  color: var(--ink);
+  font: 600 19px/1.35 var(--font-sans);
+  color: var(--text);
 }
 
 .markdown h1 {
@@ -888,23 +663,23 @@ svg {
 .markdown blockquote {
   padding: 4px 0 4px 14px;
   border-left: 3px solid var(--accent);
-  color: var(--ink-secondary);
+  color: var(--muted);
   font-style: italic;
-  background: var(--composer-well);
+  background: var(--bg);
 }
 
 .markdown code {
   padding: 2px 5px;
   border-radius: 4px;
-  background: var(--control-bg);
-  font: 12.5px/1.4 var(--mono-font);
+  background: var(--surface-deep);
+  font: 12.5px/1.4 var(--font-mono);
 }
 
 .markdown pre {
   overflow: auto;
   max-width: 100%;
   padding: 12px 14px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   background: var(--code-bg);
   color: var(--code-ink);
 }
@@ -919,7 +694,7 @@ svg {
 
 .markdown hr {
   border: 0;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--border);
   margin: 16px 0;
 }
 
@@ -933,11 +708,11 @@ svg {
 .markdown td,
 .markdown th {
   padding: 6px 10px;
-  border: 1px solid var(--control-rule);
+  border: 1px solid var(--border);
 }
 
 .markdown th {
-  background: var(--composer-well);
+  background: var(--bg);
   font-weight: 600;
 }
 
@@ -950,22 +725,22 @@ svg {
 
 .plain-fallback {
   white-space: pre-wrap;
-  font-family: var(--mono-font);
+  font-family: var(--font-mono);
 }
 
 .empty-notes {
   padding: 32px 20px;
   text-align: center;
-  border: 1px dashed var(--control-rule);
-  border-radius: var(--radius-md);
-  color: var(--ink-secondary);
-  background: var(--composer-well);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  background: var(--bg);
 }
 
 .empty-notes p {
   margin: 0 0 4px;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .empty-notes span {
@@ -974,7 +749,7 @@ svg {
 
 .no-matches {
   padding: 28px 18px;
-  color: var(--ink-secondary);
+  color: var(--muted);
   text-align: center;
   font-size: 13px;
 }
@@ -984,25 +759,25 @@ dialog {
   max-width: calc(100% - 32px);
   width: 420px;
   padding: 24px;
-  border: 1px solid var(--control-rule);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  color: var(--ink);
-  background: var(--paper);
-  box-shadow: 0 24px 70px rgba(var(--ink-rgb), 0.25);
+  color: var(--text);
+  background: var(--surface);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 25%);
 }
 
 dialog::backdrop {
-  background: rgba(var(--ink-rgb), 0.45);
+  background: rgb(0 0 0 / 45%);
   backdrop-filter: blur(2px);
 }
 
 dialog h2 {
-  font: 600 23px/1.25 var(--display-font);
+  font: 600 23px/1.25 var(--font-sans);
   margin-bottom: 8px;
 }
 
 dialog p {
-  color: var(--ink-secondary);
+  color: var(--muted);
   font-size: 13.5px;
   margin-bottom: 0;
 }
@@ -1021,9 +796,17 @@ dialog p {
 .dialog-form input {
   width: 100%;
   padding: 9px 12px;
-  border: 1px solid var(--control-rule);
-  border-radius: var(--radius-sm);
-  background: var(--paper-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+#rename-error {
+  color: var(--error);
+}
+
+#rename-error:empty {
+  position: absolute;
 }
 
 .confirm-actions {
@@ -1039,16 +822,10 @@ dialog p {
   margin-top: 10px;
   font-size: 12px;
   color: var(--accent);
-  font-family: var(--mono-font);
+  font-family: var(--font-mono);
 }
 
 @media (max-width: 820px) {
-  .masthead-inner,
-  .shell {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
   .workspace {
     grid-template-columns: 1fr;
     min-height: 0;
@@ -1056,7 +833,7 @@ dialog p {
 
   .doc-rail {
     border-right: 0;
-    border-bottom: 1px solid var(--control-rule);
+    border-bottom: 1px solid var(--border);
   }
 
   .doc-list {
@@ -1068,7 +845,7 @@ dialog p {
   .doc-row {
     width: 240px;
     flex: 0 0 240px;
-    border-right: 1px solid var(--rule);
+    border-right: 1px solid var(--border);
     border-bottom: 0;
     scroll-snap-align: start;
   }
@@ -1090,9 +867,12 @@ dialog p {
   }
 }
 
-@media (max-width: 560px) {
-  .brand,
-  .masthead-tools {
-    flex-basis: 100%;
+@media (max-width: 640px) {
+  .global-search {
+    flex: 1 1 100%;
+  }
+
+  .global-search input {
+    font-size: 16px;
   }
 }
