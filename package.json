@@ -2,12 +2,15 @@
   "name": "portfolio",
   "version": "1.0.0",
   "description": "Portfolio Website for Ravi Ranjan",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "check": "node --check src/main.js",
-    "fmt": "npx prettier --write 'src/**/*.html'",
-    "serve": "python3 -m http.server 8000 --bind 127.0.0.1 --directory src"
+    "check": "node scripts/check.js",
+    "fmt": "prettier --write '{src,scripts}/**/*.{html,js,css}'",
+    "fmt:check": "prettier --check '{src,scripts}/**/*.{html,js,css}'"
   },
   "author": "Ravi Ranjan",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.10.1"
+  }
 }
