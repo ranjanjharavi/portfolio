@@ -5,33 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f6f7f4" />
+    <script src="/shared/theme.js"></script>
     <meta name="robots" content="noindex" />
     <title>Page not found | Ravi Ranjan</title>
     <meta
       name="description"
       content="This page could not be found. Return to Ravi Ranjan's portfolio to explore his work or get in touch." />
-    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/shared/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./style.css" />
-    <script>
-      (() => {
-        let saved;
-        try {
-          saved = localStorage.getItem("color-scheme");
-        } catch {}
-        const systemTheme = matchMedia("(prefers-color-scheme: dark)");
-        const hasSavedTheme = saved === "dark" || saved === "light";
-        function applyTheme() {
-          const theme = hasSavedTheme ? saved : systemTheme.matches ? "dark" : "light";
-          document.documentElement.dataset.theme = theme;
-          document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
-        }
-        applyTheme();
-        systemTheme.addEventListener("change", applyTheme);
-      })();
-    </script>
+    <link rel="stylesheet" href="/shared/theme.css" />
+    <link rel="stylesheet" href="/site/style.css" />
   </head>
 
   <body>
@@ -54,7 +39,7 @@
       <a class="button button-primary" href="/">
         Back to the portfolio
         <svg class="icon" aria-hidden="true">
-          <use href="./img/icons.svg#arrow-right" />
+          <use href="/shared/icons.svg#arrow-right" />
         </svg>
       </a>
       <a class="text-link" href="mailto:hey@raviranjanjha.com">Or get in touch</a>

@@ -5,21 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f6f7f4" />
+    <script src="./shared/theme.js"></script>
     <script>
       (() => {
-        let saved;
-        try {
-          saved = localStorage.getItem("color-scheme");
-        } catch {}
-        const theme =
-          saved === "dark" || saved === "light"
-            ? saved
-            : matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light";
-        document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#181818" : "#f6f7f4";
-
+        // Mirrors the preference checks in site/motion.js; keep them in sync.
         if (
           !matchMedia("(prefers-reduced-motion: reduce)").matches &&
           !new URLSearchParams(location.search).has("still")
@@ -45,23 +34,26 @@
       property="og:description"
       content="Senior software engineer at Akamai. Web applications, APIs, and microservices, built with the whole system in mind." />
     <meta property="og:url" content="https://raviranjanjha.com/" />
-    <meta property="og:image" content="https://raviranjanjha.com/img/social.png" />
+    <meta property="og:image" content="https://raviranjanjha.com/shared/social.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Ravi Ranjan. Senior software engineer. Thoughtful code. Reliable systems." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Ravi Ranjan | Senior Software Engineer" />
     <meta name="twitter:description" content="Thoughtful code. Reliable systems. Explore my work across the stack." />
-    <meta name="twitter:image" content="https://raviranjanjha.com/img/social.png" />
+    <meta name="twitter:image" content="https://raviranjanjha.com/shared/social.png" />
     <link rel="canonical" href="https://raviranjanjha.com/" />
-    <link rel="icon" type="image/svg+xml" href="./img/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./shared/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300..800&display=swap"
       rel="stylesheet" />
-    <link rel="stylesheet" href="./style.css" />
-    <script src="./main.js" defer></script>
+    <link rel="stylesheet" href="./shared/theme.css" />
+    <link rel="stylesheet" href="./site/style.css" />
+    <link rel="stylesheet" href="./site/demos/demos.css" />
+    <script type="module" src="./site/main.js"></script>
+    <script type="module" src="./site/demos/demos.js"></script>
   </head>
 
   <body>
@@ -85,10 +77,10 @@
       <div class="nav-actions">
         <button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme">
           <svg class="icon theme-moon" aria-hidden="true">
-            <use href="./img/icons.svg#moon" />
+            <use href="./shared/icons.svg#moon" />
           </svg>
           <svg class="icon theme-sun" aria-hidden="true">
-            <use href="./img/icons.svg#sun" />
+            <use href="./shared/icons.svg#sun" />
           </svg>
         </button>
 
@@ -181,7 +173,7 @@
                 <a class="button button-primary" href="#contact">
                   Start a conversation
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
                 <span class="action-note">Have a role or architectural problem in mind?</span>
@@ -203,7 +195,7 @@
               <div class="visual-top">
                 <span class="visual-label">The whole system in mind</span>
                 <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#code" />
+                  <use href="./shared/icons.svg#code" />
                 </svg>
                 <button
                   class="icon-button motion-toggle"
@@ -234,14 +226,14 @@
                     <span class="layer-tech">React · TypeScript · Web APIs</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#brackets-curly" />
+                    <use href="./shared/icons.svg#brackets-curly" />
                   </svg>
                 </div>
                 <div class="system-connector" aria-hidden="true">
                   <span></span>
                   <span>Explicit contracts &amp; edge auth</span>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-down" />
+                    <use href="./shared/icons.svg#arrow-down" />
                   </svg>
                 </div>
                 <div
@@ -256,14 +248,14 @@
                     <span class="layer-tech">Node.js · .NET Core · Go · REST APIs</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#code" />
+                    <use href="./shared/icons.svg#code" />
                   </svg>
                 </div>
                 <div class="system-connector" aria-hidden="true">
                   <span></span>
                   <span>Zero-downtime foundations</span>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-down" />
+                    <use href="./shared/icons.svg#arrow-down" />
                   </svg>
                 </div>
                 <div
@@ -278,7 +270,7 @@
                     <span class="layer-tech">PostgreSQL · SQL Server · Redis · Linode</span>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#stack" />
+                    <use href="./shared/icons.svg#stack" />
                   </svg>
                 </div>
               </div>
@@ -304,7 +296,7 @@
             <a class="explore-link" href="#projects">
               A closer look at my work
               <svg class="icon" aria-hidden="true">
-                <use href="./img/icons.svg#arrow-down" />
+                <use href="./shared/icons.svg#arrow-down" />
               </svg>
             </a>
           </div>
@@ -406,7 +398,7 @@
               rel="noopener noreferrer">
               View my LinkedIn profile
               <svg class="icon" aria-hidden="true">
-                <use href="./img/icons.svg#arrow-up-right" />
+                <use href="./shared/icons.svg#arrow-up-right" />
               </svg>
             </a>
           </div>
@@ -476,47 +468,115 @@
             </p>
           </div>
           <div class="projects-grid">
-            <article class="project-card project-wide" data-reveal data-story="bookmark">
+            <article class="project-card project-wide" data-reveal>
+              <!-- Illustration: the azkmark popup open in Chrome. Static markup is the finished frame; demos.js plays the story. -->
               <div
                 class="project-preview"
-                role="group"
-                aria-label="Concept preview of azkmark, showing a saved bookmark in an Engineering collection with a Markdown note.">
-                <div class="preview-toolbar">
-                  <span class="preview-dots" aria-hidden="true">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </span>
-                  <span>azkmark</span>
-                  <span class="preview-label">Concept preview</span>
-                </div>
-                <div class="url-demo">
-                  <span class="demo-label">
-                    Keep the link.
-                    <br />
-                    Keep the context.
-                  </span>
-                  <div
-                    class="demo-field"
-                    role="img"
-                    tabindex="0"
-                    aria-label="Bookmark in Engineering: Designing REST APIs">
-                    <span>Collection · Engineering</span>
-                    <strong>Designing REST APIs</strong>
-                  </div>
-                  <div class="demo-arrow">
-                    <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-down" />
-                    </svg>
-                    <span>Add a note in Markdown</span>
-                  </div>
-                  <div
-                    class="demo-field demo-result"
-                    role="img"
-                    tabindex="0"
-                    aria-label="Saved note: Keep API contracts clear and explicit">
-                    <span>Saved note</span>
-                    <strong>Keep API contracts clear and explicit.</strong>
+                role="img"
+                aria-label="Illustration: in Chrome, the azkmark popup saves the page Designing REST APIs to the Engineering collection with the tag api.">
+                <div class="ss-fit" data-demo="azkmark">
+                  <div class="ss-stage azk" aria-hidden="true" data-open data-tagged data-saved>
+                    <div class="ss-window">
+                      <div class="ss-window__bar">
+                        <span class="ss-window__lights">
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#back" /></svg>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#forward" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#reload" /></svg>
+                        </span>
+                        <span class="ss-window__url">
+                          <svg><use href="./site/demos/demo-icons.svg#tune" /></svg>
+                          <span class="ss-window__host">example.com</span>
+                          <span class="ss-window__path">/guides/rest-apis</span>
+                        </span>
+                        <span class="ss-tool ss-ext" data-target="ext">
+                          <img src="./site/demos/azkmark.png" alt="" width="16" height="16" />
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#puzzle" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#more" /></svg>
+                        </span>
+                      </div>
+                      <div class="ss-window__body" data-target="page">
+                        <div class="azk-article">
+                          <span class="ss-bar" data-strong style="width: 58%; height: 12px"></span>
+                          <span class="ss-bar" style="width: 30%"></span>
+                          <span class="azk-gap"></span>
+                          <span class="ss-bar" style="width: 94%"></span>
+                          <span class="ss-bar" style="width: 88%"></span>
+                          <span class="ss-bar" style="width: 96%"></span>
+                          <span class="ss-bar" style="width: 64%"></span>
+                          <span class="azk-gap"></span>
+                          <span class="ss-bar" style="width: 90%"></span>
+                          <span class="ss-bar" style="width: 84%"></span>
+                          <span class="ss-bar" style="width: 72%"></span>
+                          <span class="azk-gap"></span>
+                          <span class="ss-bar" style="width: 92%"></span>
+                          <span class="ss-bar" style="width: 80%"></span>
+                          <span class="ss-bar" style="width: 95%"></span>
+                          <span class="ss-bar" style="width: 56%"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ss-popover">
+                      <div class="azk-head">
+                        <span class="azk-brand">
+                          <svg><use href="./site/demos/demo-icons.svg#azk-mark" /></svg>
+                          azkmark
+                        </span>
+                        <span class="azk-library">
+                          <svg><use href="./site/demos/demo-icons.svg#azk-library" /></svg>
+                          Library
+                        </span>
+                      </div>
+                      <div class="azk-summary">
+                        <div class="azk-host">example.com</div>
+                        <div class="azk-title">Designing REST APIs</div>
+                      </div>
+                      <div class="azk-fields">
+                        <div class="azk-label">Save to</div>
+                        <div class="azk-select">
+                          Engineering
+                          <svg class="azk-chevron"><use href="./site/demos/demo-icons.svg#azk-chevron" /></svg>
+                        </div>
+                        <div class="azk-label">
+                          Tags
+                          <span>(optional)</span>
+                        </div>
+                        <div class="azk-chips">
+                          <div>
+                            <span class="azk-chip" data-snap>
+                              <span class="azk-chip-text">api</span>
+                              <svg><use href="./site/demos/demo-icons.svg#azk-remove" /></svg>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="azk-tagrow">
+                          <span class="azk-input" data-target="tag" data-cursor="ibeam">
+                            <span class="azk-placeholder" data-typing>Add a tag</span>
+                            <span class="azk-value" data-text="tag" data-typing></span>
+                            <span class="azk-caret"></span>
+                          </span>
+                          <span class="azk-add" data-target="add" data-cursor="hand">Add</span>
+                        </div>
+                      </div>
+                      <div class="azk-foot">
+                        <span class="azk-save" data-target="save" data-cursor="hand">
+                          <svg><use href="./site/demos/demo-icons.svg#azk-save" /></svg>
+                          <span class="ss-roll" data-roll="save"><span class="ss-roll__item">Saved</span></span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -529,7 +589,7 @@
                   <a href="https://github.com/ranjanjharavi/azkmark" target="_blank" rel="noopener noreferrer">
                     azkmark
                     <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-up-right" />
+                      <use href="./shared/icons.svg#arrow-up-right" />
                     </svg>
                   </a>
                 </h3>
@@ -549,48 +609,127 @@
                   rel="noopener noreferrer">
                   Explore the code
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                   <span class="sr-only">for azkmark</span>
                 </a>
               </div>
             </article>
-            <article class="project-card" data-reveal data-story="url">
+            <article class="project-card" data-reveal>
+              <!-- Illustration: the URL Transformer popup over a protected app. -->
               <div
-                class="project-preview preview-url"
-                role="group"
-                aria-label="Concept preview of URL Transformer, showing a source URL and a redirect with a token.">
-                <div class="preview-toolbar">
-                  <span class="preview-dots" aria-hidden="true">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </span>
-                  <span>URL Transformer</span>
-                  <span class="preview-label">Concept preview</span>
-                </div>
-                <div class="url-demo">
-                  <span class="demo-label">Your destination, connected.</span>
-                  <div class="demo-field" role="img" tabindex="0" aria-label="Source URL: app.example.com/dashboard">
-                    <span>Source URL</span>
-                    <strong>app.example.com/dashboard</strong>
-                  </div>
-                  <div class="demo-arrow">
-                    <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-down" />
-                    </svg>
-                    <span>Parameter rules + your token</span>
-                  </div>
-                  <div
-                    class="demo-field demo-result"
-                    role="img"
-                    tabindex="0"
-                    aria-label="Redirect URL: app.example.com/dashboard with token parameter">
-                    <span>Ready to redirect</span>
-                    <strong>
-                      app.example.com/dashboard
-                      <span class="url-token">?token=eyJ…</span>
-                    </strong>
+                class="project-preview"
+                role="img"
+                aria-label="Illustration: the URL Transformer popup turns app.example.com/dashboard into a URL carrying a saved JWT, then copies it.">
+                <div class="ss-fit" data-demo="url-transformer">
+                  <div class="ss-stage urlt" aria-hidden="true" data-open data-result data-copied>
+                    <div class="ss-window">
+                      <div class="ss-window__bar">
+                        <span class="ss-window__lights">
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#back" /></svg>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#forward" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#reload" /></svg>
+                        </span>
+                        <span class="ss-window__url">
+                          <svg><use href="./site/demos/demo-icons.svg#tune" /></svg>
+                          <span class="ss-window__host">app.example.com</span>
+                          <span class="ss-window__path">/dashboard</span>
+                        </span>
+                        <span class="ss-tool ss-ext" data-target="ext">
+                          <img src="./site/demos/url-transformer.png" alt="" width="16" height="16" />
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#puzzle" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#more" /></svg>
+                        </span>
+                      </div>
+                      <div class="ss-window__body" data-target="page">
+                        <div class="urlt-app">
+                          <nav>
+                            <span class="ss-bar" data-strong style="width: 70%"></span>
+                            <span class="ss-bar" style="width: 86%"></span>
+                            <span class="ss-bar" style="width: 64%"></span>
+                            <span class="ss-bar" style="width: 78%"></span>
+                            <span class="ss-bar" style="width: 56%"></span>
+                            <span class="ss-bar" style="width: 72%"></span>
+                            <span class="ss-bar" style="width: 60%"></span>
+                          </nav>
+                          <section>
+                            <span class="ss-bar" data-strong style="width: 46%"></span>
+                            <span class="ss-bar" style="width: 72%"></span>
+                            <span class="ss-bar" style="width: 60%"></span>
+                            <span class="urlt-tiles">
+                              <span></span>
+                              <span></span>
+                            </span>
+                            <span class="urlt-rows">
+                              <span class="ss-bar" style="width: 88%"></span>
+                              <span class="ss-bar" style="width: 74%"></span>
+                              <span class="ss-bar" style="width: 92%"></span>
+                              <span class="ss-bar" style="width: 66%"></span>
+                              <span class="ss-bar" style="width: 84%"></span>
+                              <span class="ss-bar" style="width: 70%"></span>
+                            </span>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ss-popover">
+                      <div class="urlt-shell">
+                        <div class="urlt-head">
+                          <span class="urlt-mark">
+                            <svg><use href="./site/demos/demo-icons.svg#urlt-link" /></svg>
+                          </span>
+                          <span class="urlt-title">URL Transformer</span>
+                        </div>
+                        <div class="urlt-view">
+                          <div class="urlt-field">
+                            <span class="urlt-label">Source URL</span>
+                            <span class="urlt-input">https://app.example.com/dashboard</span>
+                          </div>
+                          <div class="urlt-token">
+                            <span class="urlt-token-icon">
+                              <svg><use href="./site/demos/demo-icons.svg#urlt-key" /></svg>
+                            </span>
+                            <span>
+                              <b>Staging admin</b>
+                              <small>JWT · expires in 2 hours</small>
+                            </span>
+                          </div>
+                          <span class="urlt-transform" data-target="transform" data-cursor="hand">Transform URL</span>
+                          <div class="urlt-result">
+                            <div>
+                              <div class="urlt-result-head">
+                                <span class="urlt-label">Generated URL</span>
+                                <span class="urlt-icons">
+                                  <span class="urlt-icon urlt-copy" data-target="copy" data-cursor="hand">
+                                    <svg><use href="./site/demos/demo-icons.svg#urlt-copy" /></svg>
+                                    <svg class="urlt-check"><use href="./site/demos/demo-icons.svg#urlt-check" /></svg>
+                                  </span>
+                                  <span class="urlt-icon">
+                                    <svg><use href="./site/demos/demo-icons.svg#urlt-open" /></svg>
+                                  </span>
+                                </span>
+                              </div>
+                              <div class="urlt-out" data-text="out" data-typing>
+                                https://app.example.com/dashboard?auth_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGFnaW5nIn0.Hk3vQp8sX2
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -603,7 +742,7 @@
                   <a href="https://github.com/ranjanjharavi/urltransformer" target="_blank" rel="noopener noreferrer">
                     URL Transformer
                     <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-up-right" />
+                      <use href="./shared/icons.svg#arrow-up-right" />
                     </svg>
                   </a>
                 </h3>
@@ -623,56 +762,134 @@
                   rel="noopener noreferrer">
                   Explore the code
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                   <span class="sr-only">for URL Transformer</span>
                 </a>
               </div>
             </article>
-            <article class="project-card" data-reveal data-story="headers">
+            <article class="project-card" data-reveal>
+              <!-- Illustration: the HeaderKit popup over an API host's JSON. -->
               <div
-                class="project-preview preview-headerkit"
-                role="group"
-                aria-label="Concept preview of HeaderKit, showing a temporary request header profile for an exact HTTPS host.">
-                <div class="preview-toolbar">
-                  <span class="preview-dots" aria-hidden="true">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </span>
-                  <span>HeaderKit</span>
-                  <span class="preview-label">Concept preview</span>
-                </div>
-                <div class="headerkit-demo">
-                  <div class="headerkit-heading">
-                    <span class="demo-label">
-                      The right headers.
-                      <br />
-                      Only where you need them.
-                    </span>
-                    <span class="demo-badge">Temporary</span>
+                class="project-preview"
+                role="img"
+                aria-label="Illustration: the HeaderKit popup for api.example.com switches on a paused X-Trace header rule, and the toolbar badge counts three live rules.">
+                <div class="ss-fit" data-demo="headerkit">
+                  <div class="ss-stage hk" aria-hidden="true" data-open data-trace>
+                    <div class="ss-window">
+                      <div class="ss-window__bar">
+                        <span class="ss-window__lights">
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                          <span class="ss-window__dot"></span>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#back" /></svg>
+                        </span>
+                        <span class="ss-tool">
+                          <svg><use href="./site/demos/demo-icons.svg#forward" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#reload" /></svg>
+                        </span>
+                        <span class="ss-window__url">
+                          <svg><use href="./site/demos/demo-icons.svg#tune" /></svg>
+                          <span class="ss-window__host">api.example.com</span>
+                          <span class="ss-window__path">/v1/status</span>
+                        </span>
+                        <span class="ss-tool ss-ext hk-ext" data-target="ext">
+                          <img src="./site/demos/headerkit.png" alt="" width="16" height="16" />
+                          <span class="hk-badge">
+                            <span class="ss-roll" data-roll="badge" data-align="center">
+                              <span class="ss-roll__item">3</span>
+                            </span>
+                          </span>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#puzzle" /></svg>
+                        </span>
+                        <span class="ss-tool" data-wide>
+                          <svg><use href="./site/demos/demo-icons.svg#more" /></svg>
+                        </span>
+                      </div>
+                      <div class="ss-window__body" data-target="page">
+                        <div class="hk-json">
+                          <span class="ss-bar" style="width: 4%"></span>
+                          <span class="ss-bar" style="width: 38%"></span>
+                          <span class="ss-bar" style="width: 52%"></span>
+                          <span class="ss-bar" style="width: 30%"></span>
+                          <span class="ss-bar" style="width: 46%"></span>
+                          <span class="ss-bar" style="width: 60%"></span>
+                          <span class="ss-bar" style="width: 34%"></span>
+                          <span class="ss-bar" style="width: 42%"></span>
+                          <span class="ss-bar" style="width: 4%"></span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ss-popover">
+                      <div class="hk-head">
+                        <div>
+                          <div class="hk-title">HeaderKit · Headers</div>
+                          <div class="hk-profile">
+                            <b>
+                              Staging
+                              <svg><use href="./site/demos/demo-icons.svg#hk-chevron" /></svg>
+                            </b>
+                            · 1h left
+                          </div>
+                        </div>
+                        <span class="hk-master">
+                          <span class="hk-switch" data-on></span>
+                          ON
+                        </span>
+                      </div>
+                      <div class="hk-scope">
+                        <span>
+                          <code>api.example.com</code>
+                          <i>3</i>
+                        </span>
+                        <span>
+                          All
+                          <i>3</i>
+                        </span>
+                      </div>
+                      <div class="hk-rules">
+                        <div class="hk-rule">
+                          <div class="hk-rule-head">
+                            <span class="hk-name">X-Environment</span>
+                            <span class="hk-toggle">
+                              <span class="hk-switch" data-on></span>
+                              On
+                            </span>
+                          </div>
+                          <div class="hk-value">staging</div>
+                        </div>
+                        <div class="hk-rule">
+                          <div class="hk-rule-head">
+                            <span class="hk-name">X-Debug-Mode</span>
+                            <span class="hk-toggle">
+                              <span class="hk-switch" data-on></span>
+                              On
+                            </span>
+                          </div>
+                          <div class="hk-value">enabled</div>
+                        </div>
+                        <div class="hk-rule hk-trace">
+                          <div class="hk-rule-head">
+                            <span class="hk-name">X-Trace</span>
+                            <span class="hk-toggle" data-target="trace" data-cursor="hand">
+                              <span class="hk-switch" data-on></span>
+                              <span class="ss-roll" data-roll="traceLabel" data-align="end">
+                                <span class="ss-roll__item">On</span>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="hk-value">verbose</div>
+                        </div>
+                      </div>
+                      <div class="hk-manage">Manage profiles and all 3 rules →</div>
+                    </div>
                   </div>
-                  <div
-                    class="request-rule"
-                    role="img"
-                    tabindex="0"
-                    aria-label="HTTPS host api.example.com, profile active">
-                    <span>HTTPS host</span>
-                    <strong>api.example.com</strong>
-                    <span class="rule-status">
-                      <span class="status-dot" aria-hidden="true"></span>
-                      Profile active
-                    </span>
-                  </div>
-                  <div
-                    class="request-rule rule-header"
-                    role="img"
-                    tabindex="0"
-                    aria-label="Authorization header: Bearer token">
-                    <span>Authorization</span>
-                    <strong>Bearer eyJ…</strong>
-                  </div>
-                  <p class="demo-footnote">Exact hosts. Clear rules. Automatic expiry.</p>
                 </div>
               </div>
               <div class="project-content">
@@ -684,7 +901,7 @@
                   <a href="https://github.com/ranjanjharavi/HeaderKit" target="_blank" rel="noopener noreferrer">
                     HeaderKit
                     <svg class="icon" aria-hidden="true">
-                      <use href="./img/icons.svg#arrow-up-right" />
+                      <use href="./shared/icons.svg#arrow-up-right" />
                     </svg>
                   </a>
                 </h3>
@@ -704,7 +921,7 @@
                   rel="noopener noreferrer">
                   Explore the code
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                   <span class="sr-only">for HeaderKit</span>
                 </a>
@@ -721,7 +938,7 @@
                 <a href="https://github.com/OpenLiveWriter/OpenLiveWriter" target="_blank" rel="noopener noreferrer">
                   OpenLiveWriter
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
               </h4>
@@ -740,7 +957,10 @@
 
           <aside class="lab-callout" aria-labelledby="lab-title" data-reveal>
             <div>
-              <h3 id="lab-title">More projects at <a href="https://yupcode.com" target="_blank" rel="noopener noreferrer">yupcode.com</a></h3>
+              <h3 id="lab-title">
+                More projects at
+                <a href="https://yupcode.com" target="_blank" rel="noopener noreferrer">yupcode.com</a>
+              </h3>
               <p>
                 Beyond this selection, my software lab brings together command line tools, local apps, and systems
                 experiments, with project notes and source links.
@@ -749,7 +969,7 @@
             <a class="text-link" href="https://yupcode.com/#projects" target="_blank" rel="noopener noreferrer">
               Explore the software lab
               <svg class="icon" aria-hidden="true">
-                <use href="./img/icons.svg#arrow-up-right" />
+                <use href="./shared/icons.svg#arrow-up-right" />
               </svg>
             </a>
           </aside>
@@ -919,7 +1139,7 @@
                     <p>LinkedIn Learning</p>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
                 <a
@@ -932,7 +1152,7 @@
                     <p>LinkedIn Learning</p>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
                 <a
@@ -945,7 +1165,7 @@
                     <p>Coursera</p>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
                 <a
@@ -958,7 +1178,7 @@
                     <p>Quest Leader · Qwiklabs</p>
                   </div>
                   <svg class="icon" aria-hidden="true">
-                    <use href="./img/icons.svg#arrow-up-right" />
+                    <use href="./shared/icons.svg#arrow-up-right" />
                   </svg>
                 </a>
                 <div class="certificate-static">
@@ -1099,9 +1319,14 @@
             <p>Have a role, a project, or an interesting engineering problem? Tell me a little about it.</p>
             <div class="contact-email">
               <a href="mailto:hey@raviranjanjha.com">hey@raviranjanjha.com</a>
-              <button class="icon-button copy-email" id="copy-email" type="button" aria-label="Copy email address">
+              <button
+                class="icon-button copy-email"
+                id="copy-email"
+                type="button"
+                aria-label="Copy email address"
+                hidden>
                 <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#copy" />
+                  <use href="./shared/icons.svg#copy" />
                 </svg>
               </button>
             </div>
@@ -1110,7 +1335,7 @@
               <a class="text-link" href="https://github.com/ranjanjharavi" target="_blank" rel="noopener noreferrer">
                 GitHub
                 <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#arrow-up-right" />
+                  <use href="./shared/icons.svg#arrow-up-right" />
                 </svg>
               </a>
               <a
@@ -1120,24 +1345,18 @@
                 rel="noopener noreferrer">
                 LinkedIn
                 <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#arrow-up-right" />
+                  <use href="./shared/icons.svg#arrow-up-right" />
                 </svg>
               </a>
               <a class="text-link" href="https://twitter.com/ranjanjharavi" target="_blank" rel="noopener noreferrer">
                 X / Twitter
                 <svg class="icon" aria-hidden="true">
-                  <use href="./img/icons.svg#arrow-up-right" />
+                  <use href="./shared/icons.svg#arrow-up-right" />
                 </svg>
               </a>
             </div>
           </div>
-          <form
-            class="contact-form"
-            id="contact-form"
-            action="mailto:hey@raviranjanjha.com"
-            method="post"
-            enctype="text/plain"
-            data-reveal>
+          <form class="contact-form" id="contact-form" method="post" enctype="text/plain" data-reveal hidden>
             <div class="form-heading">
               <h3>Start a conversation</h3>
               <p>No signup. Just an email.</p>
@@ -1185,7 +1404,7 @@
             <button class="button button-primary contact-submit" type="submit">
               Start a conversation
               <svg class="icon" aria-hidden="true">
-                <use href="./img/icons.svg#arrow-up-right" />
+                <use href="./shared/icons.svg#arrow-up-right" />
               </svg>
             </button>
             <p class="form-note">Opens a draft in your email app. Nothing is sent from this site.</p>
@@ -1206,7 +1425,7 @@
         <a class="back-to-top" href="#hero">
           Back to top
           <svg class="icon" aria-hidden="true">
-            <use href="./img/icons.svg#arrow-up" />
+            <use href="./shared/icons.svg#arrow-up" />
           </svg>
         </a>
       </div>
@@ -1220,7 +1439,7 @@
         <a class="footer-lab" href="https://yupcode.com/" target="_blank" rel="noopener noreferrer">
           Software lab · yupcode.com
           <svg class="icon" aria-hidden="true">
-            <use href="./img/icons.svg#arrow-up-right" />
+            <use href="./shared/icons.svg#arrow-up-right" />
           </svg>
         </a>
       </div>
