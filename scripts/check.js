@@ -24,9 +24,7 @@ function isLocalRefValid(file, ref) {
 
     const target = path.join(ROOT, decodeURIComponent(url.pathname));
     const stat = fs.statSync(target, { throwIfNoEntry: false });
-    return Boolean(
-      stat?.isFile() || (stat?.isDirectory() && fs.existsSync(path.join(target, "index.html"))),
-    );
+    return Boolean(stat?.isFile() || (stat?.isDirectory() && fs.existsSync(path.join(target, "index.html"))));
   } catch {
     return false;
   }

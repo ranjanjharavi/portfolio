@@ -1,47 +1,46 @@
 # Portfolio
 
-A lightweight, single-page static portfolio.
-
-## Features
-
-- Responsive portfolio with a full-height, keyboard-accessible mobile menu
-- Light mode by default, with a manual dark mode toggle and saved preference
-- Selected projects, career history, technical toolkit, and credentials
-- Scroll reveals and a word-by-word tagline, respecting reduced motion
-
-
-## Tech stack
-
-Vanilla HTML, CSS, and JavaScript. Google Fonts, and Phosphor icons.
+Static portfolio and browser tools. Plain HTML, CSS, and JavaScript.
 
 ## Run locally
 
-Prerequisites: Node.js and Python 3.
-
-```bash
+```sh
 npm run serve
 ```
 
-Open <http://127.0.0.1:8000>. The command serves the `src` directory.
+Open <http://127.0.0.1:8000>
 
-To check the JavaScript syntax:
+## Use
 
-```bash
-npm run check
-```
+- `/` — Browse projects, experience, credentials, and animated extension demos.
+- `/scratchpad/` — Create documents. Write, preview, and search Markdown notes.
+- `/mermaid/` — Paste Mermaid code for a live preview. Download PNG, SVG, or Mermaid source.
+- `/v0/` — Open the archived portfolio.
 
-## Project structure
+Keep notes and diagrams in browser storage. Load fonts and rendering libraries from CDNs.
+
+## Layout
 
 ```text
 src/
-├── index.html      # Portfolio content and metadata
-├── 404.html        # Branded not-found page
-├── style.css       # Portfolio styles and themes
-├── main.js         # Portfolio interactions and reveals
-└── img/            # Avatar, favicon, icons, and social sharing image
+├── index.html, 404.html  # Public entry points
+├── shared/               # Theme and assets used across the site
+├── site/                 # Portfolio scripts and styles
+│   └── demos/            # Extension previews and their assets
+├── folio/                # Styles and storage shared by both tools
+├── scratchpad/           # Markdown notebook
+├── mermaid/              # Diagram editor
+└── v0/                   # Archived portfolio
 ```
 
-## License
+Keep files with the page that uses them. Move them to `folio/` when both tools need them, or to `shared/` when the portfolio and tools both use them. Source artwork lives in `design/` outside the deployed tree.
 
-[MIT](LICENSE)
+## Check and deploy
 
+- Use Node.js 24 and run `npm ci` to install the pinned formatter.
+- Run `npm run check` to check JavaScript syntax and local references under `src/`.
+- Run `npm run fmt` to format HTML, CSS, and JavaScript under `src/` and `scripts/`, or `npm run fmt:check` to check without editing files.
+- The archived site in `src/v0/` is excluded from syntax and formatting checks.
+- Push to `master` to deploy `src/` to GitHub Pages after both checks pass.
+
+[MIT license](LICENSE)
