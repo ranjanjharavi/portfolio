@@ -2,6 +2,9 @@ import { openDatabase, transact } from "../folio/idb.js";
 
 const MERMAID_URL = "https://cdn.jsdelivr.net/npm/mermaid@12.3.0/dist/mermaid.esm.min.mjs";
 const DB_NAME = "folio_mermaid_db";
+const DB_VERSION = 2;
+const PROFILE_KEY = "folio_mermaid_profile";
+const DEFAULT_PROFILE_NAME = "My diagrams";
 
 const MERMAID_CONFIG = {
   startOnLoad: false,
@@ -24,10 +27,12 @@ const PREVIEW_ACTIONS = ["download-toggle", "download-svg", "download-png", "ope
 const ui = Object.fromEntries([...document.querySelectorAll("[id]")].map((element) => [element.id, element]));
 
 const diagrams = new Map();
+const profiles = new Map();
 const dirty = new Set();
 let db;
 let storageError;
 let activeId;
+let activeProfileId;
 let saveTimer;
 let saveQueue = Promise.resolve();
 let renderTimer;
@@ -53,6 +58,30 @@ function sourceText(source) {
 
 function currentDiagram() {
   return diagrams.get(activeId);
+}
+
+function byRecent(a, b) {
+  return b.updatedAt - a.updatedAt;
+}
+
+function profileDiagrams(profileId = activeProfileId) {
+  return [...diagrams.values()].filter((diagram) => diagram.profileId === profileId).sort(byRecent);
+}
+
+function oldestProfile() {
+  return [...profiles.values()].sort((a, b) => a.createdAt - b.createdAt)[0];
+}
+
+function createProfileRecord(name) {
+  return { id: crypto.randomUUID(), name, createdAt: Date.now() };
+}
+
+function storedProfileId() {
+  try {
+    return localStorage.getItem(PROFILE_KEY);
+  } catch {
+    return null;
+  }
 }
 
 function announce(message) {
@@ -136,9 +165,7 @@ function flushSave() {
 }
 
 function updateLibrary() {
-  const options = [...diagrams.values()]
-    .sort((a, b) => b.updatedAt - a.updatedAt)
-    .map((diagram) => new Option(diagram.title || "Untitled diagram", diagram.id));
+  const options = profileDiagrams().map((diagram) => new Option(diagram.title || "Untitled diagram", diagram.id));
   ui["diagram-list"].replaceChildren(...options);
   ui["diagram-list"].value = activeId;
 }
@@ -185,12 +212,20 @@ function createDiagram() {
     title: "Untitled diagram",
     source: "",
     updatedAt: Date.now(),
+    profileId: activeProfileId,
   };
   diagrams.set(record.id, record);
   if (!storageError) dirty.add(record.id);
   selectDiagram(record.id);
   updateLibrary();
   saveRecord(record);
+}
+
+function openLatestDiagram() {
+  const [latest] = profileDiagrams();
+  if (!latest) return createDiagram();
+  selectDiagram(latest.id);
+  updateLibrary();
 }
 
 function updateSourceCount() {
@@ -548,12 +583,7 @@ ui["delete-dialog"].querySelector("form").addEventListener("submit", async (even
     diagrams.delete(id);
     dirty.delete(id);
     ui["delete-dialog"].close();
-    if (diagrams.size) {
-      selectDiagram([...diagrams.keys()][0]);
-      updateLibrary();
-    } else {
-      createDiagram();
-    }
+    openLatestDiagram();
     announce("Diagram deleted.");
   } catch (error) {
     showStorageError(error);
@@ -621,9 +651,51 @@ window.addEventListener("beforeunload", (event) => {
   event.returnValue = "";
 });
 
+function upgradeDatabase(database, tx, event) {
+  if (event.oldVersion < 1) database.createObjectStore("diagrams", { keyPath: "id" });
+  if (event.oldVersion < 2) database.createObjectStore("profiles", { keyPath: "id" });
+}
+
+async function loadLibrary() {
+  let diagramRequest;
+  // One read-only transaction gives a consistent snapshot of both stores.
+  const profileRecords = await transact(db, ["diagrams", "profiles"], "readonly", (tx) => {
+    diagramRequest = tx.objectStore("diagrams").getAll();
+    return tx.objectStore("profiles").getAll();
+  });
+  for (const profile of profileRecords) profiles.set(profile.id, profile);
+  for (const record of diagramRequest.result) diagrams.set(record.id, record);
+}
+
+// Safe to run on every load: diagrams saved before profiles existed, or whose
+// profile is missing, join the oldest profile. Without storage this only fixes memory.
+async function migrateLibrary() {
+  const addedProfiles = [];
+  if (!profiles.size) {
+    const profile = createProfileRecord(DEFAULT_PROFILE_NAME);
+    profiles.set(profile.id, profile);
+    addedProfiles.push(profile);
+  }
+  const home = oldestProfile();
+  const repaired = [];
+  for (const record of diagrams.values()) {
+    if (profiles.has(record.profileId)) continue;
+    const moved = { ...record, profileId: home.id };
+    diagrams.set(record.id, moved);
+    repaired.push(moved);
+  }
+  if (!db || (!addedProfiles.length && !repaired.length)) return;
+  await transact(db, ["diagrams", "profiles"], "readwrite", (tx) => {
+    let request;
+    for (const profile of addedProfiles) request = tx.objectStore("profiles").put(profile);
+    for (const record of repaired) request = tx.objectStore("diagrams").put(record);
+    return request;
+  });
+}
+
 async function init() {
   try {
-    db = await openDatabase(DB_NAME, 1, (database) => database.createObjectStore("diagrams", { keyPath: "id" }), {
+    db = await openDatabase(DB_NAME, DB_VERSION, upgradeDatabase, {
       onClose(error) {
         storageError = error;
         db = null;
@@ -636,22 +708,20 @@ async function init() {
         updateSaveStatus();
       },
     });
-    const records = await transact(db, "diagrams", "readonly", (tx) => tx.objectStore("diagrams").getAll());
-    for (const record of records) diagrams.set(record.id, record);
+    await loadLibrary();
+    await migrateLibrary();
   } catch (error) {
     db?.close();
     db = null;
     showStorageError(error);
+    await migrateLibrary();
   }
   for (const id of ["source", "diagram-title", "diagram-list", "download-source"]) ui[id].disabled = false;
   for (const id of ["new-diagram", "delete-diagram"]) ui[id].disabled = Boolean(storageError);
-  if (diagrams.size) {
-    const latest = [...diagrams.values()].sort((a, b) => b.updatedAt - a.updatedAt)[0];
-    selectDiagram(latest.id);
-    updateLibrary();
-  } else {
-    createDiagram();
-  }
+  const stored = storedProfileId();
+  const [latest] = [...diagrams.values()].sort(byRecent);
+  activeProfileId = profiles.has(stored) ? stored : (latest?.profileId ?? oldestProfile().id);
+  openLatestDiagram();
 }
 
 init();
