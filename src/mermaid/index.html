@@ -149,7 +149,7 @@
               Preview
             </h2>
             <div class="preview-actions" role="group" aria-label="Preview actions">
-              <div id="download-actions" class="download-actions">
+              <div id="download-actions" class="disclosure">
                 <button
                   id="download-toggle"
                   type="button"
@@ -159,14 +159,14 @@
                   Download
                   <span aria-hidden="true">▾</span>
                 </button>
-                <div id="download-formats" class="download-formats" role="group" aria-label="Download format" hidden>
+                <div id="download-formats" class="disclosure-panel" role="group" aria-label="Download format" hidden>
                   <button id="download-svg" type="button" disabled>
                     <strong>SVG</strong>
-                    <span>Scalable vector</span>
+                    <span class="option-hint">Scalable vector</span>
                   </button>
                   <button id="download-png" type="button" disabled>
                     <strong>PNG</strong>
-                    <span>Image</span>
+                    <span class="option-hint">Image</span>
                   </button>
                 </div>
               </div>

@@ -131,10 +131,10 @@
   padding: 5px 8px;
   font-size: 12px;
 }
-.download-actions {
+.disclosure {
   position: relative;
 }
-.download-formats {
+.disclosure-panel {
   position: absolute;
   z-index: 2;
   inset: calc(100% + 4px) auto auto 0;
@@ -146,13 +146,16 @@
   background: var(--surface);
   box-shadow: var(--shadow);
 }
-.download-formats button {
+.disclosure-panel--end {
+  inset: calc(100% + 4px) 0 auto auto;
+}
+.disclosure-panel button {
   justify-content: flex-start;
   gap: 8px;
   padding-inline: 10px;
   border-color: transparent;
 }
-.download-formats span {
+.option-hint {
   color: var(--muted);
   font-weight: 400;
 }

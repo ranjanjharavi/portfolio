@@ -48,6 +48,7 @@ let lightPreview = true;
 let diagramSize;
 let zoom = 1;
 let fitMode = true;
+const disclosures = [];
 
 function sourceText(source) {
   const text = source.trim();
@@ -94,20 +95,34 @@ function previewFeedback(message) {
 }
 
 function updatePreviewActions(ready) {
-  if (!ready) setDownloadFormatsOpen(false);
+  if (!ready) downloadMenu.close();
   for (const id of PREVIEW_ACTIONS) ui[id].disabled = !ready;
   if (pngPending) ui["download-png"].disabled = true;
   if (ui["fullscreen-dialog"].open) ui["fullscreen-preview"].disabled = false;
 }
 
-function setDownloadFormatsOpen(open) {
-  ui["download-formats"].hidden = !open;
-  ui["download-toggle"].setAttribute("aria-expanded", String(open));
-}
-
-function closeDownloadFormats() {
-  setDownloadFormatsOpen(false);
-  ui["download-toggle"].focus({ preventScroll: true });
+// Menus are disclosures (a button plus a panel), not ARIA menus, so native Tab
+// navigation keeps working among the buttons in each panel.
+function createDisclosure({ container, toggle, panel }) {
+  function setOpen(open) {
+    panel.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+  }
+  const disclosure = {
+    container,
+    isOpen: () => !panel.hidden,
+    open: () => setOpen(true),
+    close({ focus = false } = {}) {
+      setOpen(false);
+      if (focus) toggle.focus({ preventScroll: true });
+    },
+  };
+  toggle.addEventListener("click", () => {
+    setOpen(panel.hidden);
+    toggle.focus({ preventScroll: true });
+  });
+  disclosures.push(disclosure);
+  return disclosure;
 }
 
 function prefersDarkDiagram() {
@@ -608,29 +623,32 @@ ui["download-source"].addEventListener("click", () =>
     "mmd",
   ),
 );
-ui["download-toggle"].addEventListener("click", () => {
-  setDownloadFormatsOpen(ui["download-formats"].hidden);
-  ui["download-toggle"].focus({ preventScroll: true });
+const downloadMenu = createDisclosure({
+  container: ui["download-actions"],
+  toggle: ui["download-toggle"],
+  panel: ui["download-formats"],
 });
-// A disclosure keeps native Tab navigation among the format buttons.
 for (const eventName of ["pointerdown", "focusin"]) {
   document.addEventListener(eventName, (event) => {
-    if (!ui["download-formats"].hidden && !ui["download-actions"].contains(event.target)) setDownloadFormatsOpen(false);
+    for (const disclosure of disclosures) {
+      if (disclosure.isOpen() && !disclosure.container.contains(event.target)) disclosure.close();
+    }
   });
 }
 ui["download-svg"].addEventListener("click", () => {
-  closeDownloadFormats();
+  downloadMenu.close({ focus: true });
   download(new Blob([lastSvg], { type: "image/svg+xml;charset=utf-8" }), "svg");
 });
 ui["download-png"].addEventListener("click", () => {
-  closeDownloadFormats();
+  downloadMenu.close({ focus: true });
   downloadPng();
 });
 ui["open-preview"].addEventListener("click", openPreview);
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !ui["download-formats"].hidden) {
+  const openDisclosure = disclosures.find((disclosure) => disclosure.isOpen());
+  if (event.key === "Escape" && openDisclosure) {
     event.preventDefault();
-    closeDownloadFormats();
+    openDisclosure.close({ focus: true });
     return;
   }
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
