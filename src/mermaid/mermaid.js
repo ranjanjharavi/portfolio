@@ -5,6 +5,8 @@ const DB_NAME = "folio_mermaid_db";
 const DB_VERSION = 2;
 const PROFILE_KEY = "folio_mermaid_profile";
 const DEFAULT_PROFILE_NAME = "My diagrams";
+const PROFILE_NAME_MAX = 40;
+const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MERMAID_CONFIG = {
   startOnLoad: false,
@@ -77,12 +79,96 @@ function createProfileRecord(name) {
   return { id: crypto.randomUUID(), name, createdAt: Date.now() };
 }
 
+function createDiagramRecord(profileId) {
+  return { id: crypto.randomUUID(), title: "Untitled diagram", source: "", updatedAt: Date.now(), profileId };
+}
+
+function sortedProfiles() {
+  return [...profiles.values()].sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
+}
+
+function countLabel(count) {
+  return `${count} ${count === 1 ? "diagram" : "diagrams"}`;
+}
+
+function profileInitial(name) {
+  return [...name.trim()][0]?.toLocaleUpperCase() ?? "?";
+}
+
+function profileNameError(name, exceptId) {
+  if (!name) return "Enter a name for the profile.";
+  if (name.length > PROFILE_NAME_MAX) return `Use ${PROFILE_NAME_MAX} characters or fewer.`;
+  const key = name.toLocaleLowerCase();
+  const taken = [...profiles.values()].some(
+    (profile) => profile.id !== exceptId && profile.name.toLocaleLowerCase() === key,
+  );
+  return taken ? `There is already a profile named “${name}”.` : "";
+}
+
 function storedProfileId() {
   try {
     return localStorage.getItem(PROFILE_KEY);
   } catch {
     return null;
   }
+}
+
+function rememberProfile(id) {
+  try {
+    localStorage.setItem(PROFILE_KEY, id);
+  } catch {
+    // Without localStorage the app falls back to the most recently edited diagram's profile.
+  }
+}
+
+function icon(name, className = "icon") {
+  const svg = document.createElementNS(SVG_NS, "svg");
+  const use = document.createElementNS(SVG_NS, "use");
+  svg.setAttribute("class", className);
+  svg.setAttribute("aria-hidden", "true");
+  use.setAttribute("href", `../shared/icons.svg#${name}`);
+  svg.append(use);
+  return svg;
+}
+
+function profileAvatar(name) {
+  const avatar = document.createElement("span");
+  avatar.className = "profile-avatar";
+  avatar.setAttribute("aria-hidden", "true");
+  avatar.textContent = profileInitial(name);
+  return avatar;
+}
+
+function diagramCounts() {
+  const counts = new Map();
+  for (const diagram of diagrams.values()) counts.set(diagram.profileId, (counts.get(diagram.profileId) ?? 0) + 1);
+  return counts;
+}
+
+// Profile names are user input, so everything here is built with DOM APIs and textContent.
+function renderProfiles() {
+  const active = profiles.get(activeProfileId);
+  ui["profile-current"].textContent = active.name;
+  ui["profile-avatar"].textContent = profileInitial(active.name);
+  const counts = diagramCounts();
+  const options = sortedProfiles().map((profile) => {
+    const button = document.createElement("button");
+    const text = document.createElement("span");
+    const name = document.createElement("strong");
+    const count = document.createElement("span");
+    button.type = "button";
+    button.className = "profile-option";
+    button.dataset.profileId = profile.id;
+    button.setAttribute("aria-pressed", String(profile.id === activeProfileId));
+    text.className = "option-text";
+    name.textContent = profile.name;
+    count.className = "option-hint";
+    count.textContent = countLabel(counts.get(profile.id) ?? 0);
+    text.append(name, count);
+    button.append(profileAvatar(profile.name), text, icon("check", "icon option-check"));
+    return button;
+  });
+  ui["profile-options"].replaceChildren(...options);
 }
 
 function announce(message) {
@@ -222,17 +308,12 @@ function selectDiagram(id) {
 
 function createDiagram() {
   flushSave();
-  const record = {
-    id: crypto.randomUUID(),
-    title: "Untitled diagram",
-    source: "",
-    updatedAt: Date.now(),
-    profileId: activeProfileId,
-  };
+  const record = createDiagramRecord(activeProfileId);
   diagrams.set(record.id, record);
   if (!storageError) dirty.add(record.id);
   selectDiagram(record.id);
   updateLibrary();
+  renderProfiles();
   saveRecord(record);
 }
 
@@ -241,6 +322,38 @@ function openLatestDiagram() {
   if (!latest) return createDiagram();
   selectDiagram(latest.id);
   updateLibrary();
+  renderProfiles();
+}
+
+function switchProfile(id) {
+  flushSave();
+  activeProfileId = id;
+  rememberProfile(id);
+  openLatestDiagram();
+  announce(`Switched to ${profiles.get(id).name}.`);
+}
+
+async function createProfile(name) {
+  await flushSave();
+  const profile = createProfileRecord(name);
+  const diagram = createDiagramRecord(profile.id);
+  if (db) {
+    // Chained on the save queue so it cannot race a pending diagram save.
+    const write = saveQueue.then(() =>
+      transact(db, ["profiles", "diagrams"], "readwrite", (tx) => {
+        tx.objectStore("profiles").put(profile);
+        return tx.objectStore("diagrams").put(diagram);
+      }),
+    );
+    saveQueue = write.catch(() => {});
+    await write;
+  } else if (!storageError) {
+    dirty.add(diagram.id);
+  }
+  profiles.set(profile.id, profile);
+  diagrams.set(diagram.id, diagram);
+  switchProfile(profile.id);
+  announce(`Created ${name}.`);
 }
 
 function updateSourceCount() {
@@ -628,6 +741,64 @@ const downloadMenu = createDisclosure({
   toggle: ui["download-toggle"],
   panel: ui["download-formats"],
 });
+const profileMenu = createDisclosure({
+  container: ui["profile-actions"],
+  toggle: ui["profile-toggle"],
+  panel: ui["profile-panel"],
+});
+ui["profile-options"].addEventListener("click", (event) => {
+  const option = event.target.closest("[data-profile-id]");
+  if (!option) return;
+  profileMenu.close({ focus: true });
+  if (option.dataset.profileId !== activeProfileId) switchProfile(option.dataset.profileId);
+});
+
+const profileDialog = ui["profile-dialog"];
+const profileForm = profileDialog.querySelector("form");
+let profileCreated = false;
+
+function setNameError(input, error, message) {
+  error.textContent = message;
+  error.hidden = !message;
+  if (message) input.setAttribute("aria-invalid", "true");
+  else input.removeAttribute("aria-invalid");
+}
+
+ui["new-profile"].addEventListener("click", () => {
+  profileMenu.close();
+  profileCreated = false;
+  ui["profile-name"].value = "";
+  setNameError(ui["profile-name"], ui["profile-name-error"], "");
+  profileDialog.showModal();
+});
+ui["profile-name"].addEventListener("input", () => setNameError(ui["profile-name"], ui["profile-name-error"], ""));
+ui["cancel-profile"].addEventListener("click", () => profileDialog.close());
+profileForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const name = ui["profile-name"].value.trim();
+  const message = profileNameError(name);
+  if (message) {
+    setNameError(ui["profile-name"], ui["profile-name-error"], message);
+    ui["profile-name"].focus();
+    return;
+  }
+  const buttons = profileForm.querySelectorAll("button");
+  for (const button of buttons) button.disabled = true;
+  try {
+    await createProfile(name);
+    profileCreated = true;
+    profileDialog.close();
+  } catch (error) {
+    showStorageError(error);
+    setNameError(ui["profile-name"], ui["profile-name-error"], "The profile could not be saved in this browser.");
+  } finally {
+    for (const button of buttons) button.disabled = false;
+  }
+});
+profileDialog.addEventListener("close", () => {
+  if (profileCreated) ui.source.focus();
+  else ui["profile-toggle"].focus();
+});
 for (const eventName of ["pointerdown", "focusin"]) {
   document.addEventListener(eventName, (event) => {
     for (const disclosure of disclosures) {
@@ -734,8 +905,10 @@ async function init() {
     showStorageError(error);
     await migrateLibrary();
   }
-  for (const id of ["source", "diagram-title", "diagram-list", "download-source"]) ui[id].disabled = false;
-  for (const id of ["new-diagram", "delete-diagram"]) ui[id].disabled = Boolean(storageError);
+  for (const id of ["source", "diagram-title", "diagram-list", "profile-toggle", "download-source"]) {
+    ui[id].disabled = false;
+  }
+  for (const id of ["new-diagram", "delete-diagram", "new-profile"]) ui[id].disabled = Boolean(storageError);
   const stored = storedProfileId();
   const [latest] = [...diagrams.values()].sort(byRecent);
   activeProfileId = profiles.has(stored) ? stored : (latest?.profileId ?? oldestProfile().id);

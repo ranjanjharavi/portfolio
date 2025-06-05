@@ -58,6 +58,32 @@
       </div>
 
       <div class="library-bar" aria-label="Diagram library">
+        <div class="library-picker profile-picker">
+          <span id="profile-label" class="field-label">Profile</span>
+          <div id="profile-actions" class="disclosure">
+            <button
+              id="profile-toggle"
+              class="profile-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="profile-panel"
+              aria-labelledby="profile-label profile-current"
+              disabled>
+              <span id="profile-avatar" class="profile-avatar" aria-hidden="true"></span>
+              <span id="profile-current" class="profile-name">Opening…</span>
+              <svg class="icon chev" aria-hidden="true"><use href="../shared/icons.svg#chevron-down" /></svg>
+            </button>
+            <div id="profile-panel" class="disclosure-panel profile-panel" role="group" aria-label="Profiles" hidden>
+              <div id="profile-options" class="profile-options"></div>
+              <hr />
+              <button id="new-profile" type="button" disabled>
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#plus" /></svg>
+                New profile…
+              </button>
+            </div>
+          </div>
+        </div>
+        <span class="path-sep" aria-hidden="true">›</span>
         <label class="library-picker" for="diagram-list">
           <span class="field-label">Your diagrams</span>
           <select id="diagram-list" disabled>
@@ -248,6 +274,27 @@
         <div class="dialog-actions">
           <button value="cancel" autofocus>Keep diagram</button>
           <button value="delete" class="danger-solid">Delete diagram</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="profile-dialog" aria-labelledby="profile-dialog-heading" aria-describedby="profile-dialog-copy">
+      <form method="dialog" autocomplete="off" novalidate>
+        <h2 id="profile-dialog-heading">New profile</h2>
+        <p id="profile-dialog-copy">A profile keeps its own list of diagrams in this browser.</p>
+        <label class="dialog-field" for="profile-name">
+          <span class="field-label">Profile name</span>
+          <input
+            id="profile-name"
+            type="text"
+            maxlength="40"
+            placeholder="Client work"
+            aria-describedby="profile-name-error"
+            autofocus />
+        </label>
+        <p id="profile-name-error" class="field-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button id="cancel-profile" type="button">Cancel</button>
+          <button id="create-profile" class="primary">Create profile</button>
         </div>
       </form>
     </dialog>

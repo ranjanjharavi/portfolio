@@ -41,6 +41,93 @@
 .library-picker select {
   width: 100%;
 }
+.profile-picker {
+  width: 210px;
+}
+.profile-toggle {
+  justify-content: flex-start;
+  gap: 9px;
+  width: 100%;
+  min-height: 42px;
+  padding: 6px 10px 6px 8px;
+  font-weight: 500;
+}
+.profile-name,
+.option-text > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.profile-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--surface-deep);
+  color: var(--text);
+  font: 700 11px/1 var(--font-sans);
+}
+.profile-toggle .profile-avatar,
+[aria-pressed="true"] > .profile-avatar {
+  background: var(--accent);
+  color: var(--button-text);
+}
+.chev {
+  margin-left: auto;
+  color: var(--muted);
+}
+.path-sep {
+  display: grid;
+  place-items: center;
+  height: 42px;
+  margin-inline: -3px;
+  color: var(--muted);
+  font-size: 18px;
+}
+.profile-panel {
+  width: max-content;
+  min-width: max(100%, 240px);
+  max-width: min(320px, calc(100vw - 2 * var(--folio-gutter)));
+}
+.profile-options {
+  display: grid;
+  max-height: min(320px, 50vh);
+  overflow-y: auto;
+}
+.disclosure-panel .profile-option {
+  gap: 10px;
+  min-height: 44px;
+  padding-block: 5px;
+  font-weight: 500;
+  text-align: left;
+}
+.option-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+.option-text strong {
+  font-weight: 600;
+}
+.option-text .option-hint {
+  font-size: 11px;
+}
+.option-check {
+  margin-left: auto;
+  color: var(--accent);
+  visibility: hidden;
+}
+[aria-pressed="true"] > .option-check {
+  visibility: visible;
+}
+.disclosure-panel hr {
+  width: calc(100% - 4px);
+  margin: 4px 2px;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
 .library-bar > button {
   min-height: 42px;
 }
@@ -428,6 +515,23 @@ dialog p {
   color: var(--muted);
   font-size: 12px;
 }
+.dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+.dialog-field input {
+  min-height: 42px;
+  padding: 8px 12px;
+}
+input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+dialog .field-error {
+  margin-top: 6px;
+  color: var(--error);
+}
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -487,6 +591,14 @@ dialog p {
   .library-picker {
     flex: 1;
     width: auto;
+  }
+  .profile-picker,
+  .profile-picker ~ .library-picker {
+    flex: 1 1 150px;
+    width: auto;
+  }
+  .path-sep {
+    display: none;
   }
   .workspace {
     grid-template-columns: minmax(0, 1fr);
