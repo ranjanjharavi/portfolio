@@ -325,6 +325,32 @@ function openLatestDiagram() {
   renderProfiles();
 }
 
+function mostRecentProfileId() {
+  const [latest] = [...diagrams.values()].sort(byRecent);
+  return latest?.profileId ?? oldestProfile().id;
+}
+
+function saveProfile(profile) {
+  if (!db) return saveQueue;
+  saveQueue = saveQueue.then(async () => {
+    if (!db) return;
+    try {
+      await transact(db, "profiles", "readwrite", (tx) => tx.objectStore("profiles").put(profile));
+    } catch (error) {
+      showStorageError(error);
+    }
+  });
+  return saveQueue;
+}
+
+function renameProfile(id, name) {
+  const profile = { ...profiles.get(id), name };
+  profiles.set(id, profile);
+  renderProfiles();
+  saveProfile(profile);
+  announce(`Renamed profile to ${name}.`);
+}
+
 function switchProfile(id) {
   flushSave();
   activeProfileId = id;
@@ -799,6 +825,156 @@ profileDialog.addEventListener("close", () => {
   if (profileCreated) ui.source.focus();
   else ui["profile-toggle"].focus();
 });
+
+const manageDialog = ui["manage-dialog"];
+const deleteProfileDialog = ui["delete-profile-dialog"];
+let pendingDeleteId;
+let deleteReturnFocus;
+
+function renderManageList() {
+  const counts = diagramCounts();
+  const rows = sortedProfiles().map((profile) => {
+    const row = document.createElement("li");
+    const input = document.createElement("input");
+    const count = document.createElement("span");
+    const remove = document.createElement("button");
+    row.className = "manage-row";
+    input.type = "text";
+    input.maxLength = PROFILE_NAME_MAX;
+    input.value = profile.name;
+    input.dataset.profileId = profile.id;
+    input.setAttribute("aria-label", `Name of profile ${profile.name}`);
+    count.className = "manage-count";
+    count.textContent = countLabel(counts.get(profile.id) ?? 0);
+    remove.type = "button";
+    remove.className = "icon-button danger";
+    remove.dataset.deleteProfile = profile.id;
+    remove.setAttribute("aria-label", `Delete profile ${profile.name}`);
+    remove.title = profiles.size > 1 ? "Delete profile" : "The last profile can’t be deleted";
+    remove.disabled = profiles.size === 1 || Boolean(storageError);
+    remove.append(icon("trash-2"));
+    row.append(profileAvatar(profile.name), input, count, remove);
+    return row;
+  });
+  ui["manage-list"].replaceChildren(...rows);
+}
+
+function setManageError(input, message) {
+  for (const field of ui["manage-list"].querySelectorAll("input")) {
+    field.removeAttribute("aria-invalid");
+    field.removeAttribute("aria-describedby");
+  }
+  ui["manage-error"].textContent = message;
+  ui["manage-error"].hidden = !message;
+  if (!message || !input) return;
+  input.setAttribute("aria-invalid", "true");
+  input.setAttribute("aria-describedby", "manage-error");
+}
+
+// Enter keeps an invalid name for correcting; leaving the field puts the saved name back.
+function commitRename(input, { revert }) {
+  const profile = profiles.get(input.dataset.profileId);
+  if (!profile) return;
+  const name = input.value.trim();
+  if (name === profile.name) {
+    input.value = name;
+    setManageError(null, "");
+    return;
+  }
+  const message = profileNameError(name, profile.id);
+  if (message) {
+    if (!revert) return setManageError(input, message);
+    input.value = profile.name;
+    return setManageError(null, `${message} The name was not changed.`);
+  }
+  setManageError(null, "");
+  input.value = name;
+  input.setAttribute("aria-label", `Name of profile ${name}`);
+  input.previousElementSibling.textContent = profileInitial(name);
+  input.parentElement.querySelector("[data-delete-profile]").setAttribute("aria-label", `Delete profile ${name}`);
+  renameProfile(profile.id, name);
+}
+
+ui["manage-profiles"].addEventListener("click", () => {
+  profileMenu.close();
+  renderManageList();
+  setManageError(null, "");
+  manageDialog.showModal();
+});
+ui["manage-list"].addEventListener("change", (event) => {
+  if (event.target.matches("input")) commitRename(event.target, { revert: true });
+});
+ui["manage-list"].addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" || event.isComposing || !event.target.matches("input")) return;
+  // Without this, Enter submits the dialog form and closes Manage profiles.
+  event.preventDefault();
+  commitRename(event.target, { revert: false });
+});
+ui["manage-list"].addEventListener("click", (event) => {
+  const button = event.target.closest("[data-delete-profile]");
+  if (!button) return;
+  const profile = profiles.get(button.dataset.deleteProfile);
+  const doomed = profileDiagrams(profile.id);
+  const count = countLabel(doomed.length);
+  pendingDeleteId = profile.id;
+  deleteReturnFocus = button;
+  ui["delete-profile-heading"].textContent = `Delete “${profile.name}”?`;
+  ui["delete-profile-copy"].textContent =
+    `This deletes the profile and its ${count} from this browser. Download any you want to keep first.`;
+  ui["delete-profile-list"].replaceChildren(
+    ...doomed.map((diagram) => {
+      const item = document.createElement("li");
+      item.textContent = diagram.title || "Untitled diagram";
+      return item;
+    }),
+  );
+  ui["delete-profile-list"].scrollTop = 0;
+  ui["confirm-delete-profile"].textContent = `Delete profile and ${count}`;
+  deleteProfileDialog.showModal();
+});
+manageDialog.addEventListener("close", () => ui["profile-toggle"].focus());
+deleteProfileDialog.addEventListener("close", () => {
+  pendingDeleteId = null;
+  if (deleteReturnFocus?.isConnected) deleteReturnFocus.focus();
+  else ui["manage-done"].focus();
+});
+deleteProfileDialog.querySelector("form").addEventListener("submit", async (event) => {
+  if (event.submitter?.value !== "delete") return;
+  event.preventDefault();
+  const id = pendingDeleteId;
+  const { name } = profiles.get(id);
+  const doomed = profileDiagrams(id).map((diagram) => diagram.id);
+  const buttons = deleteProfileDialog.querySelectorAll("button");
+  for (const button of buttons) button.disabled = true;
+  await flushSave();
+  try {
+    if (storageError) throw storageError;
+    if (profiles.size === 1) throw new Error("The last profile can’t be deleted.");
+    if (db) {
+      await transact(db, ["profiles", "diagrams"], "readwrite", (tx) => {
+        const store = tx.objectStore("diagrams");
+        for (const diagramId of doomed) store.delete(diagramId);
+        return tx.objectStore("profiles").delete(id);
+      });
+    }
+    for (const diagramId of doomed) {
+      diagrams.delete(diagramId);
+      dirty.delete(diagramId);
+    }
+    profiles.delete(id);
+    deleteProfileDialog.close();
+    if (id === activeProfileId) switchProfile(mostRecentProfileId());
+    else renderProfiles();
+    renderManageList();
+    announce(`Deleted “${name}” and ${countLabel(doomed.length)}.`);
+  } catch (error) {
+    showStorageError(error);
+    deleteProfileDialog.close();
+    announce(storageError?.message ?? `“${name}” could not be deleted. Its diagrams are still available.`);
+  } finally {
+    for (const button of buttons) button.disabled = false;
+  }
+});
 for (const eventName of ["pointerdown", "focusin"]) {
   document.addEventListener(eventName, (event) => {
     for (const disclosure of disclosures) {
@@ -908,10 +1084,11 @@ async function init() {
   for (const id of ["source", "diagram-title", "diagram-list", "profile-toggle", "download-source"]) {
     ui[id].disabled = false;
   }
-  for (const id of ["new-diagram", "delete-diagram", "new-profile"]) ui[id].disabled = Boolean(storageError);
+  for (const id of ["new-diagram", "delete-diagram", "new-profile", "manage-profiles"]) {
+    ui[id].disabled = Boolean(storageError);
+  }
   const stored = storedProfileId();
-  const [latest] = [...diagrams.values()].sort(byRecent);
-  activeProfileId = profiles.has(stored) ? stored : (latest?.profileId ?? oldestProfile().id);
+  activeProfileId = profiles.has(stored) ? stored : mostRecentProfileId();
   openLatestDiagram();
 }
 

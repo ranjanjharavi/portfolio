@@ -532,6 +532,47 @@ dialog .field-error {
   margin-top: 6px;
   color: var(--error);
 }
+.manage-list {
+  display: grid;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.manage-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.manage-row input {
+  flex: 1;
+  min-width: 0;
+  min-height: 38px;
+  padding: 6px 10px;
+}
+.manage-count {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.manage-row .icon-button {
+  background: transparent;
+  border-color: transparent;
+}
+.delete-profile-list {
+  max-height: 180px;
+  overflow-y: auto;
+  margin: 14px 0 0;
+  padding: 8px 12px 8px 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.delete-profile-list li + li {
+  margin-top: 3px;
+}
 .dialog-actions {
   display: flex;
   justify-content: flex-end;

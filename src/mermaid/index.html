@@ -80,6 +80,10 @@
                 <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#plus" /></svg>
                 New profile…
               </button>
+              <button id="manage-profiles" type="button" disabled>
+                <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#sliders" /></svg>
+                Manage profiles…
+              </button>
             </div>
           </div>
         </div>
@@ -295,6 +299,32 @@
         <div class="dialog-actions">
           <button id="cancel-profile" type="button">Cancel</button>
           <button id="create-profile" class="primary">Create profile</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="manage-dialog" aria-labelledby="manage-heading" aria-describedby="manage-copy">
+      <form method="dialog" autocomplete="off">
+        <h2 id="manage-heading">Manage profiles</h2>
+        <p id="manage-copy">Rename a profile, or delete it along with its diagrams.</p>
+        <ul id="manage-list" class="manage-list"></ul>
+        <p id="manage-error" class="field-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button id="manage-done" value="done" class="primary">Done</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="delete-profile-dialog" aria-labelledby="delete-profile-heading" aria-describedby="delete-profile-copy">
+      <form method="dialog">
+        <h2 id="delete-profile-heading">Delete this profile?</h2>
+        <p id="delete-profile-copy"></p>
+        <ul
+          id="delete-profile-list"
+          class="delete-profile-list"
+          aria-label="Diagrams that will be deleted"
+          tabindex="0"></ul>
+        <div class="dialog-actions">
+          <button value="cancel" autofocus>Keep profile</button>
+          <button id="confirm-delete-profile" value="delete" class="danger-solid">Delete profile</button>
         </div>
       </form>
     </dialog>
