@@ -113,6 +113,28 @@
               disabled />
           </label>
           <span id="save-status" class="save-status" role="status">Opening local storage…</span>
+          <div id="move-actions" class="disclosure" hidden>
+            <button
+              id="move-diagram"
+              class="icon-button"
+              type="button"
+              aria-expanded="false"
+              aria-controls="move-panel"
+              aria-label="Move to another profile"
+              title="Move to another profile"
+              disabled>
+              <svg class="icon" aria-hidden="true"><use href="../shared/icons.svg#folder-move" /></svg>
+            </button>
+            <div
+              id="move-panel"
+              class="disclosure-panel disclosure-panel--end profile-panel"
+              role="group"
+              aria-labelledby="move-label"
+              hidden>
+              <p id="move-label" class="field-label panel-label">Move to profile</p>
+              <div id="move-options" class="profile-options"></div>
+            </div>
+          </div>
           <button
             id="delete-diagram"
             class="icon-button danger"
@@ -284,7 +306,9 @@
     <dialog id="profile-dialog" aria-labelledby="profile-dialog-heading" aria-describedby="profile-dialog-copy">
       <form method="dialog" autocomplete="off" novalidate>
         <h2 id="profile-dialog-heading">New profile</h2>
-        <p id="profile-dialog-copy">A profile keeps its own list of diagrams in this browser.</p>
+        <p id="profile-dialog-copy">
+          A profile keeps its own list of diagrams in this browser. You can move diagrams between profiles later.
+        </p>
         <label class="dialog-field" for="profile-name">
           <span class="field-label">Profile name</span>
           <input

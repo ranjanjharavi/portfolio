@@ -85,7 +85,7 @@
   color: var(--muted);
   font-size: 18px;
 }
-.profile-panel {
+.disclosure-panel.profile-panel {
   width: max-content;
   min-width: max(100%, 240px);
   max-width: min(320px, calc(100vw - 2 * var(--folio-gutter)));
@@ -121,6 +121,9 @@
 }
 [aria-pressed="true"] > .option-check {
   visibility: visible;
+}
+.panel-label {
+  padding: 6px 10px 4px;
 }
 .disclosure-panel hr {
   width: calc(100% - 4px);

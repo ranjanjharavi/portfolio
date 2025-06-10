@@ -145,30 +145,42 @@ function diagramCounts() {
   return counts;
 }
 
-// Profile names are user input, so everything here is built with DOM APIs and textContent.
+// Profile names are user input, so options are built with DOM APIs and textContent.
+function profileOption(profile, count) {
+  const button = document.createElement("button");
+  const text = document.createElement("span");
+  const name = document.createElement("strong");
+  const hint = document.createElement("span");
+  button.type = "button";
+  button.className = "profile-option";
+  button.dataset.profileId = profile.id;
+  text.className = "option-text";
+  name.textContent = profile.name;
+  hint.className = "option-hint";
+  hint.textContent = countLabel(count);
+  text.append(name, hint);
+  button.append(profileAvatar(profile.name), text);
+  return button;
+}
+
 function renderProfiles() {
   const active = profiles.get(activeProfileId);
   ui["profile-current"].textContent = active.name;
   ui["profile-avatar"].textContent = profileInitial(active.name);
   const counts = diagramCounts();
-  const options = sortedProfiles().map((profile) => {
-    const button = document.createElement("button");
-    const text = document.createElement("span");
-    const name = document.createElement("strong");
-    const count = document.createElement("span");
-    button.type = "button";
-    button.className = "profile-option";
-    button.dataset.profileId = profile.id;
+  const sorted = sortedProfiles();
+  const options = sorted.map((profile) => {
+    const button = profileOption(profile, counts.get(profile.id) ?? 0);
     button.setAttribute("aria-pressed", String(profile.id === activeProfileId));
-    text.className = "option-text";
-    name.textContent = profile.name;
-    count.className = "option-hint";
-    count.textContent = countLabel(counts.get(profile.id) ?? 0);
-    text.append(name, count);
-    button.append(profileAvatar(profile.name), text, icon("check", "icon option-check"));
+    button.append(icon("check", "icon option-check"));
     return button;
   });
   ui["profile-options"].replaceChildren(...options);
+  const targets = sorted.filter((profile) => profile.id !== activeProfileId);
+  ui["move-options"].replaceChildren(...targets.map((profile) => profileOption(profile, counts.get(profile.id) ?? 0)));
+  // People who never create a second profile never see the Move button.
+  ui["move-actions"].hidden = !targets.length;
+  if (!targets.length) moveMenu.close();
 }
 
 function announce(message) {
@@ -349,6 +361,17 @@ function renameProfile(id, name) {
   renderProfiles();
   saveProfile(profile);
   announce(`Renamed profile to ${name}.`);
+}
+
+function moveDiagram(targetId) {
+  clearTimeout(saveTimer);
+  // Moving is not editing, so updatedAt stays as it was.
+  const record = { ...currentDiagram(), profileId: targetId };
+  diagrams.set(record.id, record);
+  if (!storageError) dirty.add(record.id);
+  saveRecord(record);
+  openLatestDiagram();
+  announce(`Moved “${record.title || "Untitled diagram"}” to ${profiles.get(targetId).name}.`);
 }
 
 function switchProfile(id) {
@@ -772,6 +795,17 @@ const profileMenu = createDisclosure({
   toggle: ui["profile-toggle"],
   panel: ui["profile-panel"],
 });
+const moveMenu = createDisclosure({
+  container: ui["move-actions"],
+  toggle: ui["move-diagram"],
+  panel: ui["move-panel"],
+});
+ui["move-options"].addEventListener("click", (event) => {
+  const option = event.target.closest("[data-profile-id]");
+  if (!option) return;
+  moveMenu.close({ focus: true });
+  moveDiagram(option.dataset.profileId);
+});
 ui["profile-options"].addEventListener("click", (event) => {
   const option = event.target.closest("[data-profile-id]");
   if (!option) return;
@@ -1084,7 +1118,7 @@ async function init() {
   for (const id of ["source", "diagram-title", "diagram-list", "profile-toggle", "download-source"]) {
     ui[id].disabled = false;
   }
-  for (const id of ["new-diagram", "delete-diagram", "new-profile", "manage-profiles"]) {
+  for (const id of ["new-diagram", "delete-diagram", "new-profile", "manage-profiles", "move-diagram"]) {
     ui[id].disabled = Boolean(storageError);
   }
   const stored = storedProfileId();
