@@ -86,14 +86,20 @@
   font-size: 18px;
 }
 .disclosure-panel.profile-panel {
+  grid-template-columns: minmax(0, 1fr);
   width: max-content;
   min-width: max(100%, 240px);
   max-width: min(320px, calc(100vw - 2 * var(--folio-gutter)));
 }
 .profile-options {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   max-height: min(320px, 50vh);
   overflow-y: auto;
+}
+.disclosure-panel .profile-option:focus-visible {
+  /* The option list scrolls, which would clip an outside outline. */
+  outline-offset: -2px;
 }
 .disclosure-panel .profile-option {
   gap: 10px;
@@ -513,6 +519,7 @@ body:has(.fullscreen-dialog[open]) {
 dialog h2 {
   font: 500 26px/1.2 var(--font-sans);
   margin-bottom: 12px;
+  overflow-wrap: anywhere;
 }
 dialog p {
   color: var(--muted);

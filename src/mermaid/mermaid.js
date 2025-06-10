@@ -25,6 +25,8 @@ const DIAGRAM_CONFIG_KEYS = {
 };
 
 const PREVIEW_ACTIONS = ["download-toggle", "download-svg", "download-png", "open-preview", "fullscreen-preview"];
+// Actions that write to storage. Switching profiles still works in memory without storage.
+const WRITE_ACTIONS = ["new-diagram", "delete-diagram", "new-profile", "manage-profiles", "move-diagram"];
 
 const ui = Object.fromEntries([...document.querySelectorAll("[id]")].map((element) => [element.id, element]));
 
@@ -156,6 +158,7 @@ function profileOption(profile, count) {
   button.dataset.profileId = profile.id;
   text.className = "option-text";
   name.textContent = profile.name;
+  name.title = profile.name;
   hint.className = "option-hint";
   hint.textContent = countLabel(count);
   text.append(name, hint);
@@ -166,6 +169,7 @@ function profileOption(profile, count) {
 function renderProfiles() {
   const active = profiles.get(activeProfileId);
   ui["profile-current"].textContent = active.name;
+  ui["profile-current"].title = active.name;
   ui["profile-avatar"].textContent = profileInitial(active.name);
   const counts = diagramCounts();
   const sorted = sortedProfiles();
@@ -383,6 +387,7 @@ function switchProfile(id) {
 }
 
 async function createProfile(name) {
+  if (storageError) throw storageError;
   await flushSave();
   const profile = createProfileRecord(name);
   const diagram = createDiagramRecord(profile.id);
@@ -910,6 +915,10 @@ function commitRename(input, { revert }) {
   const profile = profiles.get(input.dataset.profileId);
   if (!profile) return;
   const name = input.value.trim();
+  if (storageError && name !== profile.name) {
+    input.value = profile.name;
+    return setManageError(null, storageError.message);
+  }
   if (name === profile.name) {
     input.value = name;
     setManageError(null, "");
@@ -1101,8 +1110,8 @@ async function init() {
         clearTimeout(saveTimer);
         ui.source.readOnly = true;
         ui["diagram-title"].readOnly = true;
-        ui["new-diagram"].disabled = true;
-        ui["delete-diagram"].disabled = true;
+        for (const id of WRITE_ACTIONS) ui[id].disabled = true;
+        moveMenu.close();
         showStorageError(error);
         updateSaveStatus();
       },
@@ -1118,9 +1127,7 @@ async function init() {
   for (const id of ["source", "diagram-title", "diagram-list", "profile-toggle", "download-source"]) {
     ui[id].disabled = false;
   }
-  for (const id of ["new-diagram", "delete-diagram", "new-profile", "manage-profiles", "move-diagram"]) {
-    ui[id].disabled = Boolean(storageError);
-  }
+  for (const id of WRITE_ACTIONS) ui[id].disabled = Boolean(storageError);
   const stored = storedProfileId();
   activeProfileId = profiles.has(stored) ? stored : mostRecentProfileId();
   openLatestDiagram();
