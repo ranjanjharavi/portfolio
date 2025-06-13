@@ -14,7 +14,7 @@ Open <http://127.0.0.1:8000>
 
 - `/` — Browse projects, experience, credentials, and animated extension demos.
 - `/scratchpad/` — Create documents. Write, preview, and search Markdown notes.
-- `/mermaid/` — Paste Mermaid code for a live preview. Download PNG, SVG, or Mermaid source.
+- `/mermaid/` — Paste Mermaid code for a live preview. Group diagrams into profiles, such as Personal and Work, and move them between profiles. Download PNG, SVG, or Mermaid source.
 - `/v0/` — Open the archived portfolio.
 
 Keep notes and diagrams in browser storage. Load fonts and rendering libraries from CDNs.
