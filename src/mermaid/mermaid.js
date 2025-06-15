@@ -227,6 +227,11 @@ function createDisclosure({ container, toggle, panel }) {
   return disclosure;
 }
 
+// The preview canvas colour, also used behind exported PNGs.
+function previewBackground() {
+  return lightPreview ? "#fff" : "#181818";
+}
+
 function prefersDarkDiagram() {
   return document.documentElement.dataset.theme === "dark";
 }
@@ -238,6 +243,70 @@ function darkTheme(mermaid, source) {
   if (theme === "redux-color") return "redux-dark-color";
   if (theme === "redux") return "redux-dark";
   return "dark";
+}
+
+// Diagrams restyled after render: plain nodes get a palette colour each (Mermaid's colour
+// themes only colour their containers: flowchart subgraphs, composite states), and edge
+// labels take the canvas colour instead of a grey box.
+const RESTYLED_TYPES = new Set(["flowchart", "flowchart-v2", "flowchart-elk", "stateDiagram"]);
+// The container rules Mermaid writes into the SVG, one per palette slot.
+const PALETTE_RULE =
+  /\[data-color-id="color-(\d+)"\]\.(?:cluster:not\(\.swimlane\) rect|statediagram-cluster rect\.outer)$/;
+// Any other class on a node comes from `classDef`.
+const PLAIN_NODE_CLASSES = new Set(["node", "default", "clickable", "statediagram-state"]);
+// Node outlines, not label internals, plain-text shapes, or inner divider lines.
+const NODE_SHAPE = ":is(rect, circle, ellipse, polygon, path):not(.label *, .neo-line *, .text)";
+
+// Colour each node from the theme palette in declaration order, the way sequence diagrams
+// colour participants. Nodes styled with `style` or `classDef`, notes, label-less markers
+// (start/end dots, fork bars, choices), and hand-drawn nodes keep Mermaid's colours.
+function colorDiagramNodes(svg) {
+  const palette = [];
+  for (const element of svg.querySelectorAll("style")) {
+    for (const rule of element.sheet?.cssRules ?? []) {
+      const slot = rule.selectorText?.match(PALETTE_RULE)?.[1];
+      if (slot !== undefined && rule.style.stroke) palette[slot] = { stroke: rule.style.stroke, fill: rule.style.fill };
+    }
+  }
+  // Non-colour themes (e.g. `theme: neutral` in frontmatter) carry no palette.
+  if (!palette.length || palette.includes(undefined)) return;
+
+  let colored = false;
+  let index = 0;
+  for (const node of svg.querySelectorAll("g.node")) {
+    if (!node.querySelector(":scope > .label") || node.classList.contains("statediagram-note")) continue;
+    // A styled node still takes its slot, so styling one node doesn't recolour the rest.
+    const slot = index++ % palette.length;
+    const styled =
+      [...node.classList].some((name) => !PLAIN_NODE_CLASSES.has(name)) ||
+      [...node.querySelectorAll("[style]")].some((element) => element.getAttribute("style").includes("!important"));
+    if (styled || node.dataset.look === "handDrawn") continue;
+    node.setAttribute("data-color-id", `color-${slot}`);
+    colored = true;
+  }
+  if (!colored) return;
+
+  const style = document.createElementNS(SVG_NS, "style");
+  style.textContent = palette
+    .map(({ stroke, fill }, slot) => {
+      const shape = `#${CSS.escape(svg.id)} [data-color-id="color-${slot}"].node ${NODE_SHAPE}`;
+      // Some shapes draw fill and outline as separate paths; keep each to its own job.
+      const strokeRule = `${shape}:not([stroke="none"]) { stroke: ${stroke}; }`;
+      return fill ? `${strokeRule}\n${shape}:not([fill="none"]) { fill: ${fill}; }` : strokeRule;
+    })
+    .join("\n");
+  svg.append(style);
+}
+
+// Edge labels sit on a grey box (`edgeLabelBackground`) that also hides their line. Paint
+// it the canvas colour instead, so the box disappears but still hides the line. Covers
+// HTML labels and, when `htmlLabels` is off, the SVG rect behind the text.
+function paintEdgeLabelBackgrounds(svg, background) {
+  const scope = `#${CSS.escape(svg.id)}`;
+  const style = document.createElementNS(SVG_NS, "style");
+  style.textContent = `${scope} :is(.edgeLabel, .edgeLabel p, .labelBkg) { background-color: ${background}; }
+${scope} :is(.edgeLabel rect, .edgeLabel .label rect) { fill: ${background}; opacity: 1; }`;
+  svg.append(style);
 }
 
 function showStorageError(error) {
@@ -482,8 +551,16 @@ async function renderLatest() {
         const result = await mermaid.render(`folio-diagram-${++renderSequence}`, source, ui["render-sandbox"]);
         if (version !== renderVersion) continue;
         lastSvg = result.svg;
+        const renderedTheme = mermaid.mermaidAPI?.getConfig().theme ?? theme;
+        lightPreview = !renderedTheme?.includes("dark");
         ui["diagram-canvas"].innerHTML = result.svg;
         const svg = ui["diagram-canvas"].querySelector("svg");
+        // Needs the live document so the SVG's stylesheet is parsed.
+        if (RESTYLED_TYPES.has(mermaid.detectType(source))) {
+          colorDiagramNodes(svg);
+          paintEdgeLabelBackgrounds(svg, previewBackground());
+          lastSvg = new XMLSerializer().serializeToString(svg);
+        }
         const box = svg.viewBox.baseVal;
         diagramSize = {
           width: box.width || svg.width.baseVal.value,
@@ -494,8 +571,6 @@ async function renderLatest() {
         ui["diagram-canvas"].hidden = false;
         ui["preview-empty"].hidden = true;
         ui["syntax-error"].hidden = true;
-        const renderedTheme = mermaid.mermaidAPI?.getConfig().theme ?? theme;
-        lightPreview = !renderedTheme?.includes("dark");
         ui["preview-viewport"].dataset.scheme = lightPreview ? "light" : "dark";
         updatePreviewActions(true);
         ui["preview-status"].textContent = "Up to date";
@@ -586,7 +661,7 @@ function diagramImage() {
 async function downloadPng() {
   const { width, height } = diagramSize;
   const { title } = currentDiagram();
-  const background = lightPreview ? "#fff" : "#181818";
+  const background = previewBackground();
   pngPending = true;
   ui["download-png"].disabled = true;
   previewFeedback("Preparing PNG…");
@@ -617,7 +692,7 @@ async function downloadPng() {
 
 function openPreview() {
   const link = document.createElement("a");
-  const background = lightPreview ? "#fff" : "#181818";
+  const background = previewBackground();
   const image = diagramImage().replaceAll('"', "%22");
   const page = `<!doctype html><html lang="en"><meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
